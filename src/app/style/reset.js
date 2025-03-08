@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import fontSet from './fontSet'
 
 const ResetStyle = createGlobalStyle`
   html,
@@ -154,8 +155,7 @@ img{
 html, body, #root{
   width:100%;
   height:100%;
-  font-family : Pretendard,  sans-serif;
-  font-weight:400;
+  ${fontSet({ size: 14, weight: 400, lineHeight: "1.5", letterSpacing: "0.5px", family: "'Pretendard', sans-serif"})}
 }
 `
 
