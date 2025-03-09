@@ -13,15 +13,16 @@ import call from "../../assets/ico-call.svg"
 
 
 
-function Detail() {
+function Detail(props) {
 
   const navigate = useNavigate()
   const {id} = useParams()
+  const {toggleAsideModal} = props
 
   return (
     <s.Detail>
 
-      <AsideModal />
+      <AsideModal toggleAsideModal={toggleAsideModal} />
 
       <s.RestaurentImgBox>
         <s.RestaurentImg src={mainmenu} alt="메인메뉴" />

@@ -1,10 +1,9 @@
 import s from './style'
 import FoldImg from '../../assets/ico-fold.svg'
-import useAsideModal from '../../model/useAsideModal'
 
-function AsideModal() {
+function AsideModal(props) {
 
-  const [, toggleAsideModal] = useAsideModal()
+  const {toggleAsideModal} = props
   
   return(
     <s.BtnAsideFold onClick={toggleAsideModal}>

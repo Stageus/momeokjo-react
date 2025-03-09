@@ -12,8 +12,8 @@ import AsideModal from "../widget/ui/AsideModal";
 
 function Page() {
 
-  const navigate = useNavigate();
-  const [AsideModalOpen, toggleAsideModal] = useAsideModal();
+  const navigate = useNavigate()
+  const [AsideModalOpen, toggleAsideModal] = useAsideModal()
 
   return (
     <s.Main>
@@ -29,11 +29,11 @@ function Page() {
         </s.HamburgerMenu>
       ) : (
         <s.AsideModal>
-          <AsideModal />
+          <AsideModal toggleAsideModal={toggleAsideModal} />
           <s.AsideModalDepth1>
           <Routes>
             <Route path="/" element={<Layout />}>
-              <Route path="restaurant/:id" element={<Detail />} />
+              <Route path="restaurant/:id" element={<Detail toggleAsideModal={toggleAsideModal} />} />
             </Route>
           </Routes>
           </s.AsideModalDepth1>
