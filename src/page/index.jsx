@@ -7,11 +7,11 @@ import KakaoMap from "./ui/KakaoMap";
 import Detail from "./ui/Detail";
 
 import HamburgerImg from "./assets/ico-menu.svg";
-import FoldImg from "./assets/ico-fold.svg";
-import useAsideModal from "./model/useAsideModal";
+import useAsideModal from "../widget/model/useAsideModal";
+import AsideModal from "../widget/ui/AsideModal";
 
 function Page() {
-  
+
   const navigate = useNavigate();
   const [AsideModalOpen, toggleAsideModal] = useAsideModal();
 
@@ -29,9 +29,7 @@ function Page() {
         </s.HamburgerMenu>
       ) : (
         <s.AsideModal>
-          <s.BtnAsideFold onClick={toggleAsideModal}>
-            <s.FoldImg src={FoldImg} alt="접기 버튼" />
-          </s.BtnAsideFold>
+          <AsideModal />
           <s.AsideModalDepth1>
           <Routes>
             <Route path="/" element={<Layout />}>

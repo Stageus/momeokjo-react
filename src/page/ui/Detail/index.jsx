@@ -1,12 +1,16 @@
+import { useNavigate, useParams } from "react-router-dom"
+
 import s from "./style"
-// import AsideFoldBtn from "../../../../shared/ui/AsideFoldBtn"
+
+import AsideModal from "../../../widget/ui/AsideModal"
+
 import mainmenu from "../../assets/ico-mainFood.png"
 import close from "../../assets/ico-close.png"
 import star from "../../assets/ico-fillStar.png"
 import map from "../../assets/ico-map.svg"
 import time from "../../assets/ico-time.svg"
 import call from "../../assets/ico-call.svg"
-import { useNavigate, useParams } from "react-router-dom"
+
 
 
 function Detail() {
@@ -17,7 +21,7 @@ function Detail() {
   return (
     <s.Detail>
 
-      {/* <AsideFoldBtn /> */}
+      <AsideModal />
 
       <s.RestaurentImgBox>
         <s.RestaurentImg src={mainmenu} alt="메인메뉴" />

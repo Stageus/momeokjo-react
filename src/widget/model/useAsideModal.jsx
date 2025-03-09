@@ -1,8 +1,10 @@
-import React,{useState} from "react"
+import { useRecoilState } from "recoil"
+import asideModalState from "./ui/asideModalState"
 
 const useAsideModal = () => {
 
-  const [AsideModalOpen, setAsideModalOpen] =  useState(false)
+
+  const [AsideModalOpen, setAsideModalOpen] =  useRecoilState(asideModalState)
 
   const toggleAsideModal = () => {
     setAsideModalOpen(AsideModalOpen => !AsideModalOpen)

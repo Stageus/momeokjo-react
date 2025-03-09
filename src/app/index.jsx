@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { RecoilRoot } from "recoil";
 
 import Page from '../page'
 import Login from '../page/ui/Login'
@@ -13,12 +14,14 @@ function App() {
       <ThemeProvider theme={theme.defaultTheme}>
         <ResetStyle />
         <GlobalStyle />
+        <RecoilRoot>
           <Router>
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/*" element={<Page />} />
             </Routes>
           </Router>
+        </RecoilRoot>
       </ThemeProvider>
     </>
   )
