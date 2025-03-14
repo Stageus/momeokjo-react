@@ -1,35 +1,36 @@
-import { useNavigate, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom"
 
-import s from "./style";
+import s from "./style"
 
-import Layout from "./ui/Layout";
-import KakaoMap from "./ui/KakaoMap";
-import Detail from "./ui/Detail";
+import Layout from "./ui/Layout"
+import KakaoMap from "./ui/KakaoMap"
+import Detail from "./ui/Detail"
 
-import HamburgerImg from "./assets/ico-menu.svg";
-import useAsideModal from "../widget/model/useAsideModal";
-import AsideModal from "../widget/ui/AsideModal";
+import useAsideModal from "../widget/model/useAsideModal"
+
+import AsideModalBtn from "../widget/ui/AsideModalBtn"
+import GotoLoginBtn from "../widget/ui/GotoLoginBtn"
+import HamburgerBtn from "../widget/ui/HambergerBtn"
+
+
 
 function Page() {
 
-  const navigate = useNavigate()
   const [AsideModalOpen, toggleAsideModal] = useAsideModal()
 
   return (
     <s.Main>
       <KakaoMap />
 
-      <s.BtnLogin onClick={() => navigate("/login")}>로그인</s.BtnLogin>
+      <GotoLoginBtn />
 
       {AsideModalOpen ? (
-        <s.HamburgerMenu onClick={toggleAsideModal}>
-          <s.HamburgerBtn>
-            <s.HamburgerImg src={HamburgerImg} alt="햄버거 버튼" />
-          </s.HamburgerBtn>
+        <s.HamburgerMenu>
+          <HamburgerBtn toggleAsideModal={toggleAsideModal}/>
         </s.HamburgerMenu>
       ) : (
         <s.AsideModal>
-          <AsideModal toggleAsideModal={toggleAsideModal} />
+          <AsideModalBtn toggleAsideModal={toggleAsideModal} />
           <s.AsideModalDepth1>
           <Routes>
             <Route path="/" element={<Layout />}>

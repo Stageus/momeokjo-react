@@ -1,7 +1,7 @@
 import s from './style'
 import FoldImg from '../../assets/ico-fold.svg'
 
-function AsideModal(props) {
+function AsideModalBtn(props) {
 
   const {toggleAsideModal} = props
   
@@ -12,4 +12,4 @@ function AsideModal(props) {
   )
 }
 
-export default AsideModal
+export default AsideModalBtn

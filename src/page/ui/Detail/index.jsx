@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom"
 
 import s from "./style"
 
-import AsideModal from "../../../widget/ui/AsideModal"
+import AsideModalBtn from "../../../widget/ui/AsideModalBtn"
 
 import mainmenu from "../../assets/ico-mainFood.png"
 import close from "../../assets/ico-close.png"
@@ -22,7 +22,7 @@ function Detail(props) {
   return (
     <s.Detail>
 
-      <AsideModal toggleAsideModal={toggleAsideModal} />
+      <AsideModalBtn toggleAsideModal={toggleAsideModal} />
 
       <s.RestaurentImgBox>
         <s.RestaurentImg src={mainmenu} alt="메인메뉴" />
