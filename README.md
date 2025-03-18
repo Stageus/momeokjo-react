@@ -1,6 +1,6 @@
 # 뭐 먹을지 정해주는 조력자, 모먹조
 
-![readme_mockup](https://github.com/Stageus/momeokjo-react/blob/master/public/redme-img.png)
+![readme_mockup](https://github.com/user-attachments/assets/760fb747-4ef7-4780-aecb-53e558d605da)
 
 - 배포 URL : 
 - Test ID : 
