@@ -1,45 +1,50 @@
-import { useEffect, useState } from "react"
-import { Map, MapMarker } from 'react-kakao-maps-sdk'
-import s from "./style"
+import { Map , MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk'
+import markermylocation from "./assets/ico-mylocationmarker.svg"
+import markerfilter from "./assets/ico-filtermarker.svg"
 
-const KakaoMap = () => {
-	const [location, setLocation] = useState({ lat: null, lng: null })
-	const [address, setAddress] = useState()
+import s from "./style";
 
-	// 현재 위치 가져온다
-	useEffect(() => {
-		navigator.geolocation.getCurrentPosition(
-			(position) => {
-				const { latitude, longitude } = position.coords
-				setLocation({ lat: latitude, lng: longitude }) // 현재 위치의 위도, 경도를 state에 저장
-				fetchAddress(latitude, longitude)
-			}
-		)	
-	}, []);
+function KakaoMap(props){ 
+    const { location, address, selectedRestaurant, selectedRandomRestaurant } = props
 
+    return (
+        <Map center={location} style={{ width: '100%', height: '100%' }} level={5}>
+        {/* 현재 위치 마커 */}
+        {location.lat && location.lng && 
+            <MapMarker 
+            position={location} 
+            image={{ src: markermylocation, size: {width:50, height:50} }}
+            />
+        } 
 
-	const fetchAddress = (lat, lng) => {
-		const geocoder = new window.kakao.maps.services.Geocoder() // 위도, 경도를 행정동 주소로 변환
-		geocoder.coord2RegionCode(lng, lat, (result, status) => {
-			console.log(result)
-		  if (status === window.kakao.maps.services.Status.OK) {
-			const region = result.find((r) => r.region_type === "H") // 행정동 정보로 저장 
-			if (region) {
-			  setAddress(region.address_name)
-			}
-		  }
-		})
-	  }
+        {/* 선택된 음식점 리스트 마커 표시 */}
+        {selectedRestaurant.map((restaurant) => (
+            <MapMarker
+            key={restaurant.restaurant_idx}
+            position={{ lat: restaurant.latitude, lng: restaurant.longitude }}
+            image={{ src: markerfilter, size: {width:51, height:63}}}
+            />
+        ))}
 
-	return(
-		<>
-		<Map center={location} style={{ width: '100%', height: '100%' }} level={3}>
-			<MapMarker position={location} />
-			<s.CurrentLocation>{address && <>{address}</>}</s.CurrentLocation>
-		</Map>
+        {/* 랜덤 음식점 마커 표시 */}
+        {selectedRandomRestaurant&&(
+            <>
+            <MapMarker
+                key={selectedRandomRestaurant.restaurant_idx}
+                position={{ lat: selectedRandomRestaurant.latitude, lng: selectedRandomRestaurant.longitude }}
+                image={{ src: markerfilter, size: {width:51, height:63}}}
+            />
+            <CustomOverlayMap position={{ lat: selectedRandomRestaurant.latitude, lng: selectedRandomRestaurant.longitude }}>
+                <div style={{backgroundColor:'white', border:'3px solid black', width:'200px', height:'100px', textAlign:'center', position:'absolute', top:'-160px', left:'0'}}>
+                {selectedRandomRestaurant.restaurant_name}
+                </div>
+            </CustomOverlayMap>
+            </>
+        )}
 
-		</>
-    )
+        <s.CurrentLocation>{address && <>{address}</>}</s.CurrentLocation>
+        </Map>
+    );
 }
 
-export default KakaoMap
+export default KakaoMap;

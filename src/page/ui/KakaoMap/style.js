@@ -2,6 +2,7 @@
 import styled from "styled-components"
 
 const style = {
+
     "CurrentLocation" : styled.div`
         position:fixed;
         bottom:40px;
