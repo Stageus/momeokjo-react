@@ -7,6 +7,7 @@ import { ThemeProvider } from "styled-components";
 import theme from "./style/theme.js";
 import GlobalStyle from './style/global.js'
 import ResetStyle from './style/reset.js'
+import LocalSignUp from "../page/ui/Login/ui/LocalSignUp/index.jsx";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/*" element={<Page />} />
+              <Route path="/signup" element={<LocalSignUp />} />
             </Routes>
           </Router>
         </RecoilRoot>

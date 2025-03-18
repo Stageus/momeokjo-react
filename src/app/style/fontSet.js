@@ -4,7 +4,10 @@ const fontSet = ({
   lineHeight = "normal", 
   letterSpacing = "normal", 
   transform = "none",
-  family = "Pretendard, sans-serif"
+  family = "Pretendard, sans-serif",
+  line = "none",
+  color = "inherit",
+  theme
 }) => `
   font-size: ${size}px;
   font-weight: ${weight};
@@ -12,6 +15,8 @@ const fontSet = ({
   letter-spacing: ${letterSpacing};
   text-transform: ${transform};
   font-family: ${family};
+  text-decoration: ${line};
+  color: ${theme?.[color] || color};
 `;
 
 export default fontSet;

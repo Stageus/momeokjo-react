@@ -11,6 +11,7 @@ const defaultTheme = {
     mapbgdeem1: " rgba(29, 30, 31, 0.39)",
     maplinegrey: "#eee",
     mapaccent: "#FF2323",
+    mapkakao: "#FEE500",
   };
   
   // darkTheme 

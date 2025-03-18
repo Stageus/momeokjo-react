@@ -1,12 +1,17 @@
-import React from "react";
-import { StyledButton, BtnLogin, HamburgerBtn, BtnRound, BtnAsideFold, FoldImg, BtnFullCustom } from "./style";
+import StyledButton from "./style";
 
-const Button = ({ children, variant = "primary", size = "medium", ...props }) => {
+const Button = ({ children, color = "default", size = "medium", selected, disabled, ...props }) => {
   return (
-    <StyledButton variant={variant} size={size} {...props}>
+    <StyledButton 
+      color={color} 
+      size={size} 
+      selected={selected}
+      disabled={disabled}
+      {...props}
+      >
       {children}
     </StyledButton>
-  );
-};
+  )
+}
 
-export { Button, BtnLogin, HamburgerBtn, BtnRound, BtnAsideFold, FoldImg, BtnFullCustom };
+export default Button

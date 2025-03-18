@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 
 import useDataSelect from "../../../../widget/model/useDataSelect"
 
-import { Button, BtnLogin, HamburgerBtn, BtnRound, BtnAsideFold, FoldImg, BtnFullCustom } from "../../../../widget/ui/Button"
+import Button from "../../../../widget/ui/Button"
 
 function Recommend() {
 
@@ -31,11 +31,11 @@ function Recommend() {
         <s.WrapBtnRound>
           {radiusData.map((elem, idx) => (
             <Button
-              variant="primary"
+              color="default"
               size="small" 
               key={idx} 
               onClick={() => setSelectedRadius(idx)} 
-              $primary={selectedRadius === idx}
+              selected={selectedRadius === idx}
             >
               {elem.title}
             </Button>))}
@@ -44,17 +44,18 @@ function Recommend() {
         <s.H2>추천 받고 싶은 메뉴를 선택해 보세요!</s.H2>
         <s.WrapBtnRound>
           {menuData.map((elem, idx) => (
-            <BtnRound 
+            <Button 
+              color="default"
+              size="small" 
               key={idx} 
               onClick={() => setSelectedMenu(idx)} 
-              $primary={selectedMenu === idx}
+              selected={selectedMenu === idx}
             >
               {elem}
-            </BtnRound>))}
+            </Button>))}
         </s.WrapBtnRound>
 
-        {/* <s.BtnFullCustom $primary $lg onClick={handleRecommend}>음식점 추천 받기</s.BtnFullCustom> */}
-        <BtnFullCustom $primary $lg onClick={handleRecommend}>음식점 추천 받기</BtnFullCustom>
+        <Button color="primary" size="large" onClick={handleRecommend} children="음식점 추천 받기"></Button>
 
         <ul>
         {restaurants.map((restaurant) => (
