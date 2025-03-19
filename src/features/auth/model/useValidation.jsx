@@ -1,12 +1,6 @@
 import { useRef, useState } from "react";
 
-const useValidation = (type) => {
-  const idRef = useRef(null)
-  const passwordRef = useRef(null)
-  const confirmPasswordRef = useRef(null)
-  const nicknameRef = useRef(null)
-  const emailRef = useRef(null)
-
+const useValidation = (type, inputRefs) => {
   const [errors, setErrors] = useState({
     id: false,
     password: false,
@@ -27,7 +21,7 @@ const useValidation = (type) => {
         isValid = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,32}$/.test(value)
         break
       case "confirmPassword":
-        isValid = value !== "" && value == passwordRef.current?.value
+        isValid = value !== "" && value == confirmPasswordRef.current?.value
         break
       case "nickname":
         isValid = /^[가-힣a-zA-Z0-9]{1,50}$/.test(value)
@@ -47,18 +41,26 @@ const useValidation = (type) => {
     let newErrors ={}
 
     if (type === "signup") {
+      const idValue = idRef.current?.value
+      const passwordValue = passwordRef.current?.value
+      const confirmPasswordValue = confirmPasswordRef.current?.value
+      const nicknameValue = nicknameRef.current?.value
+      const emailValue = emailRef.current?.value
 
       newErrors = {
-        id: !validateField("id", idRef.current?.value),
-        password: !validateField("password", passwordRef.current?.value),
-        confirmPassword: !validateField("confirmPassword", confirmPasswordRef.current?.value),
-        nickname: !validateField("nickname", nicknameRef.current?.value),
-        email: !validateField("email", emailRef.current?.value),
+        id: !validateField("id", idValue),
+        password: !validateField("password", passwordValue),
+        confirmPassword: !validateField("confirmPassword", confirmPasswordValue),
+        nickname: !validateField("nickname", nicknameValue),
+        email: !validateField("email", emailValue),
       }
     } else if (type === "login") {
+      const idValue = idRef.current?.value
+      const passwordValue = passwordRef.current?.value
+
       newErrors = {
-        id: !validateField("id", idRef.current?.value),
-        password: !validateField("password", passwordRef.current?.value), 
+        id: !validateField("id", idValue),
+        password: !validateField("password", passwordValue), 
       }
     }
 
@@ -67,12 +69,8 @@ const useValidation = (type) => {
   }
 
   // 폼 제출
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    
-    if (!validateForm()) return
-
-    await signupEvent()
+  const handleSubmit = async () => {
+    return validateForm()
   }
 
   const signupEvent = async () => {
@@ -87,7 +85,6 @@ const useValidation = (type) => {
       body: JSON.stringify({
         id: idRef.current.value,
         password: passwordRef.current.value,
-        confirmPassword: confirmPasswordRef.current.value,
         nickname: nicknameRef.current.value,
         email: emailRef.current.value,
       })
@@ -99,18 +96,18 @@ const useValidation = (type) => {
       case 200:
         alert("회원가입에 성공하였습니다.")
         break
-        case 400:
-          alert("입력값에 문제가 있습니다.")
-          break
-        case 409:
-          alert("이미 존재하는 아이디 입니다.")
-          break
-        case 500:
-          alert("알 수 없는 오류로 동작할 수 없습니다.")
-          break
-        default:
-          alert(`알 수 없는 상태 코드: ${response.status}`)
-          break
+      case 400:
+        alert("입력값에 문제가 있습니다.")
+        break
+      case 409:
+        alert("이미 존재하는 아이디 입니다.")
+        break
+      case 500:
+        alert("알 수 없는 오류로 동작할 수 없습니다.")
+        break
+      default:
+        alert(`알 수 없는 상태 코드: ${response.status}`)
+        break
     }
   }
 
@@ -131,7 +128,7 @@ const useValidation = (type) => {
     }
   }
 
-  return {refs, errors, handleSubmit,}
+  return {refs, errors, handleSubmit}
 }
 
 export default useValidation

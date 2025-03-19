@@ -1,14 +1,12 @@
+import React from "react"
 import { useNavigate } from "react-router-dom"
-import s from "./style"
+import StyledButton from "./style"
 
 function GotoLoginBtn() {
-
   const navigate = useNavigate()
 
   return(
-    <>
-      <s.BtnLogin onClick={() => navigate("/login")}>로그인</s.BtnLogin>
-    </>
+      <StyledButton onClick={() => navigate("/login")}>로그인</StyledButton> 
   )
 
 }

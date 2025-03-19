@@ -87,7 +87,7 @@ function Page() {
                          key={idx} 
                          onClick={() => handleCategoryChange(idx)} 
                          selected={selectedMenu === idx}
-                         size="small"
+                         size="medium"
                          color={selectedMenu === idx ? "primary" : "default"}
                         >
                             {elem.category_name}
@@ -97,14 +97,14 @@ function Page() {
 
                     <Button 
                      color="primary"
-                     size="large_map"
+                     size="largeMap"
                     onClick={handleFilterSearch}>음식점 조회</Button>
                     <s.SortLine></s.SortLine>
                     <s.H2 $gap20>랜덤으로 음식점 1곳을 추천받고 싶다면 클릭해보세요!</s.H2>
 
                     <Button
                      color="secondary"
-                     size="large_map"
+                     size="largeMap"
                      onClick={handleRecommend}>음식점 랜덤 추천 받기</Button>
 
                     <s.SortLine></s.SortLine>
