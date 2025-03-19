@@ -43,8 +43,8 @@ const Login = () => {
         
         
 
-        <Button color="primary" size="large_login" children={"로그인"} onClick={handleSubmit} />
-        <Button color="kakao" size="large_login" >
+        <Button color="primary" size="large_user" children={"로그인"} onClick={handleSubmit} />
+        <Button color="kakao" size="large_user" >
           <s.KakaoImg src={kakaoIcon} alt="카카오 아이콘" />
           카카오 로그인
         </Button>

@@ -122,7 +122,7 @@ const LocalSignUp = () => {
         })}
         
 
-        <Button $verify color="primary" size="large_login" onClick={handleSubmit}>회원가입</Button>
+        <Button $verify color="primary" size="large_user" onClick={handleSubmit}>회원가입</Button>
       </s.Form>
     </s.Container>
   )

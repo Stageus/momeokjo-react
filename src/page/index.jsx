@@ -6,6 +6,7 @@ import useAsideModal from "../widget/model/useAsideModal"
 import AsideModalBtn from "../widget/ui/AsideModalBtn"
 import GotoLoginBtn from "../widget/ui/GotoLoginBtn"
 import HamburgerBtn from "../widget/ui/HambergerBtn"
+import Button from "../widget/ui/Button"
 
 import useLocation from "./model/useLocation"
 import useRadius from "./model/useRadius"
@@ -82,17 +83,29 @@ function Page() {
 
                     <s.WrapBtnRound>
                         {uniqueCategories.map((elem, idx) => (
-                        <s.BtnRound key={idx} onClick={() => handleCategoryChange(idx)} $primary={selectedMenu === idx}>
+                        <Button
+                         key={idx} 
+                         onClick={() => handleCategoryChange(idx)} 
+                         selected={selectedMenu === idx}
+                         size="small"
+                         color={selectedMenu === idx ? "primary" : "default"}
+                        >
                             {elem.category_name}
-                        </s.BtnRound>
+                        </Button>
                         ))}
                     </s.WrapBtnRound>
 
-                    <s.BtnFullCustom $primary $lg onClick={handleFilterSearch}>음식점 조회</s.BtnFullCustom>
+                    <Button 
+                     color="primary"
+                     size="large_map"
+                    onClick={handleFilterSearch}>음식점 조회</Button>
                     <s.SortLine></s.SortLine>
                     <s.H2 $gap20>랜덤으로 음식점 1곳을 추천받고 싶다면 클릭해보세요!</s.H2>
 
-                    <s.BtnFullCustom $secondary $lg onClick={handleRecommend}>음식점 랜덤 추천 받기</s.BtnFullCustom>
+                    <Button
+                     color="secondary"
+                     size="large_map"
+                     onClick={handleRecommend}>음식점 랜덤 추천 받기</Button>
 
                     <s.SortLine></s.SortLine>
 
