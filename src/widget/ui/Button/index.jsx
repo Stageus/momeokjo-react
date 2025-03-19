@@ -1,14 +1,8 @@
 import StyledButton from "./style";
 
-const Button = ({ children, color = "default", size = "medium", selected, disabled, ...props }) => {
+const Button = ({ children, color = "default", size = "medium", ...props }) => {
   return (
-    <StyledButton 
-      color={color} 
-      size={size} 
-      selected={selected}
-      disabled={disabled}
-      {...props}
-      >
+    <StyledButton color={color} size={size} {...props}>
       {children}
     </StyledButton>
   )
