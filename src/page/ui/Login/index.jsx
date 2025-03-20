@@ -4,12 +4,17 @@ import BackIcon from "./assets/ico-back.svg"
 import kakaoIcon from "./assets/ico-kakao.svg"
 import useLoginForm from "./model/useLoginForm";
 import Button from "../../../shared/ui/Button"
+import { useCallback } from "react";
 
 
 const Login = () => {
 
   const navigate = useNavigate()
   const { inputFields, refs, errors, setErrors, handleLogin } = useLoginForm()
+
+  const onClick = useCallback((e) => {
+    handleLogin(e, navigate)
+  }, [handleLogin, navigate])
 
   return (
     <s.Container>
@@ -32,16 +37,15 @@ const Login = () => {
             $error={!!errors[field.refName]}
             placeholder={field.placeholder}
           />
-          {errors[field.refName] &&
-            <s.Message $error={!!errors[field.refName]}>
-              {field.label === "아이디" && "50자 이하 / 영어, 숫자 조합"}
-              {field.label === "비밀번호" && "8~32자 이하, 영대문자 1자 이상, 특수문자 1자 이상, 영소문자, 숫자 조합"}
-            </s.Message>
-          }
+          {errors && errors[field.refName] && (
+              <s.Message $error={!!errors[field.refName]}>
+                {errors[field.refName]}
+              </s.Message>
+          )}
         </s.InputBox>
         ))}
 
-        <Button color="primary" size="largeUser" children={"로그인"} onClick={handleLogin} />
+        <Button color="primary" size="largeUser" children={"로그인"} onClick={onClick} />
         <Button color="kakao" size="largeUser" >
           <s.KakaoImg src={kakaoIcon} alt="카카오 아이콘" />
           카카오 로그인
@@ -60,4 +64,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Login
