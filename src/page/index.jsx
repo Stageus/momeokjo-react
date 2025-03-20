@@ -2,11 +2,11 @@ import s from "./style"
 import KakaoMap from "./ui/KakaoMap"
 import categoryRecomend from './assets/data/categoryRecomend.json'
 
-import useAsideModal from "../widget/model/useAsideModal"
-import AsideModalBtn from "../widget/ui/AsideModalBtn"
-import GotoLoginBtn from "../widget/ui/GotoLoginBtn"
-import HamburgerBtn from "../widget/ui/HambergerBtn"
-import Button from "../widget/ui/Button"
+import useAsideModal from "../shared/ui/AsideModalBtn/model/useAsideModal"
+import AsideModalBtn from "../shared/ui/AsideModalBtn"
+import GotoLoginBtn from "../shared/ui/GotoLoginBtn"
+import HamburgerBtn from "../shared/ui/HambergerBtn"
+import Button from "../shared/ui/Button"
 
 import useLocation from "./model/useLocation"
 import useRadius from "./model/useRadius"

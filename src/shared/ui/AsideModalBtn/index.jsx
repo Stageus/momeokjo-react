@@ -1,5 +1,5 @@
 import s from './style'
-import FoldImg from '../../assets/ico-fold.svg'
+import FoldImg from './assets/ico-fold.svg'
 
 function AsideModalBtn(props) {
 
