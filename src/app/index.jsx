@@ -6,7 +6,7 @@ import { ThemeProvider } from "styled-components";
 import theme from "./style/theme.js";
 import GlobalStyle from './style/global.js'
 import ResetStyle from './style/reset.js'
-import LocalSignUp from "../page/ui/Login/ui/LocalSignUp/index.jsx";
+import LocalSignUp from "../page/ui/LocalSignUp"
 
 function App() {
   return (
