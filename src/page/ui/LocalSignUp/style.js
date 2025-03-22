@@ -148,7 +148,7 @@ const style = {
         `}
 
       ${props => 
-        props.$succes &&
+        props.$success &&
         css`
           color: ${props => props.theme.mapprimary}
         `

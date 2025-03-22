@@ -33,6 +33,7 @@ const useLoginForm = () => {
     }
     if (!passwordRegex.test(password)) {
       newErrors.password = "8~32자 이하, 영대문자 1자 이상, 특수문자 1자 이상, 영소문자, 숫자 조합으로 입력해주세요."
+      console.log(password)
     }
 
     return newErrors
@@ -55,7 +56,7 @@ const useLoginForm = () => {
     }
 
     // ** 임시 프론트엔드 테스트용 **
-    if(id == "zxc422523" && password === "Tlswotjq04@") {
+    if(id === "zxc422523" && password === "Tlswotjq04@") {
       alert("로그인 성공 (임시)")
       navigate("/")
       return
