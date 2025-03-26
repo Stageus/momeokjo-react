@@ -11,7 +11,7 @@ import LocalSignUp from "../page/ui/LocalSignUp"
 function App() {
   return (
     <>
-      <ThemeProvider theme={theme.defaultTheme}>
+      <ThemeProvider  theme={{ ...theme.defaultTheme, fontSet: theme.fontSet }}>
         <ResetStyle />
         <GlobalStyle />
         <RecoilRoot>
