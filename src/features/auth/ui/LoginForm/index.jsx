@@ -12,7 +12,7 @@ const LoginForm = () => {
   const navigate = useNavigate()
 
   return (
-    
+    <></>
   )
 }
 
