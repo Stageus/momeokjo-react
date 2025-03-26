@@ -1,11 +1,15 @@
 import { useNavigate } from "react-router-dom"
 import s from "./style"
 import BackIcon from "./assets/ico-back.svg"
-import LoginForm from "../../../features/auth/ui/LoginForm";
+import kakaoIcon from "./assets/ico-kakao.svg"
+import useLoginForm from "./model/useLoginForm";
+import Button from "../../../shared/ui/Button"
+
 
 const Login = () => {
 
   const navigate = useNavigate()
+  const { inputFields, refs, errors, setErrors, handleLogin } = useLoginForm()
 
   return (
     <s.Container>
@@ -15,7 +19,8 @@ const Login = () => {
         </s.Back>
         <s.Title>로그인</s.Title>
         <s.Empty></s.Empty>
-        <s.Form>
+      </s.Header>
+      <s.Form>
         {inputFields.map((field, index) => (
           <s.InputBox key={index}>
           <s.Label>
@@ -24,19 +29,17 @@ const Login = () => {
           <s.Input 
             type={field.type}
             ref={refs[field.refName]}
-            $error={!!field.error}
+            $error={!!errors[field.refName]}
             placeholder={field.placeholder}
           />
           {errors[field.refName] &&
-            <s.Message $error={!!field.error}>
+            <s.Message $error={!!errors[field.refName]}>
               {field.label === "아이디" && "50자 이하 / 영어, 숫자 조합"}
               {field.label === "비밀번호" && "8~32자 이하, 영대문자 1자 이상, 특수문자 1자 이상, 영소문자, 숫자 조합"}
             </s.Message>
           }
         </s.InputBox>
         ))}
-        
-        
 
         <Button color="primary" size="largeUser" children={"로그인"} onClick={handleLogin} />
         <Button color="kakao" size="largeUser" >
@@ -53,7 +56,6 @@ const Login = () => {
           <s.GoToSignUP onClick={() => navigate("/signup")}>회원가입</s.GoToSignUP>
         </s.SignUp>
       </s.Form>
-      </s.Header>
     </s.Container>
   );
 };

@@ -1,5 +1,5 @@
 import s from "./style"
-import HamburgerImg from "../../assets/ico-menu.svg";
+import HamburgerImg from "./assets/ico-menu.svg";
 
 function HamburgerBtn(props) {
 

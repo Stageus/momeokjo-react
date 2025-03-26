@@ -1,10 +1,55 @@
-import styled,{css} from "styled-components";
-import fontSet from "../../../../app/style/fontSet"
-
+import styled, {css} from "styled-components";
+import fontSet from "../../../app/style/fontSet";
 
 const style = {
+    "Container" : styled.div`
+        width: 564px;
+        height: 1024px;
+        margin: 0 auto;
+        padding: 0 16px;
+        border-radius: 10px;
+        background-color: ${props => props.theme.maptextwhite};
+        position: relative;
+    `,
 
-  "Form" : styled.form`
+    "Header" : styled.header`
+        width: 100%;
+        padding: 14px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 36px;
+    `,
+
+    "Back" : styled.button`
+        width:24px;
+        height:24px;
+    `,
+
+    "BackImg" : styled.img`
+        width:100%;
+    `,
+
+    "Title" : styled.h2`
+        text-align: center;
+
+        ${({theme}) => fontSet({
+            size: 20,
+            weight: 600,
+            lineHeight: "100%",
+            letterSpacing: "0",
+            family: "'Pretendard', sans-serif",
+            color: "maptextblack",
+            theme
+          })}
+    `,
+
+    "Empty" : styled.div`
+        width: 24px;
+        height: 24px;
+    `,
+
+    "Form" : styled.form`
         display: flex;
         flex-direction: column;
     `,

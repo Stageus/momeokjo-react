@@ -1,5 +1,5 @@
 import s from "./style"
-import CloseImg from "../../assets/ico-close.svg"
+import CloseImg from "./assets/ico-close.svg"
 
 function CloseBtn(props) {
   
