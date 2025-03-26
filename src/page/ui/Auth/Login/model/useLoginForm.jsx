@@ -1,30 +1,35 @@
-import { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useCallback } from 'react';
 
-const useLoginForm = () => {
+const useLoginForm = (navigate) => {
   // 입력 필드 정보
   const inputFields = [
-    { label: "아이디", type: "text", refName: "id", placeholder: "아이디를 입력하세요" },
-    { label: "비밀번호", type: "password", refName: "password", placeholder: "비밀번호를 입력하세요" },
+    { label: "아이디", type: "text", name: "id", placeholder: "아이디를 입력하세요" },
+    { label: "비밀번호", type: "password", name: "password", placeholder: "비밀번호를 입력하세요" },
   ]
-
-  // ref 객체 생성
-  const idRef = useRef(null)
-  const passwordRef = useRef(null)
-
-  const refs = {
-    id: idRef,
-    password: passwordRef,
-  }
 
   // 에러 상태 관리
   const [errors, setErrors] = useState({})
 
+  // 입력 값 상태 관리
+  const [values, setValues] = useState({
+    id: '',
+    password: '',
+  })
+
+  // 정규표현식
   const idRegex = /^[a-zA-Z0-9]{1,50}$/
   const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[0-9]).{8,32}$/
 
-  // 로그인 처리 함수
-  const validate = (id, password) => {
+  const handleChange = useCallback((e) => {
+    const { name, value } = e.target
+    setValues(prevValues => ({
+      ...prevValues,
+      [name]: value,
+    }))
+  }, [])
+
+  // 유효성 검사 함수
+  const validate = useCallback((id, password) => {
 
     const newErrors = {}
 
@@ -33,27 +38,14 @@ const useLoginForm = () => {
     }
     if (!passwordRegex.test(password)) {
       newErrors.password = "8~32자 이하, 영대문자 1자 이상, 특수문자 1자 이상, 영소문자, 숫자 조합으로 입력해주세요."
-      console.log(password)
     }
 
     return newErrors
-  }
+  }, [])
 
-  const handleLogin = async (e, navigate) => {
-    e.preventDefault()
-
-    const id = idRef.current?.value
-    const password = passwordRef.current?.value
-
-    const newErrors = validate(id, password)
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors)
-      return
-    } else {
-      // 정규 표현식 검사에 통과하면 에러 상태 초기화
-      setErrors({})
-    }
+  // 로그인 처리 함수
+  const handleLogin = useCallback(async () => {
+    const { id, password } = values
 
     // ** 임시 프론트엔드 테스트용 **
     if(id === "zxc422523" && password === "Tlswotjq04@") {
@@ -102,14 +94,32 @@ const useLoginForm = () => {
     //     console.error("로그인 에러:", error)
     //     alert("로그인 중 오류가 발생했습니다.")
     // }
-  }  
+  }, [values, navigate])
+
+  // 폼 제출 처리 함수
+  const handleSubmit = useCallback((e) => { // navigate 추가
+    e.preventDefault();
+
+    const { id, password } = values;
+    const newErrors = validate(id, password);
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    } else {
+      // 정규 표현식 검사에 통과하면 에러 상태 초기화
+      setErrors({});
+    }
+
+    handleLogin(); // handleLogin 호출
+  }, [validate, values, handleLogin]);
 
   return {
     inputFields,
-    refs,
     errors,
-    setErrors,
-    handleLogin,
+    values,
+    handleChange,
+    handleSubmit,
   }
 }
 

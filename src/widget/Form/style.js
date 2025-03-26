@@ -1,5 +1,5 @@
 import styled, {css} from "styled-components";
-import fontSet from "../../../app/style/fontSet"
+import fontSet from "../../../../app/style/fontSet"
 
 const style = {
     "Container" : styled.div`

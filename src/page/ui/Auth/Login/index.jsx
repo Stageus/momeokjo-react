@@ -1,20 +1,36 @@
+import React from "react"
 import { useNavigate } from "react-router-dom"
 import s from "./style"
-import BackIcon from "./assets/ico-back.svg"
+import BackIcon from "../assets/ico-back.svg"
 import kakaoIcon from "./assets/ico-kakao.svg"
-import useLoginForm from "./model/useLoginForm";
-import Button from "../../../shared/ui/Button"
-import { useCallback } from "react";
+// import useLoginForm from "./model/useLoginForm";
+import Button from "../../../../shared/ui/Button"
+
+import useAuthForm from "../../../../widget/Form/model/useAuthForm"
+
 
 
 const Login = () => {
 
   const navigate = useNavigate()
-  const { inputFields, refs, errors, setErrors, handleLogin } = useLoginForm()
+  const {
+    formType,
+    setFormType,
+    commonInputFields,
+    errors,
+    values,
+    handleChange,
+    handleSubmit,
+  } = useAuthForm(navigate)
 
-  const onClick = useCallback((e) => {
-    handleLogin(e, navigate)
-  }, [handleLogin, navigate])
+  React.useEffect(() => {
+    setFormType('login')
+  }, [setFormType])
+
+  const onClick = (e) => {
+    e.preventDefault()
+    handleSubmit(e)
+  }
 
   return (
     <s.Container>
@@ -26,21 +42,23 @@ const Login = () => {
         <s.Empty></s.Empty>
       </s.Header>
       <s.Form>
-        {inputFields.map((field, index) => (
+        {commonInputFields.map((field, index) => (
           <s.InputBox key={index}>
           <s.Label>
             {field.label} <s.Span>*</s.Span>
           </s.Label>
           <s.Input 
             type={field.type}
-            ref={refs[field.refName]}
-            $error={!!errors[field.refName]}
+            $error={!!errors[field.name]}
             placeholder={field.placeholder}
+            onChange={handleChange}
+            name={field.name}
+            value={values[field.name] || ""}
           />
-          {errors && errors[field.refName] && (
-              <s.Message $error={!!errors[field.refName]}>
-                {errors[field.refName]}
-              </s.Message>
+          {errors[field.name] && (
+            <s.Message $error={!!errors[field.name]}>
+              {errors[field.name]}
+            </s.Message>
           )}
         </s.InputBox>
         ))}
@@ -52,7 +70,12 @@ const Login = () => {
         </Button>
 
         <s.Links>
-          <s.LinksText>아이디 찾기</s.LinksText> | <s.LinksText>비밀번호 찾기</s.LinksText>
+          <s.LinksText onClick={() => navigate("/find-id")}>
+            아이디 찾기
+          </s.LinksText> | 
+          <s.LinksText onClick={() => navigate("/find-pw")}>
+            비밀번호 찾기
+          </s.LinksText>
         </s.Links>
 
         <s.SignUp>
@@ -61,7 +84,7 @@ const Login = () => {
         </s.SignUp>
       </s.Form>
     </s.Container>
-  );
-};
+  )
+}
 
 export default Login
