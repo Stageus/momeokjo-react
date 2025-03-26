@@ -27,11 +27,91 @@ const defaultTheme = {
     lg: '18px',
   };
   
+  const fontSet = {
+    xxxs: `
+    font-size: 8px;
+    font-weight: 400 ;
+    line-height: 13px;
+  `,
+    xxs: `
+      font-size: 10px;
+      font-weight: 400;
+      line-height: 1.2;
+    `,
+    xs: `
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.5;
+    `,
+    xsEps: `
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 1.5;
+    `,
+    sm: `
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.5;
+    `,
+    smEps: `
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.5;
+    `,
+    base: `
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.5;
+    `,
+    baseEps:`
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.5;
+    `,
+    baseBold:`
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.5;
+    `,
+    md: `
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+    `,
+    lg: `
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.5;
+    `,
+    lgEps: `
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.5;
+    `,
+    xlg: `
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.5;
+   `,
+    xlgEps: `
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 1.5;
+    `,
+    xxxlgEps: `
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.5;
+  `, 
+  };
+  
+
    
   const theme = {
     defaultTheme,
     darkTheme,
-    fontSize
+    fontSize,
+    fontSet
   };
   
   export default theme;
