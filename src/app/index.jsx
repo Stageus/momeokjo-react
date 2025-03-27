@@ -14,7 +14,7 @@ import ChangePw from "../page/ui/Auth/ChangePw/index.jsx";
 function App() {
   return (
     <>
-      <ThemeProvider theme={{...theme.defaultTheme, fontSet: theme.fontSet}}>
+      <ThemeProvider theme={{ ...theme.defaultTheme, fontSet: theme.fontSet }}>
         <ResetStyle />
         <GlobalStyle />
         <RecoilRoot>
