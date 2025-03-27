@@ -27,7 +27,6 @@ const Form = ({
             <s.Label>
               {field.label} <s.Span>*</s.Span>
             </s.Label>
-            <s.EmailContainer>
               <s.Input
                 type={field.type}
                 name={field.name}
@@ -36,7 +35,6 @@ const Form = ({
                 value={values[field.name] || ""}
                 placeholder={field.placeholder || ""}
               />
-            </s.EmailContainer>
             {errors[field.name] && (
               <s.Message $error={!!errors[field.name]}>
                 {errors[field.name]}

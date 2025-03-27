@@ -1,5 +1,4 @@
 import styled, {css} from "styled-components"
-import fontSet from "../../../app/style/fontSet"
 
 const StyledButton = styled.button`
         position:absolute;
@@ -12,14 +11,7 @@ const StyledButton = styled.button`
         color:${props => props.theme.maptextgrey};
         background-color:${props => props.theme.maptextwhite};
         border-radius:14px;
-
-        ${fontSet({
-          size: 14,
-          weight: 500,
-          lineHeight: "21px",
-          letterSpacing: "-0.3%",
-          family: "'Pretendard', sans-serif",
-        })}
+        ${props => props.theme.fontSet.baseEps};
 
         ${(props) => 
           props.isLoggedIn

@@ -1,5 +1,4 @@
-import styled, {css} from "styled-components";
-import fontSet from "../../../../app/style/fontSet"
+import styled from "styled-components";
 
 const style = {
 
@@ -19,40 +18,19 @@ const style = {
 
     "ModalTitle" : styled.h2`
       margin-bottom: 16px;
-    ${({theme}) => fontSet({
-        size: 14,
-        weight: 600,
-        lineHeight: "18px",
-        letterSpacing: "0",
-        family: "'Pretendard', sans-serif",
-        color: "maptextblack",
-        theme
-    })}
+      ${props => props.theme.fontSet.baselightBold};
+      color: ${props => props.theme.maptextblack};
     `,
 
     "ModalText" : styled.p`
       margin-bottom: 28px;
-    ${({theme}) => fontSet({
-      size: 14,
-      weight: 400,
-      lineHeight: "18px",
-      letterSpacing: "0",
-      family: "'Pretendard', sans-serif",
-      color: "maptextblack",
-      theme
-    })}
+      ${props => props.theme.fontSet.base};
+      color: ${props => props.theme.maptextblack};
     `,
 
     "ModalSpan" : styled.span`
-    ${({theme}) => fontSet({
-      size: 14,
-      weight: 600,
-      lineHeight: "18px",
-      letterSpacing: "0",
-      family: "'Pretendard', sans-serif",
-      color: "maptextblack",
-      theme
-    })}
+    ${props => props.theme.fontSet.baselightBold};
+      color: ${props => props.theme.maptextblack};
     `,
 
     "Overlay" : styled.div`

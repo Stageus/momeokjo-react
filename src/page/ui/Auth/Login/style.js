@@ -1,5 +1,4 @@
-import styled, {css} from "styled-components";
-import fontSet from "../../../../app/style/fontSet"
+import styled from "styled-components";
 
 const style = {
     "KakaoImg" : styled.img`
@@ -14,16 +13,9 @@ const style = {
     `,
 
     "LinksText" : styled.a`
-    ${({theme}) => fontSet({
-        size: 14,
-        weight: 400,
-        lineHeight: "12px",
-        letterSpacing: "0",
-        family: "'Pretendard', sans-serif",
-        line: "underline",
-        color: "maptextgrey",
-        theme
-    })}
+        ${props => props.theme.fontSet.base};
+        color: ${props => props.theme.maptextgrey};
+        text-decoration: underline;
     `,
 
     "SignUp" : styled.div`
@@ -33,30 +25,15 @@ const style = {
 
     "SignUpText" : styled.a`
         cursor: default;
-    ${({theme}) => fontSet({
-        size: 14,
-        weight: 400,
-        lineHeight: "12px",
-        letterSpacing: "0",
-        family: "'Pretendard', sans-serif",
-        line: "none",
-        color: "maptextgrey",
-        theme
-    })}
+        ${props => props.theme.fontSet.base};
+        color: ${props => props.theme.maptextgrey};
     `,
 
     "GoToSignUP" : styled.a`
         margin-left: 12px;
-    ${({theme}) => fontSet({
-        size: 14,
-        weight: 600,
-        lineHeight: "12px",
-        letterSpacing: "0",
-        family: "'Pretendard', sans-serif",
-        line: "underline",
-        color: "mapprimary",
-        theme
-    })}
+        ${props => props.theme.fontSet.baselightBold};
+        color: ${props => props.theme.mapprimary};
+        text-decoration: underline;
     `,
 }
 
