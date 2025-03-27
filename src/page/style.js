@@ -61,9 +61,8 @@ const style = {
     `,
     "H2" : styled.h2`
         margin-bottom:16px;
-        font-size:14px;
-        font-weight:400;
-         ${props => 
+        ${props => props.theme.fontSet.baseEps};
+        ${props => 
             props.$gap20 &&  css`
                 margin-top:20px;
             `
