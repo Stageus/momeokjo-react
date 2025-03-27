@@ -1,5 +1,5 @@
 import styled, {css} from "styled-components";
-import fontSet from "../../../../app/style/fontSet"
+import fontSet from "../../app/style/fontSet"
 
 const style = {
     "Container" : styled.div`
@@ -9,7 +9,7 @@ const style = {
         padding: 0 16px;
         border-radius: 10px;
         background-color: ${props => props.theme.maptextwhite};
-        // position: relative;
+        position: relative;
     `,
 
     "Header" : styled.header`
@@ -146,7 +146,7 @@ const style = {
         `}
 
       ${props => 
-        props.$succes &&
+        props.$success &&
         css`
           color: ${props => props.theme.mapprimary}
         `
