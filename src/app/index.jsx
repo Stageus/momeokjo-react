@@ -10,6 +10,7 @@ import LocalSignUp from "../page/ui/Auth/LocalSignUp"
 import FindId from "../page/ui/Auth/FindId/index.jsx";
 import Findpw from "../page/ui/Auth/FindPw/index.jsx"
 import ChangePw from "../page/ui/Auth/ChangePw/index.jsx";
+import Register from '../page/ui/Register'
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
               <Route path="change-pw" element={<ChangePw />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<LocalSignUp />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/:Depth2RestaurantIdx" element={<Page />} />
               <Route path="/*" element={<Page />} />
             </Routes>
           </Router>
