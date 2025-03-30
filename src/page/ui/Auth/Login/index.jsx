@@ -3,8 +3,11 @@ import { useNavigate } from "react-router-dom"
 import s from "./style"
 import kakaoIcon from "./assets/ico-kakao.svg"
 import useLoginForm from "./model/useLoginForm";
+import useKakaoLogin from "./model/useKakaoLogin";
 import Button from "../../../../shared/ui/Button"
+import LogoutBtn from "../../../../shared/ui/LogoutBtn";
 import Form from "../../../../widget/Form";
+
 
 
 const Login = () => {
@@ -15,8 +18,10 @@ const Login = () => {
     values, 
     handleChange, 
     handleLogin, 
-    loginInputFields
+    loginInputFields,
   } = useLoginForm(navigate)
+
+  const { handleKakaoLoginClick } = useKakaoLogin();
 
   const submitButton = (
     <Button type="button" color="primary" size="largeUser" children={"로그인"} onClick={handleLogin} />
@@ -32,7 +37,7 @@ const Login = () => {
       handleChange={handleChange}
       submitButton={submitButton}
     >
-      <Button color="kakao" size="largeUser">
+      <Button type="button" color="kakao" size="largeUser" onClick={handleKakaoLoginClick}>
         <s.KakaoImg src={kakaoIcon} alt="카카오 아이콘" />
         카카오 로그인
       </Button>
@@ -45,6 +50,8 @@ const Login = () => {
           비밀번호 찾기
         </s.LinksText>
       </s.Links>
+
+      <LogoutBtn />
 
       <s.SignUp>
         <s.SignUpText>아직 회원이 아닌가요?</s.SignUpText>

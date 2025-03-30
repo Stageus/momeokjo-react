@@ -1,19 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 const useSignUpForm = (navigate) => {
-
   // URL 파라미터 파싱
+  const [searchParams] = useSearchParams()
   const pageType = (() => {
-    try {
-      if (window.location && window.location.search) {
-        const urlParams = new URLSearchParams(window.location.search)
-        const pageParam = urlParams.get("page")
-        return pageParam === "간편회원가입" ? "easy" : "local"
-      }
-    } catch (error) {
-      console.error("URL 파라미터 읽기 오류:", error)
-    }
-    return "local" // 기본값
+    const pageParam = searchParams.get("page")
+    return pageParam === "간편회원가입" ? "easy" : "local"
   })()
 
   const [values, setValues] = useState({
@@ -36,9 +29,6 @@ const useSignUpForm = (navigate) => {
   const [expireMessage, setExpireMessage] = useState("")
   const emailTimeLimit = 900; // 15분
 
-  
-
-
   // 정규표현식
   const regex = {
     nickname: /^[a-zA-Z0-9가-힣]{1,50}$/,
@@ -48,9 +38,8 @@ const useSignUpForm = (navigate) => {
       password: /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[0-9]).{8,32}$/,
     } : {}),
   }
-
-
-    // 유효성 검사
+  
+  // 유효성 검사
   const messages = {
     nickname: "50자 이하 / 한글, 영어, 숫자 포함",
     email: "254자 이하 / '영어, 숫자, 특수문자(. , +, -, _ 만 허용) + @ + 도메인' 형태",

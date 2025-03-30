@@ -54,8 +54,8 @@ const useLoginForm = (navigate) => {
     }
 
     // ** 프론트엔드에서 사용자 정보 확인 **
-    const storedUsers = JSON.parse(localStorage.getItem("users") || "[]");
-    const user = storedUsers.find(user => user.id === id);
+    const storedUsers = JSON.parse(localStorage.getItem("users") || "[]")
+    const user = storedUsers.find(user => user.id === id)
 
     // ** 임시 프론트엔드 테스트용 **
     if (user) {
@@ -81,7 +81,7 @@ const useLoginForm = (navigate) => {
     }
   }, [values, navigate, setValues, messages])
 
-  return {errors, values, handleChange, handleLogin, loginInputFields}
+  return {errors, values, handleChange, handleLogin, loginInputFields }
 }
 
 export default useLoginForm
