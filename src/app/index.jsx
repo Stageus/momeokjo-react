@@ -6,13 +6,14 @@ import { ThemeProvider } from "styled-components";
 import theme from "./style/theme.js";
 import GlobalStyle from './style/global.js'
 import ResetStyle from './style/reset.js'
-import LocalSignUp from "../page/ui/Auth/LocalSignUp"
+import SignUp from "../page/ui/Auth/SignUp"
 import FindId from "../page/ui/Auth/FindId/index.jsx";
 import Findpw from "../page/ui/Auth/FindPw/index.jsx"
 import ChangePw from "../page/ui/Auth/ChangePw/index.jsx";
 import Register from '../page/ui/Register'
 
 function App() {
+
   return (
     <>
       <ThemeProvider theme={{ ...theme.defaultTheme, fontSet: theme.fontSet }}>
@@ -25,7 +26,7 @@ function App() {
               <Route path="find-pw" element={<Findpw />} />
               <Route path="change-pw" element={<ChangePw />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<LocalSignUp />} />
+              <Route path="/signup" element={<SignUp />} />
               <Route path="/register" element={<Register />} />
               <Route path="/:Depth2RestaurantIdx" element={<Page />} />
               <Route path="/*" element={<Page />} />

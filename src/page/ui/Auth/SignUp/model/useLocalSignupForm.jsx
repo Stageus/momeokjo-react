@@ -1,14 +1,19 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 const useSignUpForm = (navigate) => {
+  // URL 파라미터 파싱
+  const [searchParams] = useSearchParams()
+  const pageType = (() => {
+    const pageParam = searchParams.get("page")
+    return pageParam === "간편회원가입" ? "easy" : "local"
+  })()
 
   const [values, setValues] = useState({
-    id: '',
-    password: '',
-    confirmPassword: '',
     nickname: '',
     email: '',
-    emailCode: ''
+    emailCode: '',
+    ...(pageType === 'local' ? { id: '', password: '', confirmPassword: ''} : {}),
   })
 
   // 에러 상태 관리
@@ -24,32 +29,36 @@ const useSignUpForm = (navigate) => {
   const [expireMessage, setExpireMessage] = useState("")
   const emailTimeLimit = 900; // 15분
 
-
   // 정규표현식
   const regex = {
-    id: /^[a-zA-Z0-9]{1,50}$/,
-    password: /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[0-9]).{8,32}$/,
     nickname: /^[a-zA-Z0-9가-힣]{1,50}$/,
-    email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+    ...(pageType === 'local' ? {
+      id: /^[a-zA-Z0-9]{1,50}$/,
+      password: /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[0-9]).{8,32}$/,
+    } : {}),
   }
-
-
-    // 유효성 검사
+  
+  // 유효성 검사
   const messages = {
-    id: "50자 이하 / 한글, 영어, 숫자 포함",
-    password: "8~32자 이하, 영대문자 1자 이상, 특수문자 1자이상, 영소문자, 숫자 조합",
-    confirmPassword: "비밀번호 입력값과 동일한 번호를 입력해주세요",
     nickname: "50자 이하 / 한글, 영어, 숫자 포함",
     email: "254자 이하 / '영어, 숫자, 특수문자(. , +, -, _ 만 허용) + @ + 도메인' 형태",
-    emailCode: "인증번호를 확인해주세요"
+    emailCode: "인증번호를 확인해주세요",
+    ...(pageType === 'local' ? {
+      id: "50자 이하 / 한글, 영어, 숫자 포함",
+      password: "8~32자 이하, 영대문자 1자 이상, 특수문자 1자이상, 영소문자, 숫자 조합",
+      confirmPassword: "비밀번호 입력값과 동일한 번호를 입력해주세요",
+    }: {}),
   }
 
 
   // 입력 필드 정보
   const signUpInputFields = [
-    { label: "아이디", type: "text", name: "id"},
-    { label: "비밀번호", type: "password", name: "password"},
-    { label: "비밀번호 확인", type: "password", name: "confirmPassword"},
+    ...(pageType === 'local' ? [
+      { label: "아이디", type: "text", name: "id"},
+      { label: "비밀번호", type: "password", name: "password"},
+      { label: "비밀번호 확인", type: "password", name: "confirmPassword"},
+    ] : []),
     { label: "닉네임", type: "text", name: "nickname"},
     { label: "이메일", type: "email", name: "email" }
   ]
@@ -179,15 +188,18 @@ const useSignUpForm = (navigate) => {
       const { id, password, confirmPassword, nickname, email, emailCode} = values
       const newErrors = {}
 
-      if (!regex.id.test(id)) {
-        newErrors.id = messages.id
+      if (pageType === 'local') {
+        if (!regex.id.test(id)) {
+          newErrors.id = messages.id
+        }
+        if (!regex.password.test(password)) {
+          newErrors.password = messages.password
+        }
+        if (password !== confirmPassword || !confirmPassword) {
+          newErrors.confirmPassword = messages.confirmPassword
+        }
       }
-      if (!regex.password.test(password)) {
-        newErrors.password = messages.password
-      }
-      if (password !== confirmPassword || !confirmPassword) {
-        newErrors.confirmPassword = messages.confirmPassword
-      }
+
       if (!regex.nickname.test(nickname)) {
         newErrors.nickname = messages.nickname
       }
@@ -205,15 +217,23 @@ const useSignUpForm = (navigate) => {
         return
       }
       // 모든 필드가 유효하고, 이메일 인증이 완료된 경우 회원가입 성공
-      if (id && password && confirmPassword === password && nickname && email && isEmailSuccessful) {
+      if (pageType === 'local' && id && password && confirmPassword === password && nickname && email && isEmailSuccessful) {
         // ** 프론트엔드에서 사용자 정보 저장
         const newUser = { id, password, nickname, email }
         const storedUser = JSON.parse(localStorage.getItem("users") || "[]")
         storedUser.push(newUser)
         localStorage.setItem("users", JSON.stringify(storedUser))
-
         alert("회원가입 성공!")
-        navigate("/login", { replace: true }) // 로그인 페이지로 이동
+        navigate("/login", { replace: true })
+        return
+      } else if (pageType === 'easy' && nickname && email && isEmailSuccessful) {
+        // 간편 회원가입 로직
+        const newUser = { nickname, email }
+        const storedUser = JSON.parse(localStorage.getItem("users") || "[]")
+        storedUser.push(newUser)
+        localStorage.setItem("users", JSON.stringify(storedUser))
+        alert("회원가입 성공!")
+        navigate("/login", { replace: true })
         return
       } else if (!isEmailSuccessful) {
         setErrors(prevErrors => ({...prevErrors, email: "이메일 인증을 완료해주세요."}))
@@ -251,7 +271,7 @@ const useSignUpForm = (navigate) => {
       // }
 
       
-    }, [values, navigate, isEmailSuccessful])
+    }, [values, navigate, isEmailSuccessful, pageType])
   
   
   
