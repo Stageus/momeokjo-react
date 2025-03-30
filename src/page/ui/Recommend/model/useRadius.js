@@ -18,7 +18,7 @@ const useRadius = () => {
         const newValue = Number(e.target.value)
         setValue(newValue)
         setSelectedRadius(newValue)
-    };
+    }
 
     return [value, selectedRadius, radiusData, handleSlideChange]
 }
