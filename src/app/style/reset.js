@@ -1,6 +1,9 @@
 import { createGlobalStyle } from 'styled-components';
+import  fonts  from './fonts'
+
 
 const ResetStyle = createGlobalStyle`
+${fonts}
   html,
   body,
   h1,
@@ -158,7 +161,7 @@ html, body, #root{
   font-size:14px;
   font-weight:400;
   line-height:.1.5;
-  font-family:"'Pretendard', sans-serif";
+  font-family:'Pretendard', sans-serif;
 }
 `
 

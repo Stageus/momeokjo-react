@@ -7,8 +7,6 @@ import icopencel from "./assets/ico-pencel.svg"
 import star from "./assets/ico-star-before.png"
 import imgaddress from "./assets/ico-address.png"
 
-import Button from "../../../shared/ui/Button"
-
 import s from "./style";
 
 function KakaoMap(props){ 
@@ -52,7 +50,7 @@ function KakaoMap(props){
                     </s.Title>
                     <s.Adresstype1><img src={imgaddress} alt="" />{selectedRandomRestaurant.address}</s.Adresstype1>
                     <s.Adresstype2>지번 | {selectedRandomRestaurant.jibunAddress}</s.Adresstype2>
-                    <Button color="primary" size="largeMap">상세보기</Button>
+                    <button onClick={() => navigate(`/${selectedRandomRestaurant.restaurant_idx}`)}>상세보기</button>
                 </s.RandomModal>
             </CustomOverlayMap>
             </>

@@ -1,5 +1,5 @@
 
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 
 const style = {
 
@@ -61,7 +61,56 @@ const style = {
     `,
     "BoxInput" : styled.div`
     
-    `
+    `,
+    "BtnRound" : styled.button`
+    padding:0 10px;
+    height:34px;
+    line-height:32px;
+    border-radius:100px;
+    border:1px solid ${props => props.theme.maplinegrey};
+    color:${props => props.theme.mapgrey2};
+    font-size:14px;
+    font-weight:500;
+    ${props => 
+        props.$primary &&  css`
+            background-color:${props => props.theme.mapprimary};
+            color:${props => props.theme.maptextwhite};
+        `
+    },
+`,
+"BtnFullCustom" : styled.button`
+    width:100%;
+    border:1px solid;
+    border-radius:4px;
+    ${props => 
+        props.$primary &&  css`
+            background-color:${props => props.theme.mapprimary};
+            color:${props => props.theme.maptextwhite};
+        `
+    }
+    ${props => 
+        props.$grey &&  css`
+        background-color:${props => props.theme.maplinegrey};
+        color:${props => props.theme.maptextgrey};
+        border:0;
+        `
+    }
+    ${props => 
+        props.$secondary &&  css`
+        background-color:${props => props.theme.mapsecondary};
+        color:${props => props.theme.maptextwhite};
+        border:0;
+        `
+    }
+    ${props => 
+        props.$lg &&  css`
+            height:40px;
+            line-height:38px;
+            font-size:12px;
+            font-weight:500;
+        `
+    },
+`,
 
 }
 

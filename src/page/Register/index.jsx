@@ -1,8 +1,8 @@
 import s from "./style"
 import BackImg from "./assets/ico-back.svg"
-import Button from "../../../shared/ui/Button"
+
 import { useNavigate, useLocation } from "react-router-dom"
-import restaurantsCategories from '../Recommend/assets/data/restaurantsCategories.json'   // 음식점 카테고리 리스트 조회 api 대체 : /restaurants/categories?include_deleted=
+import restaurantsCategories from '../Main/ui/Recommend/assets/data/restaurantsCategories.json'   // 음식점 카테고리 리스트 조회 api 대체 : /restaurants/categories?include_deleted=
 
 import useRegister from "./model/useRegister.js"
 
@@ -26,15 +26,9 @@ function Register() {
           <s.TitleInput>카테고리 선택</s.TitleInput>
           <s.WrapBtnRound>
               {restaurantsCategories.map((elem, idx) => (
-              <Button
-              key={idx} 
-              onClick={() => handleCategoryChange(idx)} 
-              selected={selectedMenu === idx}
-              size="medium"
-              color={selectedMenu === idx ? "primary" : "default"}
-              >
-                {elem.category_name}
-              </Button>
+              <s.BtnRound key={idx} onClick={() => handleCategoryChange(idx)} $primary={selectedMenu === idx}>
+              {elem.category_name}
+            </s.BtnRound>
               ))}
           </s.WrapBtnRound>
 
@@ -74,7 +68,7 @@ function Register() {
             <s.ContentNoti>4자 이하 숫자로만 기입해주세요</s.ContentNoti>
           </s.BoxInput>
 
-          <Button type="button" color="primary" size="largeUser" children={"음식점 등록"} />
+       
 
         </s.Content>
       </s.Login>
