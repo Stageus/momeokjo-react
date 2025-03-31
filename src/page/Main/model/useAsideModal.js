@@ -7,6 +7,7 @@ const useAsideModal = () => {
 
   const toggleAsideModal = () => {
     setAsideModalOpen(AsideModalOpen => !AsideModalOpen)
+    console.log('??andjt')
   }
 
   return [AsideModalOpen, toggleAsideModal]

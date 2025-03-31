@@ -35,7 +35,7 @@ function Recommend({ location, setMapProps }) {
     handleFilterSearch,
     handleRecommend
   ] = useRestaurantFilter(restaurantsCategoryIdxRangePage, restaurantsCategoryIdxRange, location, selectedRadius, radiusData, restaurantsCategories)
-  const [isDetailOpen, Depth2RestaurantIdx, detailPageOpen, closeDetailPage] = useDetailPage(restaurantsIdx)
+  const [isDetailOpen, depth2restaurantidx, detailPageOpen, closeDetailPage] = useDetailPage(restaurantsIdx)
 
   // useRestaurantFilter의 결과가 업데이트될 때마다 맵 props 업데이트
   useEffect(() => {
@@ -131,7 +131,7 @@ function Recommend({ location, setMapProps }) {
               <s.DetailImg><img src={thumb} /></s.DetailImg>
 
               {restaurantsIdx
-              .filter((restaurant) => Number(restaurant.restaurant_idx) === Number(Depth2RestaurantIdx)) // 리스트에서 받아온 idx와 같은 데이터만 필터링
+              .filter((restaurant) => Number(restaurant.restaurant_idx) === Number(depth2restaurantidx)) // 리스트에서 받아온 idx와 같은 데이터만 필터링
               .map((restaurant) => (
                 <s.DetailBox key={restaurant.restaurant_idx}>
                   <s.DetailTitle>{restaurant.restaurant_name}</s.DetailTitle>

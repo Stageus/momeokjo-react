@@ -4,12 +4,12 @@ import { useNavigate, useParams } from 'react-router-dom'
 const useDetailPage = (restaurantsIdx) => {
     const navigate = useNavigate()
     const [isDetailOpen, setIsDetailOpen] = useState(0)
-    const { Depth2RestaurantIdx } = useParams() // 음식점 상세보기 조회 : /restaurants/:restaurant_idx
+    const { depth2restaurantidx } = useParams() // 음식점 상세보기 조회 : /restaurants/:restaurant_idx
 
     useEffect(() => {
-        if (Depth2RestaurantIdx) {
+        if (depth2restaurantidx) {
           const restaurantExists = restaurantsIdx.some(
-            restaurant => Number(restaurant.restaurant_idx) === Number(Depth2RestaurantIdx)
+            restaurant => Number(restaurant.restaurant_idx) === Number(depth2restaurantidx)
           )
           if (!restaurantExists) {
             navigate('/')
@@ -19,11 +19,11 @@ const useDetailPage = (restaurantsIdx) => {
         } else {
           setIsDetailOpen(0)
         }
-      }, [Depth2RestaurantIdx, navigate])
+      }, [depth2restaurantidx, navigate])
 
     // 상세페이지 열기
-    const detailPageOpen = (Depth2RestaurantIdx) => {
-        navigate(`/${Depth2RestaurantIdx}`)
+    const detailPageOpen = (depth2restaurantidx) => {
+        navigate(`/${depth2restaurantidx}`)
         setIsDetailOpen(1)
     }
 
@@ -35,7 +35,7 @@ const useDetailPage = (restaurantsIdx) => {
 
     return [
         isDetailOpen,
-        Depth2RestaurantIdx,
+        depth2restaurantidx,
         detailPageOpen,
         closeDetailPage
     ]
