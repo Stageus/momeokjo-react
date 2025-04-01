@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 
-const useSignUpForm = (navigate) => {
+const useSignUpForm = () => {
+  const navigate = useNavigate()
   // URL 파라미터 파싱
   const [searchParams] = useSearchParams()
   const pageType = (() => {

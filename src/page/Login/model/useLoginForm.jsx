@@ -1,7 +1,9 @@
 import { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const useLoginForm = (navigate) => {
+const useLoginForm = () => {
 
+  const navigate = useNavigate()
   const [values, setValues] = useState({
     id: '',
     password: '',

@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react"
 
-const useFindPwForm = (navigate) => {
+const useFindPwForm = () => {
 
   const [values, setValues] = useState({
     id: '',

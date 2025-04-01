@@ -3,24 +3,20 @@ import { useNavigate } from "react-router-dom"
 import s from "./style"
 import Button from "../../shared/ui/Button"
 import useFindIdForm from "./model/useFinIdForm"
-import Form from "../../widget/Form"
+import Header from "../../widget/Header"
 
 const FindId = () => {
 
   const navigate = useNavigate()
   const {
     errors, 
-    values, 
+    value, 
     handleChange, 
     handleFindId, 
     findIdInputFields, 
     isFindIdSuccess,
     foundId
-  } = useFindIdForm(navigate)
-
-  const submitButton = (
-    <Button type="button" color="primary" size="largeUser" children={"아이디 찾기"} onClick={handleFindId} />
-  )
+  } = useFindIdForm()
 
   return (
     <>
@@ -31,15 +27,35 @@ const FindId = () => {
         <Button color="primary" size="largeMap" children={"확인"} onClick={() => navigate("/login")} />
       </s.Modal>
     }
-    <Form 
-      headerTitle="아이디 찾기"
-      backNavigation={() => navigate("/login")}
-      inputFields={findIdInputFields}
-      errors={errors}
-      values={values}
-      handleChange={handleChange}
-      submitButton={submitButton}
-    />
+    <s.Container>
+    <Header 
+        headerTitle="아이디 찾기"
+        backNavigation={() => navigate('/login')}
+      />
+      <s.Form>
+        {findIdInputFields.map((field, index) => (
+          <s.InputBox key={index}>
+            <s.Label>
+              {field.label} <s.Span>*</s.Span>
+            </s.Label>
+              <s.Input
+                type={field.type}
+                name={field.name}
+                $error={!!errors[field.name]}
+                onChange={handleChange}
+                value={value[field.name]}
+                placeholder={field.placeholder}
+              />
+            {errors[field.name] && (
+              <s.Message $error={!!errors[field.name]}>
+                {errors[field.name]}
+              </s.Message>
+            )}
+          </s.InputBox>
+        ))}
+        <Button type="button" color="primary" size="largeUser" children={"아이디 찾기"} onClick={handleFindId} />
+      </s.Form>
+    </s.Container>
     {isFindIdSuccess && <s.Overlay></s.Overlay>}
     </>
   )

@@ -6,7 +6,7 @@ import useLoginForm from "./model/useLoginForm";
 import useKakaoLogin from "./model/useKakaoLogin";
 import Button from "../../shared/ui/Button"
 import LogoutBtn from "../../shared/ui/LogoutBtn";
-import Form from "../../widget/Form";
+import Header from "../../widget/Header";
 
 
 
@@ -19,24 +19,39 @@ const Login = () => {
     handleChange, 
     handleLogin, 
     loginInputFields,
-  } = useLoginForm(navigate)
+  } = useLoginForm()
 
-  const { handleKakaoLoginClick } = useKakaoLogin();
-
-  const submitButton = (
-    <Button type="button" color="primary" size="largeUser" children={"로그인"} onClick={handleLogin} />
-  )
+  const { handleKakaoLoginClick } = useKakaoLogin()
 
   return (
-    <Form 
-      headerTitle="로그인"
-      backNavigation={() => navigate("/")}
-      inputFields={loginInputFields}
-      errors={errors}
-      values={values}
-      handleChange={handleChange}
-      submitButton={submitButton}
-    >
+    <s.Container>
+      <Header 
+        headerTitle="로그인"
+        backNavigation={() => navigate('/')}
+      />
+      <s.Form>
+        {loginInputFields.map((field, index) => (
+          <s.InputBox key={index}>
+            <s.Label>
+              {field.label} <s.Span>*</s.Span>
+            </s.Label>
+              <s.Input
+                type={field.type}
+                name={field.name}
+                $error={!!errors[field.name]}
+                onChange={handleChange}
+                value={values[field.name] || ""}
+                placeholder={field.placeholder || ""}
+              />
+            {errors[field.name] && (
+              <s.Message $error={!!errors[field.name]}>
+                {errors[field.name]}
+              </s.Message>
+            )}
+          </s.InputBox>
+        ))}
+        <Button type="button" color="primary" size="largeUser" children={"로그인"} onClick={handleLogin} />
+      
       <Button type="button" color="kakao" size="largeUser" onClick={handleKakaoLoginClick}>
         <s.KakaoImg src={kakaoIcon} alt="카카오 아이콘" />
         카카오 로그인
@@ -57,7 +72,8 @@ const Login = () => {
         <s.SignUpText>아직 회원이 아닌가요?</s.SignUpText>
         <s.GoToSignUP onClick={() => navigate("/signup")}>회원가입</s.GoToSignUP>
       </s.SignUp>
-    </Form>
+      </s.Form>
+    </s.Container>
   )
 }
 

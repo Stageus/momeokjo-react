@@ -2,7 +2,7 @@ import { useState, useCallback } from "react"
 
 const useFindIdForm = (navigate) => {
 
-  const [values, setValues] = useState({
+  const [value, setValue] = useState({
     email: '',
   })
 
@@ -31,12 +31,12 @@ const useFindIdForm = (navigate) => {
   // 필드 값 변경
   const handleChange = useCallback((e) => {
     const {name, value} = e.target
-    setValues(prevValues => ({ ...prevValues, [name]: value }))
+    setValue(prevvalue => ({ ...prevvalue, [name]: value }))
   }, [])
 
   // 아이디 찾기 이벤트
   const handleFindId = useCallback(async () => {
-    const {email} = values
+    const {email} = value
     const newErrors = {}
 
     if (!regex.email.test(email)) {
@@ -63,9 +63,9 @@ const useFindIdForm = (navigate) => {
     setFoundId(user.id)
 
     setIsFindIdSuccess(true)
-  }, [values, regex, messages])
+  }, [value, regex, messages])
 
-  return {errors, values, handleChange, handleFindId, findIdInputFields, isFindIdSuccess, setIsFindIdSuccess, foundId}
+  return {errors, value, handleChange, handleFindId, findIdInputFields, isFindIdSuccess, setIsFindIdSuccess, foundId}
 
 }
 
