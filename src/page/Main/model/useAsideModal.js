@@ -2,15 +2,14 @@ import { useState } from "react"
 
 const useAsideModal = () => {
 
-
-  const [AsideModalOpen, setAsideModalOpen] =  useState(false)
+  const [asideModalOpen, setAsideModalOpen] =  useState(false)
 
   const toggleAsideModal = () => {
-    setAsideModalOpen(AsideModalOpen => !AsideModalOpen)
+    setAsideModalOpen(asideModalOpen => !asideModalOpen)
     console.log('??andjt')
   }
 
-  return [AsideModalOpen, toggleAsideModal]
+  return [asideModalOpen, toggleAsideModal]
 }
 
 export default useAsideModal

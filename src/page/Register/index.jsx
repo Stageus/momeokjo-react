@@ -2,15 +2,14 @@ import s from "./style"
 import BackImg from "./assets/ico-back.svg"
 
 import { useNavigate, useLocation } from "react-router-dom"
-import restaurantsCategories from '../Main/ui/Recommend/assets/data/restaurantsCategories.json'   // 음식점 카테고리 리스트 조회 api 대체 : /restaurants/categories?include_deleted=
-
-import useRegister from "./model/useRegister.js"
+import restaurantsCategories from './assets/data/restaurantsCategories.json'   // 음식점 카테고리 리스트 조회 api 대체 : /restaurants/categories?include_deleted=
+import useCategoryChange from "./model/useCategoryChange.js"
 
 function Register() {
   const navigate = useNavigate()
   const location = useLocation()
   const address = location.state?.address
-  const [selectedMenu, handleCategoryChange] = useRegister(restaurantsCategories)
+  const [selectedMenu, handleCategoryChange] = useCategoryChange(restaurantsCategories)
 
   return (
     <>
@@ -28,7 +27,7 @@ function Register() {
               {restaurantsCategories.map((elem, idx) => (
               <s.BtnRound key={idx} onClick={() => handleCategoryChange(idx)} $primary={selectedMenu === idx}>
               {elem.category_name}
-            </s.BtnRound>
+              </s.BtnRound>
               ))}
           </s.WrapBtnRound>
 

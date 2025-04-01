@@ -2,26 +2,6 @@
 import styled, { css } from "styled-components"
 
 const style = {
-    "Main" : styled.main`
-        position:relative;
-        width:100%;
-        height:100%;
-        overflow:hidden;
-    `,
-    "HamburgerMenu" : styled.div`
-        position:absolute;
-        top:0;
-        left:0;
-        z-index:1;
-        width:62px;
-        height:100%;
-        text-align:center;
-        background-color:${props => props.theme.maptextwhite};
-    `,
-    "HamburgerImg" : styled.img`
-        width:100%;
-        height:100%;
-    `,
     "AsideModalDepth1" : styled.section`
         position:absolute;
         top:0;
@@ -418,7 +398,7 @@ const style = {
     `,
     "DetailAdresstype1" : styled.p`
         display:flex;
-
+        align-items:center;
         gap:8px;
         color:${props => props.theme.maptextblack};
         & img{
@@ -427,14 +407,16 @@ const style = {
         }
     `,
     "DetailAdresstype2" : styled.p`
-        margni-top:-4px;
+        display:flex;
+        align-items:center;
+        margin-top:-4px;
         padding-left:20px;
         font-size:14px;
         color:${props => props.theme.maptextgrey};
     `,
     "DetailTime" : styled.p`
         display:flex;
-
+        align-items:center;
         gap:8px;
         font-size:14px;
         color:${props => props.theme.maptextblack};
