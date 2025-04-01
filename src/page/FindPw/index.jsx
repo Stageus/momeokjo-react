@@ -1,6 +1,6 @@
-import React from "react"
+import React, {useEffect} from "react"
 import { useNavigate } from "react-router-dom"
-import Button from "../../shared/ui/Button"
+import Button from "../../shared/Button"
 import useFindPwForm from "./model/useFindPwForm"
 import Header from "../../widget/Header"
 import s from "./style"
@@ -10,14 +10,20 @@ const FindPw = () => {
   const navigate = useNavigate()
   const {
     errors, 
-    values, 
-    handleChange, 
+    values,
     handleFindPw, 
     findPwInputFields, 
     isFindPwSuccess,
   } = useFindPwForm()
 
-  React.useEffect(() => {
+  // 입력값 변경
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    values.current[name] = value
+  }
+
+
+  useEffect(() => {
     if (isFindPwSuccess) {
       navigate('/change-pw')
     }
@@ -40,8 +46,8 @@ const FindPw = () => {
                 type={field.type}
                 name={field.name}
                 $error={!!errors[field.name]}
-                onChange={handleChange}
-                value={values[field.name] || ""}
+                onChange={handleInputChange}
+                defaultValue={values.current[field.name] || ""}
                 placeholder={field.placeholder || ""}
               />
             {errors[field.name] && (

@@ -1,10 +1,11 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { IdRegex, IdMessage, PasswordRegex, PasswordMessage } from '../../../shared/Content/regex';
 
 const useLoginForm = () => {
 
   const navigate = useNavigate()
-  const [values, setValues] = useState({
+  const values = useRef({
     id: '',
     password: '',
   })
@@ -12,43 +13,22 @@ const useLoginForm = () => {
   // 에러 상태 관리
   const [errors, setErrors] = useState({})
 
-  // 정규표현식
-  const regex = {
-    id: /^[a-zA-Z0-9]{1,50}$/,
-    password: /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[0-9]).{8,32}$/,
-  }
-
-  // 유효성 검사 메시지
-  const messages = {
-    id: "50자 이하 / 한글, 영어, 숫자 포함",
-    password: "8~32자 이하, 영대문자 1자 이상, 특수문자 1자이상, 영소문자, 숫자 조합",
-  }
-
   // 로그인 필드 정보
   const loginInputFields = [
     { label: "아이디", type: "text", name: "id", placeholder: "아이디를 입력하세요" },
     { label: "비밀번호", type: "password", name: "password", placeholder: "비밀번호를 입력하세요" },
   ]
 
-  // 입력값 변경 함수
-  const handleChange = useCallback((e) => {
-    const { name, value } = e.target
-    setValues(prevValues => ({
-      ...prevValues,
-      [name]: value,
-    }))
-  }, [])
-
   // 로그인 처리 함수
   const handleLogin = useCallback(async () => {
-    const { id, password } = values
+    const { id, password } = values.current
     const newErrors = {}
 
-    if (!regex.id.test(id)) {
-      newErrors.id = messages.id
+    if (!IdRegex.test(id)) {
+      newErrors.id = IdMessage
     }
-    if (!regex.password.test(password)) {
-      newErrors.password = messages.password
+    if (!PasswordRegex.test(password)) {
+      newErrors.password = PasswordMessage
     }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
@@ -67,7 +47,7 @@ const useLoginForm = () => {
         navigate("/")
       } else {
         alert("로그인 실패 (임시): 아이디 또는 비밀번호가 일치하지 않습니다.")
-        setValues(prevValues => ({
+        values(prevValues => ({
           ...prevValues,
           id: '',
           password: ''
@@ -75,15 +55,15 @@ const useLoginForm = () => {
       }
     } else {
       alert("로그인 실패: 존재하지 않는 아이디입니다.")
-      setValues(prevValues => ({
+      values(prevValues => ({
         ...prevValues,
         id: '',
         password: ''
       }))
     }
-  }, [values, navigate, setValues, messages])
+  }, [values, navigate])
 
-  return {errors, values, handleChange, handleLogin, loginInputFields }
+  return {errors, values, handleLogin, loginInputFields}
 }
 
 export default useLoginForm

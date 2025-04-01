@@ -20,15 +20,6 @@ const style = {
         margin-bottom: 36px;
     `,
 
-    "Back" : styled.button`
-        width:24px;
-        height:24px;
-    `,
-
-    "BackImg" : styled.img`
-        width:100%;
-    `,
-
     "Title" : styled.h2`
         text-align: center;
         ${props => props.theme.fontSet.xlgBold};

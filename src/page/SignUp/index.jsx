@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import useSignUpForm from "./model/useLocalSignupForm";
-import Button from "../../shared/ui/Button";
+import Button from "../../shared/Button"
 import Header from "../../widget/Header"
 import s from "./style"
 
@@ -12,7 +12,6 @@ const SignUp = () => {
   const {
     errors,
     values,
-    handleChange,
     isEmailCodeSent,
     emailCodeMessage,
     isEmailSuccessful,
@@ -26,11 +25,17 @@ const SignUp = () => {
     handleSignUp,
   } = useSignUpForm()
 
+  // 입력값 변경
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    values.current[name] = value
+  }
+
   return (
     <s.Container>
       <Header 
         headerTitle="회원가입"
-        backNavigation={() => navigate('/')}
+        backNavigation={() => navigate('/login')}
       />
       <s.Form>
       {signUpInputFields.map((field, index) => (
@@ -45,7 +50,8 @@ const SignUp = () => {
                     type={field.type}
                     name={field.name}
                     $error={!!errors.email}
-                    onChange={handleChange}
+                    onChange={handleInputChange}
+                    defaultValue={values.current[field.name] || ""}
                     disabled={isEmailSuccessful}
                   />
                   {!isEmailSuccessful && (
@@ -67,8 +73,8 @@ const SignUp = () => {
                         placeholder="이메일 인증번호 6자리 숫자를 입력해주세요"
                         $error={!!errors.emailCode}
                         $verify
-                        value={values.emailCode || ""}
-                        onChange={handleChange}
+                        defaultValue={values.current[field.name] || ""}
+                        onChange={handleInputChange}
                         disabled={isEmailSuccessful}
                       />
                       {!isEmailSuccessful && ( // 인증 성공 시 인증 확인 버튼 숨김
@@ -92,9 +98,9 @@ const SignUp = () => {
                 <s.Input
                   type={field.type}
                   name={field.name}
-                  value={values[field.name] || ""}
+                  defaultValue={values.current[field.name] || ""}
                   $error={!!errors[field.name]}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                 />
                 <s.Message $error={!!errors[field.name]}>
                   {errors[field.name] || messages[field.name] || ""}

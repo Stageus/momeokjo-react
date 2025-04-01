@@ -28,21 +28,6 @@ const sizeStyles = {
     ${props => props.theme.fontSet.mdBold};
     
   `,
-  detail: css`
-    padding-top: 5px;
-    padding-bottom: 3px;
-    width: 100%;
-    height: 28px;
-    ${props => props.theme.fontSet.xsEps};
-  `,
-  modal: css`
-    padding-top: 8px;
-    padding-bottom: 8px;
-    width: 100%;
-    height: 40px;
-    ${props => props.theme.fontSet.base};
-  `
-
 }
 
 const colorStyles = {
@@ -75,12 +60,82 @@ const colorStyles = {
   
 }
 
+const shapeStyles = {
+  back: css`
+    width: 24px;
+    height: 24px;
+  `,
+  close: css`
+    width: 17.95px;
+    height: 18px;
+  `,
+  login: css`
+    position:absolute;
+    top:20px;
+    right:20px;
+    z-index:1;
+    padding: 9px 16px;
+    height:39px;
+    box-shadow: 0px 20px 24px -4px rgba(10, 13, 18, 0.1);
+    color:${props => props.theme.maptextgrey};
+    background-color:${props => props.theme.maptextwhite};
+    border-radius:14px;
+    ${props => props.theme.fontSet.baseEps};
+
+    ${(props) => 
+      props.isLoggedIn
+        ? css`
+          backgounr-color: ${props => props.theme.maptextwhite};
+          color: ${props => props.theme.maptextgrey};
+        `
+        : css`
+          background-color: ${props => props.theme.maptextwhite};
+          color: ${props => props.theme.mapnavy};
+          
+        `
+    }
+  `,
+  hamburger: css`
+    width:36px;
+    height:36px;
+    margin:7px auto;
+  `,
+  aside: css`
+    position:absolute;
+    top:50%;
+    left:390px;
+    transform:translateY(-50%);
+    width:23px;
+    height:50px;
+    background-color:${props => props.theme.maptextwhite};
+    box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.1);
+    border-radius:0 6px 6px 0;
+    z-index:1;
+  `,
+  detail: css`
+    padding-top: 5px;
+    padding-bottom: 3px;
+    width: 100%;
+    height: 28px;
+    ${props => props.theme.fontSet.xsEps};
+  `,
+  modal: css`
+    padding-top: 8px;
+    padding-bottom: 8px;
+    width: 100%;
+    height: 40px;
+    ${props => props.theme.fontSet.base};
+  `,
+}
+
 
 const StyledButton = styled.button`
 
   ${({ size }) => size && sizeStyles[size]}
 
   ${({ color }) => color && colorStyles[color]}
+
+  ${({ shape }) => shape && shapeStyles[shape]}
 
   ${({ selected, theme }) => 
     selected &&

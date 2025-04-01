@@ -1,6 +1,7 @@
 import React from "react"
 import s from "./style"
 import BackIcon from "./assets/ico-back.svg"
+import Button from "../../shared/Button"
 
 const Header = ({
   headerTitle,
@@ -8,9 +9,7 @@ const Header = ({
 }) => {
   return (
       <s.Header>
-        <s.Back onClick={backNavigation}>
-          <s.BackImg src={BackIcon} alt="뒤로가기 버튼" />
-        </s.Back>
+        <Button onClick={backNavigation} shape="back" icon={BackIcon} />
         <s.Title>{headerTitle}</s.Title>
         <s.Empty />
       </s.Header>

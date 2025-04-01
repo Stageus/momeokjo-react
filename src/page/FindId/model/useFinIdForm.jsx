@@ -1,8 +1,8 @@
-import { useState, useCallback } from "react"
+import { useState, useCallback, useRef } from "react"
+import { EmailRegex, EmailMessage, NoAccountMessage } from "../../../shared/Content/regex"
 
-const useFindIdForm = (navigate) => {
-
-  const [value, setValue] = useState({
+const useFindIdForm = () => {
+  const values = useRef({
     email: '',
   })
 
@@ -12,42 +12,25 @@ const useFindIdForm = (navigate) => {
   const [isFindIdSuccess, setIsFindIdSuccess] = useState(false)
   const [foundId, setFoundId] = useState('')
 
-  // 정규표현식
-  const regex = {
-    email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-  }
-
-  // 유효성 검사 메시지
-  const messages = {
-    email: "254자 이하 / '영어, 숫자, 특수문자(. , +, -, _ 만 허용) + @ + 도메인' 형태",
-    noAccount: "가입된 회원이 아닙니다.",
-  }
-
   // 비밀번호 변경 필드 정보
   const findIdInputFields = [
     { label: "이메일", type: "email", name: "email", placeholder: "이메일을 입력해주세요" }
   ]
 
-  // 필드 값 변경
-  const handleChange = useCallback((e) => {
-    const {name, value} = e.target
-    setValue(prevvalue => ({ ...prevvalue, [name]: value }))
-  }, [])
-
   // 아이디 찾기 이벤트
   const handleFindId = useCallback(async () => {
-    const {email} = value
+    const {email} = values.current
     const newErrors = {}
 
-    if (!regex.email.test(email)) {
-      newErrors.email = messages.email
+    if (!EmailRegex.test(email)) {
+      newErrors.email = EmailMessage
     } else {
       // 가입된 회원 확인 (로컬 스토리지 사용)
       const storedUsers = JSON.parse(localStorage.getItem("users") || "[]")
       const user = storedUsers.find(user => user.email === email)
 
       if (!user) {
-        newErrors.email = messages.noAccount
+        newErrors.email = NoAccountMessage
       }
     }
 
@@ -63,9 +46,9 @@ const useFindIdForm = (navigate) => {
     setFoundId(user.id)
 
     setIsFindIdSuccess(true)
-  }, [value, regex, messages])
+  })
 
-  return {errors, value, handleChange, handleFindId, findIdInputFields, isFindIdSuccess, setIsFindIdSuccess, foundId}
+  return {errors, values, handleFindId, findIdInputFields, isFindIdSuccess, foundId}
 
 }
 

@@ -4,8 +4,7 @@ import s from "./style"
 import kakaoIcon from "./assets/ico-kakao.svg"
 import useLoginForm from "./model/useLoginForm";
 import useKakaoLogin from "./model/useKakaoLogin";
-import Button from "../../shared/ui/Button"
-import LogoutBtn from "../../shared/ui/LogoutBtn";
+import Button from "../../shared/Button"
 import Header from "../../widget/Header";
 
 
@@ -15,13 +14,18 @@ const Login = () => {
   const navigate = useNavigate()
   const {
     errors, 
-    values, 
-    handleChange, 
+    values,
     handleLogin, 
     loginInputFields,
   } = useLoginForm()
 
   const { handleKakaoLoginClick } = useKakaoLogin()
+
+  // 입력값 변경
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    values.current[name] = value
+  }
 
   return (
     <s.Container>
@@ -39,8 +43,8 @@ const Login = () => {
                 type={field.type}
                 name={field.name}
                 $error={!!errors[field.name]}
-                onChange={handleChange}
-                value={values[field.name] || ""}
+                onChange={handleInputChange}
+                defaultValue={values.current[field.name] || ""}
                 placeholder={field.placeholder || ""}
               />
             {errors[field.name] && (
@@ -65,8 +69,6 @@ const Login = () => {
           비밀번호 찾기
         </s.LinksText>
       </s.Links>
-
-      <LogoutBtn />
 
       <s.SignUp>
         <s.SignUpText>아직 회원이 아닌가요?</s.SignUpText>

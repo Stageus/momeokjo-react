@@ -1,5 +1,8 @@
 import s from "./style"
-import { useEffect } from "react"
+
+import restaurantsCategories from '../../assets/data/restaurantsCategories.json'   // 음식점 카테고리 리스트 조회 api 대체 : /restaurants/categories?include_deleted=
+import restaurantsIdx from './assets/data/restaurantsIdx.json'   // 음식점 상세 조회 api 대체 : /restaurants/:restaurant_idx
+import useDetailPage from "./model/useDetailPage"
 
 import maploding from "./assets/loading-hambuger.svg"
 import nodatacry from "./assets/ico-cry.svg"
@@ -7,43 +10,19 @@ import star from "./assets/ico-star-before.png"
 import time from "./assets/ico-time.png"
 import phone from "./assets/ico-phone.png"
 import imgaddress from "./assets/ico-address.png"
-
-import useRadius from "./model/useRadius"
-import useRestaurantFilter from "./model/useRestaurantFilter"
-import useDetailPage from './model/useDetailPage'
-
-import restaurantsCategoryIdxRange from './assets/data/restaurantsCategoryIdxRange.json'   // 음식점 랜덤 추천 api 대체 : /restaurants/recommends?category_idx=&range=
-import restaurantsCategoryIdxRangePage from './assets/data/restaurantsCategoryIdxRangePage.json'   // 음식점 리스트 조회 api 대체 : /restaurants?category_idx=&range=&page= 
-import restaurantsCategories from './assets/data/restaurantsCategories.json'   // 음식점 카테고리 리스트 조회 api 대체 : /restaurants/categories?include_deleted=
-import restaurantsIdx from './assets/data/restaurantsIdx.json'   // 음식점 상세 조회 api 대체 : /restaurants/:restaurant_idx
-
 import closeDetail from './assets/close-detail.svg'
 import thumb from './assets/thumb.png'
 
 
-function Recommend({ location, setMapProps }) {
-  const [value, selectedRadius, radiusData, handleSlideChange] = useRadius()
-  const [
-    selectedMenu,   
-    selectedRestaurant,
-    selectedRandomRestaurant,
-    isLoading,
-    isSearched,
-    formatPhoneNumber,
-    formatTime,
-    handleCategoryChange,
-    handleFilterSearch,
-    handleRecommend
-  ] = useRestaurantFilter(restaurantsCategoryIdxRangePage, restaurantsCategoryIdxRange, location, selectedRadius, radiusData, restaurantsCategories)
+function Recommend(props) {
+
+  const { value, selectedRadius, radiusData, handleSlideChange, selectedMenu, selectedRestaurant, isLoading, isSearched, formatPhoneNumber, handleCategoryChange, formatTime, handleFilterSearch, handleRecommend } = props
   const [isDetailOpen, depth2restaurantidx, detailPageOpen, closeDetailPage] = useDetailPage(restaurantsIdx)
 
-  // useRestaurantFilter의 결과가 업데이트될 때마다 맵 props 업데이트
-  useEffect(() => {
-    setMapProps({
-      selectedRestaurant,
-      selectedRandomRestaurant
-    })
-  }, [selectedRestaurant, selectedRandomRestaurant])
+  // 어디로 옮겨야 할까 ,,
+  const selectedRandomRestaurant = restaurantsIdx.find(
+    restaurant => Number(restaurant.restaurant_idx) === Number(depth2restaurantidx)
+  )
 
   return (
     <s.AsideModal>
@@ -101,18 +80,18 @@ function Recommend({ location, setMapProps }) {
 
             {isSearched && (
               selectedRestaurant.length > 0 ? (
-                selectedRestaurant.map((restaurant) => (
-                  <s.RecommendBox key={restaurant.restaurant_idx}>
+                selectedRestaurant.map((elem, idx) => (
+                  <s.RecommendBox key={idx}>
                     <s.Title>
-                      <s.Name>{restaurant.restaurant_name}</s.Name>
-                      <s.Category>{restaurant.category_name}</s.Category>
+                      <s.Name>{elem.restaurant_name}</s.Name>
+                      <s.Category>{elem.category_name}</s.Category>
                       <s.Like><img src={star} alt="" />(13)</s.Like>
                     </s.Title>
-                    <s.Adresstype1><img src={imgaddress} alt="" />{restaurant.address} {restaurant.address_detail}</s.Adresstype1>
-                    <s.Adresstype2>지번 | {restaurant.jibunAddress}</s.Adresstype2>
-                    <s.Time><img src={time} />{formatTime(restaurant.start_time)} ~ {formatTime(restaurant.end_time)}</s.Time>
-                    <s.Phone><img src={phone} />{formatPhoneNumber(restaurant.phone)}</s.Phone>
-                    <s.BtnFullCustom $grey $lg onClick={() => detailPageOpen(restaurant.restaurant_idx)}>상세보기</s.BtnFullCustom>
+                    <s.Adresstype1><img src={imgaddress} alt="" />{elem.address} {elem.address_detail}</s.Adresstype1>
+                    <s.Adresstype2>지번 | {elem.jibunAddress}</s.Adresstype2>
+                    <s.Time><img src={time} />{formatTime(elem.start_time)} ~ {formatTime(elem.end_time)}</s.Time>
+                    <s.Phone><img src={phone} />{formatPhoneNumber(elem.phone)}</s.Phone>
+                    <s.BtnFullCustom $grey $lg onClick={() => detailPageOpen(elem.restaurant_idx)}>상세보기</s.BtnFullCustom>
                   </s.RecommendBox>
                 ))
               ) : (
@@ -126,22 +105,19 @@ function Recommend({ location, setMapProps }) {
 
       {isDetailOpen && 
           <s.AsideModalDepth2>
-            <s.BtnCloseDetail onClick={closeDetailPage}><img src={closeDetail} /></s.BtnCloseDetail>
-    
+              <s.BtnCloseDetail onClick={closeDetailPage}><img src={closeDetail} /></s.BtnCloseDetail>
               <s.DetailImg><img src={thumb} /></s.DetailImg>
 
-              {restaurantsIdx
-              .filter((restaurant) => Number(restaurant.restaurant_idx) === Number(depth2restaurantidx)) // 리스트에서 받아온 idx와 같은 데이터만 필터링
-              .map((restaurant) => (
-                <s.DetailBox key={restaurant.restaurant_idx}>
-                  <s.DetailTitle>{restaurant.restaurant_name}</s.DetailTitle>
-                  <s.DetailCategory>{restaurant.category_name}     <s.Like><img src={star} alt="" />(13)</s.Like></s.DetailCategory>
-                  <s.DetailAdresstype1><img src={imgaddress} alt="" />{restaurant.address} {restaurant.address_detail}</s.DetailAdresstype1>
-                  <s.DetailAdresstype2>지번 | {restaurant.jibunAddress}</s.DetailAdresstype2>
-                  <s.DetailTime><img src={time} />{formatTime(restaurant.start_time)} ~ {formatTime(restaurant.end_time)}</s.DetailTime>
-                  <s.DetailPhone><img src={phone} />{formatPhoneNumber(restaurant.phone)}</s.DetailPhone>
+              {selectedRandomRestaurant && (
+                <s.DetailBox key={selectedRandomRestaurant.restaurant_idx}>
+                  <s.DetailTitle>{selectedRandomRestaurant.restaurant_name}</s.DetailTitle>
+                  <s.DetailCategory>{selectedRandomRestaurant.category_name}     <s.Like><img src={star} alt="" />(13)</s.Like></s.DetailCategory>
+                  <s.DetailAdresstype1><img src={imgaddress} alt="" />{selectedRandomRestaurant.address} {selectedRandomRestaurant.address_detail}</s.DetailAdresstype1>
+                  <s.DetailAdresstype2>지번 | {selectedRandomRestaurant.jibunAddress}</s.DetailAdresstype2>
+                  <s.DetailTime><img src={time} />{formatTime(selectedRandomRestaurant.start_time)} ~ {formatTime(selectedRandomRestaurant.end_time)}</s.DetailTime>
+                  <s.DetailPhone><img src={phone} />{formatPhoneNumber(selectedRandomRestaurant.phone)}</s.DetailPhone>
                 </s.DetailBox>
-              ))}
+              )}
          
             <s.SortLine $lg></s.SortLine>
           </s.AsideModalDepth2>

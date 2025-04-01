@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { IdRegex, IdMessage, PasswordRegex, PasswordMessage, ConfirmPasswordMessage, NickNameRegex, NickNameMessage, EmailRegex, EmailMessage, EmailCodeMessage } from '../../../shared/Content/regex';
 
 const useSignUpForm = () => {
   const navigate = useNavigate()
@@ -10,7 +11,7 @@ const useSignUpForm = () => {
     return pageParam === "간편회원가입" ? "easy" : "local"
   })()
 
-  const [values, setValues] = useState({
+  const values = useRef({
     nickname: '',
     email: '',
     emailCode: '',
@@ -30,29 +31,6 @@ const useSignUpForm = () => {
   const [expireMessage, setExpireMessage] = useState("")
   const emailTimeLimit = 900; // 15분
 
-  // 정규표현식
-  const regex = {
-    nickname: /^[a-zA-Z0-9가-힣]{1,50}$/,
-    email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-    ...(pageType === 'local' ? {
-      id: /^[a-zA-Z0-9]{1,50}$/,
-      password: /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[0-9]).{8,32}$/,
-    } : {}),
-  }
-  
-  // 유효성 검사
-  const messages = {
-    nickname: "50자 이하 / 한글, 영어, 숫자 포함",
-    email: "254자 이하 / '영어, 숫자, 특수문자(. , +, -, _ 만 허용) + @ + 도메인' 형태",
-    emailCode: "인증번호를 확인해주세요",
-    ...(pageType === 'local' ? {
-      id: "50자 이하 / 한글, 영어, 숫자 포함",
-      password: "8~32자 이하, 영대문자 1자 이상, 특수문자 1자이상, 영소문자, 숫자 조합",
-      confirmPassword: "비밀번호 입력값과 동일한 번호를 입력해주세요",
-    }: {}),
-  }
-
-
   // 입력 필드 정보
   const signUpInputFields = [
     ...(pageType === 'local' ? [
@@ -63,15 +41,6 @@ const useSignUpForm = () => {
     { label: "닉네임", type: "text", name: "nickname"},
     { label: "이메일", type: "email", name: "email" }
   ]
-
-    // 입력 값 변경
-    const handleChange = useCallback((e) => {
-      const {name, value} = e.target
-      setValues(prevValues => ({
-        ...prevValues,
-        [name]: value
-      }))
-    }, [])
 
     // 랜덤 인증 코드 생성
     const randomEmailCode = useCallback(() => {
@@ -103,10 +72,10 @@ const useSignUpForm = () => {
 
     // 이메일 인증번호 전송
     const handleSendEmailCode = useCallback(async () => {
-      const {email} = values
+      const {email} = values.current
 
-      if (!regex.email.test(email)) {
-        setErrors(prevErrors => ({...prevErrors, email: messages.email}))
+      if (!EmailRegex.test(email)) {
+        setErrors(prevErrors => ({...prevErrors, email: EmailMessage}))
         return
       }
 
@@ -148,11 +117,11 @@ const useSignUpForm = () => {
       setTimer(emailTimeLimit)
       setEmailCodeMessage("")
       alert(`인증 코드가 전송되었습니다.: ${verificationCode}`)
-    }, [values.email, regex.email, messages.email, randomEmailCode])
+    }, [values.email, randomEmailCode])
 
     // 이메일 인증 확인
     const handleConfirmEmailCode = useCallback(() => {
-      const {emailCode} = values
+      const {emailCode} = values.current
 
       console.log("입력된 인증 코드:", emailCode)
       console.log("생성된 인증 코드:", generatedCode)
@@ -170,7 +139,7 @@ const useSignUpForm = () => {
           delete newErrors.emailCode // 인증 성공 시 에러 제거
           setExpireMessage("")
         } else {
-          newErrors.emailCode = "인증번호를 확인해주세요."
+          newErrors.emailCode = EmailCodeMessage
           setIsEmailSuccessful(false)
         }
 
@@ -186,29 +155,29 @@ const useSignUpForm = () => {
 
     // 회원가입 이벤트 부분
     const handleSignUp = useCallback(async () => {
-      const { id, password, confirmPassword, nickname, email, emailCode} = values
+      const { id, password, confirmPassword, nickname, email, emailCode} = values.current
       const newErrors = {}
 
       if (pageType === 'local') {
-        if (!regex.id.test(id)) {
-          newErrors.id = messages.id
+        if (!IdRegex.test(id)) {
+          newErrors.id = IdMessage
         }
-        if (!regex.password.test(password)) {
-          newErrors.password = messages.password
+        if (!PasswordRegex.test(password)) {
+          newErrors.password = PasswordMessage
         }
         if (password !== confirmPassword || !confirmPassword) {
-          newErrors.confirmPassword = messages.confirmPassword
+          newErrors.confirmPassword = ConfirmPasswordMessage
         }
       }
 
-      if (!regex.nickname.test(nickname)) {
-        newErrors.nickname = messages.nickname
+      if (!NickNameRegex.test(nickname)) {
+        newErrors.nickname = NickNameMessage
       }
-      if (!regex.email.test(email)) {
-        newErrors.email = messages.email
+      if (!EmailRegex.test(email)) {
+        newErrors.email = EmailMessage
       }
       if (isEmailCodeSent && !isEmailSuccessful && !emailCode) {
-        newErrors.emailCode = messages.emailCode
+        newErrors.emailCode = EmailCodeMessage
       }
       if (email && !isEmailSuccessful) {
         newErrors.email = "이메일 인증을 해주세요."
@@ -280,7 +249,6 @@ const useSignUpForm = () => {
     return {
       errors,
       values,
-      handleChange,
       isEmailCodeSent,
       emailCodeMessage,
       isEmailSuccessful,
@@ -289,7 +257,6 @@ const useSignUpForm = () => {
       formatTime,
       timer,
       expireMessage,
-      messages,
       signUpInputFields,
       handleSignUp,
     }

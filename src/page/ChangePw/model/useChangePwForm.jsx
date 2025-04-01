@@ -1,8 +1,10 @@
-import { useState, useCallback } from "react"
+import { useState, useCallback, useRef } from "react"
+import { useNavigate } from "react-router-dom"
+import { PasswordRegex, PasswordMessage, ConfirmPasswordMessage } from "../../../shared/Content/regex"
 
-const useChangePwForm = (navigate) => {
-
-  const [values, setValues] = useState({
+const useChangePwForm = () => {
+  const navigate = useNavigate()
+  const values = useRef({
     password: '',
     confirmPassword: '',
   })
@@ -11,16 +13,6 @@ const useChangePwForm = (navigate) => {
   const [errors, setErrors] = useState({})
   // 비밀번호 변경
   const [isChangePwSuccess, setIsChangePwSuccess] = useState(false)
-  // 정규표현식
-  const regex = {
-    password: /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[0-9]).{8,32}$/,
-  }
-
-  // 유효성 검사 메시지
-  const messages = {
-    password: "8~32자 이하, 영대문자 1자 이상, 특수문자 1자이상, 영소문자, 숫자 조합",
-    confirmPassword: "비밀번호 입력값과 동일한 번호를 입력해주세요",
-  }
 
   // 비밀번호 변경 필드 정보
   const changePwInputFields = [
@@ -28,23 +20,17 @@ const useChangePwForm = (navigate) => {
     { label: "비밀번호 확인", type: "password", name: "confirmPassword"},
   ]
 
-  // 필드 값 변경
-  const handleChange = useCallback((e) => {
-    const {name, value} = e.target
-    setValues(prevValues => ({ ...prevValues, [name]: value }))
-  }, [])
-
   // 비밀번호 변경 이벤트
   const handleChangePw = useCallback(async () => {
-    const {password, confirmPassword} = values
+    const {password, confirmPassword} = values.current
     const newErrors = {}
 
     // 유효성 검사
-    if (!regex.password.test(password)) {
-      newErrors.password = messages.password
+    if (!PasswordRegex.test(password)) {
+      newErrors.password = PasswordMessage
     }
     if (password !== confirmPassword || !confirmPassword) {
-      newErrors.confirmPassword = messages.confirmPassword
+      newErrors.confirmPassword = ConfirmPasswordMessage
     }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
@@ -63,14 +49,12 @@ const useChangePwForm = (navigate) => {
     }
 
     const userIndex = storedUsers.findIndex(user => user.id === userId)
-
     if (userIndex === -1) {
       console.error("User not found in storedUsers")
       return 
     }
 
     const user = storedUsers[userIndex]
-
     if (user && user.password === password) {
       setErrors({ password: "기존 비밀번호와 동일한 비밀번호는 사용할 수 없습니다." })
       return
@@ -82,11 +66,10 @@ const useChangePwForm = (navigate) => {
 
     // 로컬 스토리지 업데이트
     localStorage.setItem("users", JSON.stringify(newStoredUsers))
-
     setIsChangePwSuccess(true)
-  }, [values, navigate, regex, messages])
+  }, [navigate, values])
 
-  return {errors, values, handleChange, handleChangePw, changePwInputFields, isChangePwSuccess, setIsChangePwSuccess}
+  return {errors, values, handleChangePw, changePwInputFields, isChangePwSuccess}
 
 }
 

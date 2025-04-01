@@ -1,6 +1,6 @@
-import React from "react"
+import React, {useEffect} from "react"
 import { useNavigate } from "react-router-dom"
-import Button from "../../shared/ui/Button"
+import Button from "../../shared/Button"
 import useChangePwForm from "./model/useChangePwForm"
 import Header from "../../widget/Header"
 import s from "./style"
@@ -12,23 +12,27 @@ const ChangePw = () => {
 
   const {
     errors, 
-    values, 
-    handleChange, 
+    values,
     handleChangePw, 
     changePwInputFields, 
     isChangePwSuccess,
   } = useChangePwForm()
 
-  React.useEffect(() => {
+  // 입력값 변경
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    values.current[name] = value
+  }
+
+  useEffect(() => {
     const userId = localStorage.getItem("userId")
     if (!userId) {
       alert("로그인이 필요합니다.")
       navigate("/login")
-      return
     }
   }, [navigate])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isChangePwSuccess) {
       navigate('/login')
     }
@@ -50,9 +54,8 @@ const ChangePw = () => {
                 type={field.type}
                 name={field.name}
                 $error={!!errors[field.name]}
-                onChange={handleChange}
-                value={values[field.name] || ""}
-                placeholder={field.placeholder || ""}
+                onChange={handleInputChange}
+                defaultValue={values.current[field.name] || ""}
               />
             {errors[field.name] && (
               <s.Message $error={!!errors[field.name]}>

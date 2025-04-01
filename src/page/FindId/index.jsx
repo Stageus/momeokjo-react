@@ -1,7 +1,7 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import s from "./style"
-import Button from "../../shared/ui/Button"
+import Button from "../../shared/Button"
 import useFindIdForm from "./model/useFinIdForm"
 import Header from "../../widget/Header"
 
@@ -10,13 +10,17 @@ const FindId = () => {
   const navigate = useNavigate()
   const {
     errors, 
-    value, 
-    handleChange, 
+    values,
     handleFindId, 
     findIdInputFields, 
     isFindIdSuccess,
     foundId
   } = useFindIdForm()
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    values.current[name] = value
+  }
 
   return (
     <>
@@ -42,8 +46,8 @@ const FindId = () => {
                 type={field.type}
                 name={field.name}
                 $error={!!errors[field.name]}
-                onChange={handleChange}
-                value={value[field.name]}
+                onChange={handleInputChange}
+                defaultValue={values.current[field.name] || ""}
                 placeholder={field.placeholder}
               />
             {errors[field.name] && (
