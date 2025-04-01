@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import useSignUpForm from "./model/useLocalSignupForm";
+import useSignUpForm from "./model/useSignupForm";
+import { messages } from "../../shared/Content/regex";
 import Button from "../../shared/Button"
 import Header from "../../widget/Header"
 import s from "./style"
@@ -20,7 +21,6 @@ const SignUp = () => {
     formatTime,
     timer,
     expireMessage,
-    messages,
     signUpInputFields,
     handleSignUp,
   } = useSignUpForm()
@@ -73,7 +73,6 @@ const SignUp = () => {
                         placeholder="이메일 인증번호 6자리 숫자를 입력해주세요"
                         $error={!!errors.emailCode}
                         $verify
-                        defaultValue={values.current[field.name] || ""}
                         onChange={handleInputChange}
                         disabled={isEmailSuccessful}
                       />
@@ -82,7 +81,7 @@ const SignUp = () => {
                           인증 확인
                         </s.EmailVerify>
                       )}
-                      {!isEmailSuccessful && <s.Timer>{formatTime(timer)}</s.Timer>} {/* 인증 성공 시 타이머 숨김 */}
+                      {!isEmailSuccessful && <s.Timer>{formatTime(timer)}</s.Timer>}
                     </s.EmailContainer>
                     <s.Message
                       $error={!!errors.emailCode && !isEmailSuccessful}
@@ -107,6 +106,7 @@ const SignUp = () => {
                 </s.Message>
               </>
             )}
+            
           </s.InputBox>
         ))}
         <Button $signup type="button" color="primary" size="largeUser" children={"회원가입"} onClick={handleSignUp} />

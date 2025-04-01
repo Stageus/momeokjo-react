@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from "react"
-import { EmailRegex, EmailMessage, NoAccountMessage } from "../../../shared/Content/regex"
+import { regex, messages } from "../../../shared/Content/regex"
 
 const useFindIdForm = () => {
   const values = useRef({
@@ -22,15 +22,15 @@ const useFindIdForm = () => {
     const {email} = values.current
     const newErrors = {}
 
-    if (!EmailRegex.test(email)) {
-      newErrors.email = EmailMessage
+    if (!regex.email.test(email)) {
+      newErrors.email = messages.email
     } else {
       // 가입된 회원 확인 (로컬 스토리지 사용)
       const storedUsers = JSON.parse(localStorage.getItem("users") || "[]")
       const user = storedUsers.find(user => user.email === email)
 
       if (!user) {
-        newErrors.email = NoAccountMessage
+        newErrors.email = messages.emailCode
       }
     }
 

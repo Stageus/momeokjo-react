@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IdRegex, IdMessage, PasswordRegex, PasswordMessage } from '../../../shared/Content/regex';
+import { regex, messages } from '../../../shared/Content/regex';
 
 const useLoginForm = () => {
 
@@ -24,11 +24,11 @@ const useLoginForm = () => {
     const { id, password } = values.current
     const newErrors = {}
 
-    if (!IdRegex.test(id)) {
-      newErrors.id = IdMessage
+    if (!regex.id.test(id)) {
+      newErrors.id = messages.id
     }
-    if (!PasswordRegex.test(password)) {
-      newErrors.password = PasswordMessage
+    if (!regex.password.test(password)) {
+      newErrors.password = messages.password
     }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)

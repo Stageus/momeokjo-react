@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { IdRegex, IdMessage, PasswordRegex, PasswordMessage, ConfirmPasswordMessage, NickNameRegex, NickNameMessage, EmailRegex, EmailMessage, EmailCodeMessage } from '../../../shared/Content/regex';
+import { regex, messages } from '../../../shared/Content/regex';
 
 const useSignUpForm = () => {
   const navigate = useNavigate()
@@ -74,8 +74,8 @@ const useSignUpForm = () => {
     const handleSendEmailCode = useCallback(async () => {
       const {email} = values.current
 
-      if (!EmailRegex.test(email)) {
-        setErrors(prevErrors => ({...prevErrors, email: EmailMessage}))
+      if (!regex.email.test(email)) {
+        setErrors(prevErrors => ({...prevErrors, email: messages.email}))
         return
       }
 
@@ -139,7 +139,7 @@ const useSignUpForm = () => {
           delete newErrors.emailCode // 인증 성공 시 에러 제거
           setExpireMessage("")
         } else {
-          newErrors.emailCode = EmailCodeMessage
+          newErrors.emailCode = messages.emailCode
           setIsEmailSuccessful(false)
         }
 
@@ -159,25 +159,25 @@ const useSignUpForm = () => {
       const newErrors = {}
 
       if (pageType === 'local') {
-        if (!IdRegex.test(id)) {
-          newErrors.id = IdMessage
+        if (!regex.id.test(id)) {
+          newErrors.id = messages.id
         }
-        if (!PasswordRegex.test(password)) {
-          newErrors.password = PasswordMessage
+        if (!regex.password.test(password)) {
+          newErrors.password = messages.password
         }
         if (password !== confirmPassword || !confirmPassword) {
-          newErrors.confirmPassword = ConfirmPasswordMessage
+          newErrors.confirmPassword = messages.confirmPassword
         }
       }
 
-      if (!NickNameRegex.test(nickname)) {
-        newErrors.nickname = NickNameMessage
+      if (!regex.nickname.test(nickname)) {
+        newErrors.nickname = messages.nickname
       }
-      if (!EmailRegex.test(email)) {
-        newErrors.email = EmailMessage
+      if (!regex.email.test(email)) {
+        newErrors.email = messages.email
       }
       if (isEmailCodeSent && !isEmailSuccessful && !emailCode) {
-        newErrors.emailCode = EmailCodeMessage
+        newErrors.emailCode = messages.emailCode
       }
       if (email && !isEmailSuccessful) {
         newErrors.email = "이메일 인증을 해주세요."

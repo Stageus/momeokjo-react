@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom"
 import s from "./style"
-import { useNavigate } from 'react-router-dom';
 import { Map as KakaoMap , MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk'
 
 import Button from "../../shared/Button"
@@ -119,7 +118,7 @@ function Main() {
       <s.CurrentLocation>{address && <>{address}</>}</s.CurrentLocation>
       </KakaoMap>
       
-      <Button children={"로그인"} shape={"login"} />
+      <Button children={"로그인"} shape={"login"} onClick={() => navigate("/login")} />
 
       {asideModalOpen ? (
         <s.HamburgerMenu>

@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from "react"
-import { IdRegex, IdMessage, EmailRegex, EmailMessage, NoAccountMessage } from "../../../shared/Content/regex"
+import { regex, messages } from "../../../shared/Content/regex"
 
 const useFindPwForm = () => {
 
@@ -24,19 +24,19 @@ const useFindPwForm = () => {
     const {id, email} = values.current
     const newErrors = {}
 
-    if (!IdRegex.test(id)) {
-      newErrors.id = IdMessage
+    if (!regex.id.test(id)) {
+      newErrors.id = messages.id
     }
 
-    if (!EmailRegex.test(email)) {
-      newErrors.email = EmailMessage
+    if (!regex.email.test(email)) {
+      newErrors.email = messages.email
     } else {
       const storedUsers = JSON.parse(localStorage.getItem("users") || "[]")
       const user = storedUsers.find(user => user.id === id && user.email === email)
 
       if (!user) {
-        newErrors.id = NoAccountMessage
-        newErrors.email = NoAccountMessage
+        newErrors.id = messages.noAccount
+        newErrors.email = messages.noAccount
       }
     }
 

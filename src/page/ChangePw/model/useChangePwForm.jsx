@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from "react"
 import { useNavigate } from "react-router-dom"
-import { PasswordRegex, PasswordMessage, ConfirmPasswordMessage } from "../../../shared/Content/regex"
+import { regex, messages } from "../../../shared/Content/regex"
 
 const useChangePwForm = () => {
   const navigate = useNavigate()
@@ -26,11 +26,11 @@ const useChangePwForm = () => {
     const newErrors = {}
 
     // 유효성 검사
-    if (!PasswordRegex.test(password)) {
-      newErrors.password = PasswordMessage
+    if (!regex.password.test(password)) {
+      newErrors.password = messages.password
     }
     if (password !== confirmPassword || !confirmPassword) {
-      newErrors.confirmPassword = ConfirmPasswordMessage
+      newErrors.confirmPassword = messages.confirmPassword
     }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
