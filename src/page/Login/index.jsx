@@ -4,9 +4,9 @@ import s from "./style"
 import kakaoIcon from "./assets/ico-kakao.svg"
 import useLoginForm from "./model/useLoginForm";
 import useKakaoLogin from "./model/useKakaoLogin";
-import Button from "../../../../shared/ui/Button"
-import LogoutBtn from "../../../../shared/ui/LogoutBtn";
-import Form from "../../../../widget/Form";
+import Button from "../../shared/ui/Button"
+import LogoutBtn from "../../shared/ui/LogoutBtn";
+import Form from "../../widget/Form";
 
 
 

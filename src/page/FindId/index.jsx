@@ -1,9 +1,9 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import s from "./style"
-import Button from "../../../../shared/ui/Button"
+import Button from "../../shared/ui/Button"
 import useFindIdForm from "./model/useFinIdForm"
-import Form from "../../../../widget/Form"
+import Form from "../../widget/Form"
 
 const FindId = () => {
 

@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useSignUpForm from "./model/useLocalSignupForm";
-import Button from "../../../../shared/ui/Button";
-import SignUpForm from "../../../../widget/SignUpForm";
+import Button from "../../shared/ui/Button";
+import SignUpForm from "../../widget/SignUpForm";
 
 
 const SignUp = () => {

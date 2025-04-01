@@ -1,8 +1,8 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
-import Button from "../../../../shared/ui/Button"
+import Button from "../../shared/ui/Button"
 import useChangePwForm from "./model/useChangePwForm"
-import Form from "../../../../widget/Form"
+import Form from "../../widget/Form"
 
 
 const ChangePw = () => {

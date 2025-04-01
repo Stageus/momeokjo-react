@@ -1,9 +1,9 @@
 import { Routes, Route } from "react-router-dom";
-import Login from '../page/ui/Auth/Login'
-import SignUp from "../page/ui/Auth/SignUp"
-import FindId from "../page/ui/Auth/FindId/index.jsx";
-import Findpw from "../page/ui/Auth/FindPw/index.jsx"
-import ChangePw from "../page/ui/Auth/ChangePw/index.jsx";
+import Login from '../page/Login'
+import SignUp from "../page/SignUp"
+import FindId from "../page/FindId";
+import Findpw from "../page/FindPw"
+import ChangePw from "../page/ChangePw"
 import Register from './Register'
 import Main from './Main'
 
