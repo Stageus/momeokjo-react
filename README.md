@@ -66,8 +66,6 @@
 ├── package-lock.json
 ├── package.json
 │
-├── public
-│    └── 
 └── src
      ├── main.jsx
      ├── app
@@ -76,23 +74,27 @@
      │     │   style
      │     └── index.jsx
      ├── page
-     │     ├── assets
-     │     ├── ui
-     │     │   ├── Detail
-     │     │   │   KakaoMap
-     │     │   │   Layout
-     │     │   └── Login
-     │     │   index.jsx
-     │     │   style.js
+     │     ├── ChangePw
+     │     ├── FindId
+     │     ├── FindPw
+     │     ├── KakaoLogin
+     │     ├── Login
+     │     ├── Main
+     │     ├── Register
+     │     ├── SignUp
+     │     └── index.jsx
      ├── shared
-     │     ├── model
-     │     │     ├── .jsx
-     │     │     └── .jsx
+     │     ├── ui
+     │     │     ├── Button
+     │     │     ├── CloseBtn
+     │     │     ├── GotoLoginBtn
+     │     │     └── LogoutBtn
      └── widget
-           ├── assets
-           │   model
-           │   ui
-           └── .jsx
+           ├── Header
+           │   ├── assets
+           │   ├── index.jsx
+           └── └── style.js
+
 ```
 
 <br>

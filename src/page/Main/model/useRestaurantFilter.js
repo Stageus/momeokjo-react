@@ -1,12 +1,13 @@
 import { useState } from 'react'
 
 
-const useRestaurantFilter = (restaurantsCategoryIdxRangePage, restaurantsCategoryIdxRange, location, selectedRadius, radiusData, restaurantsCategories) => {
+const useRestaurantFilter = (restaurantsCategoryIdxRangePage, restaurantsCategoryIdxRange, location, selectedRadius, radiusData, restaurantsCategories, restaurantsIdx) => {
     const [selectedMenu, setSelectedMenu] = useState(null) // 카테고리 선택 : 초기값 null
     const [selectedRestaurant, setSelectedRestaurant] = useState([])  // 필터링된 음식점 리스트
     const [selectedRandomRestaurant, setSelectedRandomRestaurant] = useState(null) // 랜덤 필터링된 음식점 
     const [isLoading, setIsLoading] = useState(false) // 랜덤 필터링 전 로딩
     const [isSearched, setIsSearched] = useState(false) // 필터링 버튼 실행 유무 판단
+
 
     // 거리 계산 함수 (Haversine 공식)
     const getDistance = (lat1, lng1, lat2, lng2) => {
@@ -63,7 +64,7 @@ const useRestaurantFilter = (restaurantsCategoryIdxRangePage, restaurantsCategor
             fetchJibunAddress(restaurant.address, (jibunAddress) => {
                 setSelectedRestaurant(prev => prev.map((item, i) => 
                     i === index ? { ...item, jibunAddress: jibunAddress || '지번주소 없음' } : item
-                ));
+                ))
             });
         });
 
@@ -73,6 +74,7 @@ const useRestaurantFilter = (restaurantsCategoryIdxRangePage, restaurantsCategor
 
         console.log("음식점:", filteredRestaurants)
     }
+
 
     // 도로명 주소를 지번 주소로 변환
     const fetchJibunAddress = (roadAddress, callback) => {
@@ -148,7 +150,7 @@ const useRestaurantFilter = (restaurantsCategoryIdxRangePage, restaurantsCategor
         handleCategoryChange,
         handleFilterSearch,
         handleRecommend,
-        fetchJibunAddress,
+        fetchJibunAddress
     ]
 }
 
