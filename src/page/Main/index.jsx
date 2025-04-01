@@ -1,7 +1,8 @@
+import { useNavigate } from "react-router-dom"
 import s from "./style"
 import useAsideModal from "./model/useAsideModal"
 
-import GotoLoginBtn from "../../shared/ui/GotoLoginBtn"
+import Button from "../../shared/Button"
 
 
 import HamburgerImg from "./assets/ico-menu.svg"
@@ -15,6 +16,8 @@ import { useState } from "react"
 
 
 function Main() {
+
+  const navigate = useNavigate()
 
   const [AsideModalOpen, toggleAsideModal] = useAsideModal()
   const [location, address, clickedPosition, clickedAddress, handleMapClick] = useLocation()
@@ -36,8 +39,7 @@ function Main() {
           handleMapClick={handleMapClick}
         />
         
-
-      <GotoLoginBtn />
+      <Button shape="login" onClick={() => navigate("/login")} children={"로그인"} />
 
       {AsideModalOpen ? (
         <s.HamburgerMenu>
