@@ -28,17 +28,17 @@ const useLocation = () => {
                     setAddress(region.address_name)
                 }
             }
-        });
-    };
+        })
+    }
 
     const handleMapClick = (_, mouseEvent) => {
         const latlng = mouseEvent.latLng;
-        const clickedLat = latlng.getLat();
-        const clickedLng = latlng.getLng();
+        const clickedLat = latlng.getLat()
+        const clickedLng = latlng.getLng()
     
-        setClickedPosition({ lat: clickedLat, lng: clickedLng });
+        setClickedPosition({ lat: clickedLat, lng: clickedLng })
     
-        const geocoder = new window.kakao.maps.services.Geocoder();
+        const geocoder = new window.kakao.maps.services.Geocoder()
         geocoder.coord2Address(clickedLng, clickedLat, (result, status) => {
           if (status === window.kakao.maps.services.Status.OK) {
             const address = result[0].road_address 
@@ -46,8 +46,8 @@ const useLocation = () => {
               : result[0].address.address_name;
             setClickedAddress(address);
           }
-        });
-      };    
+        })
+      }
 
     return [ location, address, clickedPosition, clickedAddress, handleMapClick ]
 }
