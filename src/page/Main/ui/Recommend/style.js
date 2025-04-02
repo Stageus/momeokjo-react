@@ -1,4 +1,3 @@
-
 import styled, { css } from "styled-components"
 
 const style = {
@@ -19,6 +18,8 @@ const style = {
         left:390px;
         width:390px;
         height:100%;
+        overflow-y:auto;
+        overflow-x:hidden;
         z-index:0;
         background-color:${props => props.theme.maptextwhite};
     `,
@@ -207,6 +208,7 @@ const style = {
         ${props => 
             props.$lg &&  css`
                 height:6px;
+                margin:20px -16px 0;
             `
         },
     `,
@@ -436,6 +438,103 @@ const style = {
             width:12px;
             height:12px;
         }
+    `,
+    "TabList" : styled.ul`
+        display:flex;
+        width:100%;
+    `,
+    "TabListCont" : styled.li`
+        position:relative;
+        flex:1;
+        height:48px;
+        text-align:center;
+        border-bottom:2px solid;
+        border-color:${(props) => props.$currenttab  ? props.theme.maptextblack : props.theme.maplinegrey};
+        color:${(props) => props.$currenttab  ? props.theme.maptextblack : props.theme.maptextgrey};
+        cursor: pointer;
+        transition: all .2s;
+        ${(props) => props.$currenttab  ? props.theme.fontSet.mdBold : props.theme.fontSet.md};
+        line-height:48px;
+    `,
+    "TabContent" : styled.div`
+        width:100%;
+    `,
+    "MenuItem" : styled.div`
+        padding:16px;
+        ${props => props.theme.fontSet.baseEps};
+        border-bottom:1px solid ${props => props.theme.maplinegrey};
+    `,
+    "MenuItemInfo" : styled.div`
+        position:relative;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        gap:6px;
+        padding-right:60px;
+    `,
+    "MenuItemName" : styled.div`
+    `,
+    "MenuItemPrice" : styled.div`
+    `,
+    "MenuItemThumb" : styled.div`
+        position:absolute;
+        top:0;
+        right:0;
+        border-radius:6px;
+        overflow:hidden;
+        height:48px;
+        width:48px;
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    `,
+    "MenuItemBox" : styled.div`
+        display:flex;
+        justify-content:space-between;
+    `,
+    "MenuItemLike" : styled.div`
+        display:flex;
+        align-items:center;
+        gap:6px;
+        margin-top:6px;
+        ${props => props.theme.fontSet.xs};
+        color:${props => props.theme.maptextgrey};
+    `,
+    "MenuTextBtn" : styled.div`
+        display:flex;
+        align-items:center;
+        gap:12px;
+    `,
+    "BtnText" : styled.button`
+        ${props => props.theme.fontSet.xs};
+        text-decoration:underline;
+        color:${props => props.theme.maptextblack};
+    `,
+    "BtnTextPlus" : styled.button`
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        width:100%;
+        height:48px;
+        ${props => props.theme.fontSet.baseEps};
+        color:${props => props.theme.maptextgrey};
+    `,
+    "ReviewItem" : styled.div`
+        display:flex;
+        flex-direction:column;
+        gap:6px;
+        padding:16px;
+        border-bottom:1px solid ${props => props.theme.maplinegrey};
+    `,
+    "ReviwNickname" : styled.div`
+        ${props => props.theme.fontSet.smEps};
+        color:${props => props.theme.maptextblack};
+    `,
+    "ReviewContent" : styled.div`
+        ${props => props.theme.fontSet.smEps};
+        color:${props => props.theme.maptextgrey};
     `,
 }
 
