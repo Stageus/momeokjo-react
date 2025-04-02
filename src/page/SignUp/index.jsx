@@ -25,7 +25,6 @@ const SignUp = () => {
     handleSignUp,
   } = useSignUpForm()
 
-  // 입력값 변경
   const handleInputChange = (e) => {
     const { name, value } = e.target
     values.current[name] = value
