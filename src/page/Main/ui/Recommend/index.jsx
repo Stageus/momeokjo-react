@@ -1,8 +1,8 @@
 import s from "./style"
 
-import restaurantsCategories from '../../assets/data/restaurantsCategories.json'   // 음식점 카테고리 리스트 조회 api 대체 : /restaurants/categories?include_deleted=
-import restaurantsIdx from './assets/data/restaurantsIdx.json'   // 음식점 상세 조회 api 대체 : /restaurants/:restaurant_idx
+import restaurantsCategories from './assets/data/restaurantsCategories.json'   // 음식점 카테고리 리스트 조회 api 대체 : /restaurants/categories?include_deleted=
 import useDetailPage from "./model/useDetailPage"
+import useTabIndex from "./model/useTabIndex"
 
 import maploding from "./assets/loading-hambuger.svg"
 import nodatacry from "./assets/ico-cry.svg"
@@ -12,18 +12,16 @@ import phone from "./assets/ico-phone.png"
 import imgaddress from "./assets/ico-address.png"
 import closeDetail from './assets/close-detail.svg'
 import thumb from './assets/thumb.png'
-
+import like from './assets/ico-like.svg'
+import likefill from './assets/ico-like-fill.svg'
 
 function Recommend(props) {
 
   const { value, selectedRadius, radiusData, handleSlideChange, selectedMenu, selectedRestaurant, isLoading, isSearched, formatPhoneNumber, handleCategoryChange, formatTime, handleFilterSearch, handleRecommend } = props
-  const [isDetailOpen, depth2restaurantidx, detailPageOpen, closeDetailPage] = useDetailPage(restaurantsIdx)
+  const [isDetailOpen, , detailPageOpen, closeDetailPage, selectedDetailRestaurant, jibunAddress] = useDetailPage()
+  const [currentTab, activeTabIndex, MenuReviewData] = useTabIndex()
 
-  // 어디로 옮겨야 할까 ,,
-  const selectedRandomRestaurant = restaurantsIdx.find(
-    restaurant => Number(restaurant.restaurant_idx) === Number(depth2restaurantidx)
-  )
-
+    
   return (
     <s.AsideModal>
     
@@ -108,18 +106,66 @@ function Recommend(props) {
               <s.BtnCloseDetail onClick={closeDetailPage}><img src={closeDetail} /></s.BtnCloseDetail>
               <s.DetailImg><img src={thumb} /></s.DetailImg>
 
-              {selectedRandomRestaurant && (
-                <s.DetailBox key={selectedRandomRestaurant.restaurant_idx}>
-                  <s.DetailTitle>{selectedRandomRestaurant.restaurant_name}</s.DetailTitle>
-                  <s.DetailCategory>{selectedRandomRestaurant.category_name}     <s.Like><img src={star} alt="" />(13)</s.Like></s.DetailCategory>
-                  <s.DetailAdresstype1><img src={imgaddress} alt="" />{selectedRandomRestaurant.address} {selectedRandomRestaurant.address_detail}</s.DetailAdresstype1>
-                  <s.DetailAdresstype2>지번 | {selectedRandomRestaurant.jibunAddress}</s.DetailAdresstype2>
-                  <s.DetailTime><img src={time} />{formatTime(selectedRandomRestaurant.start_time)} ~ {formatTime(selectedRandomRestaurant.end_time)}</s.DetailTime>
-                  <s.DetailPhone><img src={phone} />{formatPhoneNumber(selectedRandomRestaurant.phone)}</s.DetailPhone>
+              {selectedDetailRestaurant && (
+                <s.DetailBox key={selectedDetailRestaurant.restaurant_idx}>
+                  <s.DetailTitle>{selectedDetailRestaurant.restaurant_name}</s.DetailTitle>
+                  <s.DetailCategory>{selectedDetailRestaurant.category_name}     <s.Like><img src={star} alt="" />(13)</s.Like></s.DetailCategory>
+                  <s.DetailAdresstype1><img src={imgaddress} alt="" />{selectedDetailRestaurant.address} {selectedDetailRestaurant.address_detail}</s.DetailAdresstype1>
+                  <s.DetailAdresstype2>지번 | {jibunAddress}</s.DetailAdresstype2>
+                  <s.DetailTime><img src={time} />{formatTime(selectedDetailRestaurant.start_time)} ~ {formatTime(selectedDetailRestaurant.end_time)}</s.DetailTime>
+                  <s.DetailPhone><img src={phone} />{formatPhoneNumber(selectedDetailRestaurant.phone)}</s.DetailPhone>
                 </s.DetailBox>
               )}
          
             <s.SortLine $lg></s.SortLine>
+            <s.TabList>
+                {MenuReviewData.map((elem,idx) => (
+                    <s.TabListCont $currenttab={currentTab === idx} onClick={() => activeTabIndex(idx)} key={idx}>{elem.name}</s.TabListCont>
+                ))}
+            </s.TabList>
+            <s.TabContent>
+              {currentTab === 0 && (
+                <>
+                {MenuReviewData[currentTab].content.map((elem,idx) => (
+                  <s.MenuItem key={idx}>
+                    <s.MenuItemInfo>
+                      <s.MenuItemName>{elem.menu_name}</s.MenuItemName>
+                      <s.MenuItemPrice>{elem.price}원</s.MenuItemPrice>
+                      <s.MenuItemThumb><img src={thumb} /></s.MenuItemThumb>
+                    </s.MenuItemInfo>
+                    <s.MenuItemBox>
+                      <s.MenuItemLike><img src={like} />({elem.likes_count})</s.MenuItemLike>
+                      <s.MenuTextBtn>
+                        <s.BtnText>메뉴 수정</s.BtnText>
+                        <s.BtnText>메뉴 신고</s.BtnText>
+                      </s.MenuTextBtn>
+                    </s.MenuItemBox>
+
+                  </s.MenuItem>
+                ))}
+                <s.BtnTextPlus>+ 메뉴 등록</s.BtnTextPlus>
+                </>
+              )}
+              {currentTab === 1 && (
+                <>
+                {MenuReviewData[currentTab].content.map((elem,idx) => (
+                  <s.ReviewItem key={idx}>
+                    <s.ReviwNickname>@{elem.nickname}</s.ReviwNickname>
+                    <s.ReviewContent>{elem.content}</s.ReviewContent>
+                    <s.MenuItemBox>
+                      <s.MenuItemLike><img src={like} />({elem.likes_count})</s.MenuItemLike>
+                      <s.BtnText>후기 신고</s.BtnText>
+                    </s.MenuItemBox>
+                  </s.ReviewItem>
+                ))}
+                   <s.BtnTextPlus>+ 후기 등록</s.BtnTextPlus>
+                </>
+              )}  
+            </s.TabContent>
+
+
+
+
           </s.AsideModalDepth2>
           }
 

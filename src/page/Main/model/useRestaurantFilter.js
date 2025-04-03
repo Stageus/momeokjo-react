@@ -1,13 +1,16 @@
 import { useState } from 'react'
+import { convertToJibunAddress } from '../ui/Recommend/utils/convertJibun'
+import restaurantsCategoryIdxRange from '../assets/data/restaurantsCategoryIdxRange.json'   // 음식점 랜덤 추천 api 대체 : /restaurants/recommends?category_idx=&range=
+import restaurantsCategoryIdxRangePage from '../assets/data/restaurantsCategoryIdxRangePage.json'   // 음식점 리스트 조회 api 대체
+import restaurantsCategories from '../assets/data/restaurantsCategories.json'   // 음식점 카테고리 리스트 조회 api 대체 : /restaurants/categories?include_deleted=
 
 
-const useRestaurantFilter = (restaurantsCategoryIdxRangePage, restaurantsCategoryIdxRange, location, selectedRadius, radiusData, restaurantsCategories, restaurantsIdx) => {
+const useRestaurantFilter = (location, selectedRadius, radiusData, restaurantsIdx) => {
     const [selectedMenu, setSelectedMenu] = useState(null) // 카테고리 선택 : 초기값 null
     const [selectedRestaurant, setSelectedRestaurant] = useState([])  // 필터링된 음식점 리스트
     const [selectedRandomRestaurant, setSelectedRandomRestaurant] = useState(null) // 랜덤 필터링된 음식점 
     const [isLoading, setIsLoading] = useState(false) // 랜덤 필터링 전 로딩
     const [isSearched, setIsSearched] = useState(false) // 필터링 버튼 실행 유무 판단
-
 
     // 거리 계산 함수 (Haversine 공식)
     const getDistance = (lat1, lng1, lat2, lng2) => {
@@ -32,7 +35,7 @@ const useRestaurantFilter = (restaurantsCategoryIdxRangePage, restaurantsCategor
     }
 
     // 음식점 조회 버튼 클릭 시 실행
-    const handleFilterSearch = () => {  
+    const handleFilterSearch = async () => {  
         setSelectedRandomRestaurant(null)
         setIsSearched(true)
 
@@ -48,49 +51,31 @@ const useRestaurantFilter = (restaurantsCategoryIdxRangePage, restaurantsCategor
                 location.lat, location.lng,
                 restaurant.latitude, restaurant.longitude
             )
-            return distance <= radiusData[selectedRadius].value && restaurant.category_name === selectedCategoryName;
+            return distance <= radiusData[selectedRadius].value && restaurant.category_name === selectedCategoryName
         });
-
 
         const restaurantsWithJibun = filteredRestaurants.map(restaurant => ({
             ...restaurant,
-            jibunAddress: '주소 변환 중...'
+            jibunAddress: '주소 변환'
         }));
         
         setSelectedRestaurant(restaurantsWithJibun);
 
         // 각 음식점의 지번 주소 변환
-        restaurantsWithJibun.forEach((restaurant, index) => {
-            fetchJibunAddress(restaurant.address, (jibunAddress) => {
-                setSelectedRestaurant(prev => prev.map((item, i) => 
-                    i === index ? { ...item, jibunAddress: jibunAddress || '지번주소 없음' } : item
-                ))
-            });
-        });
+        for (let index = 0; index < restaurantsWithJibun.length; index++) {
+            const restaurant = restaurantsWithJibun[index];
+            const jibunAddress = await convertToJibunAddress(restaurant.address);
+            setSelectedRestaurant(prev => prev.map((item, i) => 
+                i === index ? { ...item, jibunAddress: jibunAddress || '지번주소 없음' } : item
+            ));
+        }
 
         console.log("내 현재 위치:", location)
         console.log("선택한 반경(m):",  radiusData[selectedRadius])
         console.log("선택한 카테고리:", selectedCategoryName)
-
         console.log("음식점:", filteredRestaurants)
+        console.log("지번주소:", restaurantsWithJibun)
     }
-
-
-    // 도로명 주소를 지번 주소로 변환
-    const fetchJibunAddress = (roadAddress, callback) => {
-        const geocoder = new window.kakao.maps.services.Geocoder();
-
-        geocoder.addressSearch(roadAddress, (result, status) => {
-        if (status === window.kakao.maps.services.Status.OK) {
-            const jibunAddress = result[0]?.address?.address_name // 변환된 지번 주소 가져오기
-            callback(jibunAddress)
-        } else {
-            console.error("지번 주소 변환 실패");
-            callback(null)
-        }
-        })
-    }
-
 
     // 랜덤 음식점 추천 버튼 클릭 시 실행
     const handleRecommend = () => {
@@ -123,8 +108,32 @@ const useRestaurantFilter = (restaurantsCategoryIdxRangePage, restaurantsCategor
             }
 
             const randomIndex = Math.floor(Math.random() * nearbyRestaurants.length);
-            setSelectedRandomRestaurant(nearbyRestaurants[randomIndex]);
+            const selectedRestaurant = nearbyRestaurants[randomIndex];
+
+            // 선택된 음식점의 지번 주소 변환
+            // const jibunAddress = convertToJibunAddress(selectedRestaurant.address);
+            setSelectedRandomRestaurant({
+                ...selectedRestaurant,
+                jibunAddress: '주소 변환'
+            });
+            // Promise 처리를 통한 지번 주소 변환
+            convertToJibunAddress(selectedRestaurant.address)
+                .then(jibunAddress => {
+                    setSelectedRandomRestaurant(prev => ({
+                        ...prev,
+                        jibunAddress: jibunAddress || '지번주소 없음'
+                    }));
+                })
+                .catch(error => {
+                    console.error('지번 주소 변환 중 오류:', error);
+                    setSelectedRandomRestaurant(prev => ({
+                        ...prev,
+                        jibunAddress: '지번주소 없음'
+                    }))
+                });
+
             setIsLoading(false);
+        
         }, 3000);
     }
 
@@ -137,7 +146,6 @@ const useRestaurantFilter = (restaurantsCategoryIdxRangePage, restaurantsCategor
     const formatTime = (time) => {
         return time.replace(/(\d{2})(\d{2})/,'$1:$2')
     }
-            
 
     return [
         selectedMenu,
@@ -149,8 +157,7 @@ const useRestaurantFilter = (restaurantsCategoryIdxRangePage, restaurantsCategor
         formatTime,
         handleCategoryChange,
         handleFilterSearch,
-        handleRecommend,
-        fetchJibunAddress
+        handleRecommend
     ]
 }
 

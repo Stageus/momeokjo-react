@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
-import s from "./style"
 import { Map as KakaoMap , MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk'
+import s from "./style"
 
 import Button from "../../shared/Button"
 import Recommend from "./ui/Recommend"
@@ -9,10 +9,6 @@ import useAsideModal from "./model/useAsideModal"
 import useLocation from "./model/useLocation"
 import useRestaurantFilter from "./model/useRestaurantFilter"
 import useRadius from "./model/useRadius"
-
-import restaurantsCategoryIdxRange from './assets/data/restaurantsCategoryIdxRange.json'   // 음식점 랜덤 추천 api 대체 : /restaurants/recommends?category_idx=&range=
-import restaurantsCategoryIdxRangePage from './assets/data/restaurantsCategoryIdxRangePage.json'   // 음식점 리스트 조회 api 대체
-import restaurantsCategories from './assets/data/restaurantsCategories.json'   // 음식점 카테고리 리스트 조회 api 대체 : /restaurants/categories?include_deleted=
 
 import HamburgerImg from "./assets/ico-menu.svg"
 import FoldImg from "./assets/ico-fold.svg"
@@ -44,7 +40,7 @@ function Main() {
     handleCategoryChange,
     handleFilterSearch,
     handleRecommend
-  ] = useRestaurantFilter(restaurantsCategoryIdxRangePage, restaurantsCategoryIdxRange, location, selectedRadius, radiusData, restaurantsCategories)
+  ] = useRestaurantFilter(location, selectedRadius, radiusData)
 
 
   return (
@@ -97,7 +93,7 @@ function Main() {
             </>
         )}
 
-      {/* 클릭한 위치에 인포윈도우 표시 */}
+      {/* 지도 우클릭 시 음식점 등록 하러가기 버튼 생성 */}
       {clickedPosition && (
         <>
           <MapMarker 
@@ -107,9 +103,7 @@ function Main() {
           <CustomOverlayMap position={clickedPosition}>
               <s.BtnRegister onClick={() => navigate("/Register", { 
                 state: { 
-                  address: clickedAddress,
-                  latitude: clickedPosition.lat,
-                  longitude: clickedPosition.lng
+                  address: clickedAddress
                 }
               })}> <img src={icopencel} alt="" />음식점 등록</s.BtnRegister>
           </CustomOverlayMap>

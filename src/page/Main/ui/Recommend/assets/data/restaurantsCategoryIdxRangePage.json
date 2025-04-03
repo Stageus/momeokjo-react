@@ -5,6 +5,8 @@
         "category_name": "치킨",
         "likes_count": 20,
         "restaurant_name": "보드람치킨 송현점", 
+        "longitude": 126.636135451755 ,
+        "latitude": 37.4796283376751,
         "address": "인천 동구 송현로 41 ",
         "address_detail": "1층",
         "phone": "01012345678",
