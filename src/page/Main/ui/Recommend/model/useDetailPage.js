@@ -38,7 +38,7 @@ const useDetailPage = () => {
 
     // 상세페이지 열기
     const detailPageOpen = (depth2restaurantidx) => {
-        navigate(`/${depth2restaurantidx}`)
+        navigate(`restaurant/${depth2restaurantidx}`)
         setIsDetailOpen(1)
     }
 

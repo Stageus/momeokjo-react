@@ -162,7 +162,7 @@ const style = {
         border-radius:4px;
         background-color:${props => props.theme.mapprimary};
         color:${props => props.theme.maptextwhite};
-    `
+    `,
 }
 
 export default style

@@ -13,5 +13,20 @@
         "start_time": "1000",
         "end_time": "2200",
         "is_mine": true
-      }
+      },
+      {
+        "restaurant_idx": 2,
+        "category_name": "피자",
+        "likes_count": 20,
+        "restaurant_name": "피자스쿨 인천송현점", 
+        "longitude": 126.63580509878076 ,
+        "latitude": 37.479394680509785,
+        "address": "인천 동구 송현로 33 1",
+        "address_detail": "1층",
+        "phone": "01012345678",
+        "start_time": "1000",
+        "end_time": "2200",
+        "is_mine": true
+      
+    }
     ]
