@@ -7,7 +7,7 @@ import { useNavigate, useLocation } from "react-router-dom"
 import restaurantsCategories from './assets/data/restaurantsCategories.json'   // 음식점 카테고리 리스트 조회 api 대체 : /restaurants/categories?include_deleted=
 import useCategoryChange from "./model/useCategoryChange.js"
 
-function Register() {
+function RestaurantCreate() {
   const navigate = useNavigate()
   const location = useLocation()
   const initialAddress = location.state?.address || ''
@@ -130,5 +130,5 @@ function Register() {
   )
 }
 
-export default Register
+export default RestaurantCreate
  

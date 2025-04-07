@@ -80,7 +80,7 @@
      │     ├── KakaoLogin
      │     ├── Login
      │     ├── Main
-     │     ├── Register
+     │     ├── RestaurantCreate
      │     ├── SignUp
      │     └── index.jsx
      ├── shared

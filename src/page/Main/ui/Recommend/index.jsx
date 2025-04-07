@@ -3,6 +3,10 @@ import s from "./style"
 import restaurantsCategories from './assets/data/restaurantsCategories.json'   // 음식점 카테고리 리스트 조회 api 대체 : /restaurants/categories?include_deleted=
 import useDetailPage from "./model/useDetailPage"
 import useTabIndex from "./model/useTabIndex"
+import useModalRestaurant from "./model/useModalRestaurant"
+import useEditRestaurant from "./model/useEditRestaurant"
+
+import ModalRestaurant from "../ModalRestaurant"
 
 import maploding from "./assets/loading-hambuger.svg"
 import nodatacry from "./assets/ico-cry.svg"
@@ -20,8 +24,9 @@ function Recommend(props) {
   const { value, selectedRadius, radiusData, handleSlideChange, selectedMenu, selectedRestaurant, isLoading, isSearched, formatPhoneNumber, handleCategoryChange, formatTime, handleFilterSearch, handleRecommend } = props
   const [isDetailOpen, , detailPageOpen, closeDetailPage, selectedDetailRestaurant, jibunAddress] = useDetailPage()
   const [currentTab, activeTabIndex, MenuReviewData] = useTabIndex()
+  const [currentModal, activeModalIndex, modalTitle] = useModalRestaurant()
+  const [editRestaurant, editRestaurantOpen, inputValue, handleInputChange] = useEditRestaurant()
 
-    
   return (
     <s.AsideModal>
     
@@ -88,7 +93,11 @@ function Recommend(props) {
                     <s.Adresstype1><img src={imgaddress} alt="" />{elem.address} {elem.address_detail}</s.Adresstype1>
                     <s.Adresstype2>지번 | {elem.jibunAddress}</s.Adresstype2>
                     <s.Time><img src={time} />{formatTime(elem.start_time)} ~ {formatTime(elem.end_time)}</s.Time>
-                    <s.Phone><img src={phone} />{formatPhoneNumber(elem.phone)}</s.Phone>
+                    <s.FlexBox>
+                      <s.Phone><img src={phone} />{formatPhoneNumber(elem.phone)}</s.Phone>
+                      <s.BtnRoundLine onClick={() => activeModalIndex(1)}>폐업 신고</s.BtnRoundLine>
+                    </s.FlexBox>
+
                     <s.BtnFullCustom $grey $lg onClick={() => detailPageOpen(elem.restaurant_idx)}>상세보기</s.BtnFullCustom>
                   </s.RecommendBox>
                 ))
@@ -104,17 +113,77 @@ function Recommend(props) {
       {isDetailOpen && 
           <s.AsideModalDepth2>
               <s.BtnCloseDetail onClick={closeDetailPage}><img src={closeDetail} /></s.BtnCloseDetail>
-              <s.DetailImg><img src={thumb} /></s.DetailImg>
 
               {selectedDetailRestaurant && (
-                <s.DetailBox key={selectedDetailRestaurant.restaurant_idx}>
-                  <s.DetailTitle>{selectedDetailRestaurant.restaurant_name}</s.DetailTitle>
-                  <s.DetailCategory>{selectedDetailRestaurant.category_name}     <s.Like><img src={star} alt="" />(13)</s.Like></s.DetailCategory>
-                  <s.DetailAdresstype1><img src={imgaddress} alt="" />{selectedDetailRestaurant.address} {selectedDetailRestaurant.address_detail}</s.DetailAdresstype1>
-                  <s.DetailAdresstype2>지번 | {jibunAddress}</s.DetailAdresstype2>
-                  <s.DetailTime><img src={time} />{formatTime(selectedDetailRestaurant.start_time)} ~ {formatTime(selectedDetailRestaurant.end_time)}</s.DetailTime>
-                  <s.DetailPhone><img src={phone} />{formatPhoneNumber(selectedDetailRestaurant.phone)}</s.DetailPhone>
-                </s.DetailBox>
+                <>
+              
+                  <s.DetailBox key={selectedDetailRestaurant.restaurant_idx}>
+
+                  {!editRestaurant && (
+                    <>
+                    <s.DetailImg><img src={thumb} /></s.DetailImg>
+
+                    <s.DetailInfoBox>
+                      <s.DetailTitle>{selectedDetailRestaurant.restaurant_name}</s.DetailTitle>
+                      <s.DetailCategory>{selectedDetailRestaurant.category_name}     <s.Like><img src={star} alt="" />(13)</s.Like></s.DetailCategory>
+                      <s.DetailAdresstype1><img src={imgaddress} alt="" />{selectedDetailRestaurant.address} {selectedDetailRestaurant.address_detail}</s.DetailAdresstype1>
+                      <s.DetailAdresstype2>지번 | {jibunAddress}</s.DetailAdresstype2>
+                      <s.DetailTime><img src={time} />{formatTime(selectedDetailRestaurant.start_time)} ~ {formatTime(selectedDetailRestaurant.end_time)}</s.DetailTime>
+                      <s.FlexBox> 
+                        <s.DetailPhone><img src={phone} />{formatPhoneNumber(selectedDetailRestaurant.phone)}</s.DetailPhone>
+                        <s.BtnTextWrap>
+                          <s.BtnText onClick={editRestaurantOpen}>음식점 정보 수정</s.BtnText>
+                          <s.BtnText onClick={() => activeModalIndex(1)}>폐업 신고</s.BtnText>
+                        </s.BtnTextWrap>
+                      </s.FlexBox>
+                    </s.DetailInfoBox>
+                    </>
+                  )}
+                    {editRestaurant && (
+                      <s.EditRestaurant>
+                        <s.BtnCloseDetail onClick={editRestaurantOpen}><img src={closeDetail} /></s.BtnCloseDetail>
+                        <s.EditRestaurantForm>
+                        <s.EditRestaurantFormInput>
+                            <s.EditRestaurantFormInputTitle>음식점 카테고리</s.EditRestaurantFormInputTitle>
+                            <s.EditRestaurantFormInputSelect>
+                            {restaurantsCategories.map((elem, idx) => (
+                              <option key={idx}>{elem.category_name}</option>
+                            ))}
+                            </s.EditRestaurantFormInputSelect>
+                          </s.EditRestaurantFormInput>
+                          <s.EditRestaurantFormInput>
+                            <s.EditRestaurantFormInputTitle>음식점 이름</s.EditRestaurantFormInputTitle>
+                            <s.EditRestaurantFormInputInput type="text"/>
+                          </s.EditRestaurantFormInput>
+                          <s.EditRestaurantFormInput>
+                            <s.EditRestaurantFormInputTitle>음식점 도로명 주소</s.EditRestaurantFormInputTitle>
+                            <s.EditRestaurantFormInputInput type="text"/>
+                          </s.EditRestaurantFormInput>
+                          <s.EditRestaurantFormInput>
+                            <s.EditRestaurantFormInputTitle>음식점 상세 주소</s.EditRestaurantFormInputTitle>
+                            <s.EditRestaurantFormInputInput type="text"/>
+                          </s.EditRestaurantFormInput>
+                          <s.EditRestaurantFormInput>
+                            <s.EditRestaurantFormInputTitle>음식점 전화번호</s.EditRestaurantFormInputTitle>
+                            <s.EditRestaurantFormInputInput type="text"/>
+                          </s.EditRestaurantFormInput>
+                          <s.FlexBox>
+                          <s.EditRestaurantFormInput>
+                            <s.EditRestaurantFormInputTitle>음식점 영업 시작 시간</s.EditRestaurantFormInputTitle>
+                            <s.EditRestaurantFormInputInput type="text"/>
+                          </s.EditRestaurantFormInput>  
+                          <s.EditRestaurantFormInput>
+                            <s.EditRestaurantFormInputTitle>음식점 영업 종료 시간</s.EditRestaurantFormInputTitle>
+                            <s.EditRestaurantFormInputInput type="text"/>
+                          </s.EditRestaurantFormInput>
+                          </s.FlexBox>
+                        </s.EditRestaurantForm>
+                        <s.BtnFullCustom $linenavy $lg>수정 완료</s.BtnFullCustom>
+                      </s.EditRestaurant>
+                    )}                  
+                  </s.DetailBox>
+
+                </>
               )}
          
             <s.SortLine $lg></s.SortLine>
@@ -136,14 +205,14 @@ function Recommend(props) {
                     <s.MenuItemBox>
                       <s.MenuItemLike><img src={like} />({elem.likes_count})</s.MenuItemLike>
                       <s.MenuTextBtn>
-                        <s.BtnText>메뉴 수정</s.BtnText>
-                        <s.BtnText>메뉴 신고</s.BtnText>
+                        <s.BtnText onClick={() => activeModalIndex(2)}>메뉴 수정</s.BtnText>
+                        <s.BtnText onClick={() => activeModalIndex(3)}>메뉴 신고</s.BtnText>
                       </s.MenuTextBtn>
                     </s.MenuItemBox>
 
                   </s.MenuItem>
                 ))}
-                <s.BtnTextPlus>+ 메뉴 등록</s.BtnTextPlus>
+                <s.BtnTextPlus onClick={() => activeModalIndex(4)}>+ 메뉴 등록</s.BtnTextPlus>
                 </>
               )}
               {currentTab === 1 && (
@@ -154,11 +223,11 @@ function Recommend(props) {
                     <s.ReviewContent>{elem.content}</s.ReviewContent>
                     <s.MenuItemBox>
                       <s.MenuItemLike><img src={like} />({elem.likes_count})</s.MenuItemLike>
-                      <s.BtnText>후기 신고</s.BtnText>
+                      <s.BtnText onClick={() => activeModalIndex(5)}>후기 신고</s.BtnText>
                     </s.MenuItemBox>
                   </s.ReviewItem>
                 ))}
-                   <s.BtnTextPlus>+ 후기 등록</s.BtnTextPlus>
+                   <s.BtnTextPlus onClick={() => activeModalIndex(6)}>+ 후기 등록</s.BtnTextPlus>
                 </>
               )}  
             </s.TabContent>
@@ -167,7 +236,20 @@ function Recommend(props) {
 
 
           </s.AsideModalDepth2>
-          }
+      }
+
+    {modalTitle.map(({ id, title }) => (
+      currentModal === id && (
+        <ModalRestaurant 
+          key={id}
+          activeModalIndex={activeModalIndex} 
+          currentModal={currentModal} 
+          title={title}
+        />
+      )
+    ))}
+
+
 
     </s.AsideModal>
   );

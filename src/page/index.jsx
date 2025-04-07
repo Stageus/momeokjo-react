@@ -4,7 +4,7 @@ import SignUp from "./SignUp"
 import FindId from "./FindId";
 import Findpw from "./FindPw"
 import ChangePw from "./ChangePw"
-import Register from './Register'
+import RestaurantCreate from './RestaurantCreate'
 import Main from './Main'
 
 const Page = () => {
@@ -15,8 +15,8 @@ const Page = () => {
             <Route path="/change-pw" element={<ChangePw />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/:depth2restaurantidx" element={<Main />} />
+            <Route path="/restaurant-create" element={<RestaurantCreate />} />
+            <Route path="/restaurant/:depth2restaurantidx" element={<Main />} />
             <Route path="/" element={<Main />} />
         </Routes>
     )

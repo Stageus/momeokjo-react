@@ -98,6 +98,14 @@ const style = {
             `
         }
         ${props => 
+            props.$linenavy &&  css`
+            background-color:${props => props.theme.maptextwhite};
+            color:${props => props.theme.mapnavy};
+            border:1px solid ${props => props.theme.mapnavy};
+                ${props => props.theme.fontSet.baseBold};
+            `
+        }
+        ${props => 
             props.$lg &&  css`
                 height:40px;
                 line-height:38px;
@@ -285,7 +293,6 @@ const style = {
         display:flex;
         align-items:center;
         gap:8px;
-        margin-bottom:16px;
         font-size:11px;
         color:${props => props.theme.maptextblack};
         & img{
@@ -368,18 +375,22 @@ const style = {
         height:18px;
         position:absolute;
         top:16px;
-        right:16px
+        right:16px;
+        z-index:1;
     `,
     "DetailImg" : styled.div`
         width:100%;
         height:280px;
     `,
     "DetailBox" : styled.div`
+        position:relative;
+    `,
+    "DetailInfoBox" : styled.div`
+        position:relative;
+        padding:30px 16px 0;
         display:flex;
         flex-direction:column;
         gap:8px;
-        padding:30px 16px 0;
-
         & span{
             position:relative;
             top:-1px;
@@ -431,7 +442,6 @@ const style = {
         display:flex;
         align-items:center;
         gap:8px;
-        margin-bottom:16px;
         font-size:14px;
         color:${props => props.theme.maptextblack};
         & img{
@@ -535,6 +545,93 @@ const style = {
     "ReviewContent" : styled.div`
         ${props => props.theme.fontSet.smEps};
         color:${props => props.theme.maptextgrey};
+    `,
+    "BtnRoundLine" : styled.button`
+        height:18px;
+        padding:0 10px;
+        border-radius:10px;
+        border:1px solid ${props => props.theme.maplinegrey};
+        color:${props => props.theme.maptextblack};
+        ${props => props.theme.fontSet.smEps};
+    `,
+    "FlexBox" : styled.div`
+        display:flex;
+        align-items:center;
+        gap:8px;
+        margin-bottom:16px;
+    `,
+    "BtnTextWrap" : styled.div`
+        display:flex;
+        margin-left:auto;
+        align-items:center;
+        gap:8px;
+    `,
+    "ModalRestaurant" : styled.div`
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        z-index:10;
+        background-color:rgba(0,0,0,0.6);
+    `,
+    "ModalRestaurantContent" : styled.div`
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        width:390px;
+        height:300px;
+        background-color:${props => props.theme.maptextwhite};
+    `,      
+    "ModalRestaurantTitle" : styled.h2`
+        ${props => props.theme.fontSet.xxxlgEps};
+        text-align:center;
+        line-height:1;
+    `,
+    "CloseModal" : styled.button`
+        ${props => props.theme.fontSet.smEps};
+        color:${props => props.theme.maptextgrey};
+    `,
+    "EditRestaurant" : styled.div`
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+    `,
+    "EditRestaurant" : styled.div`
+        padding:16px;
+    `,
+    "EditRestaurantForm" : styled.form`
+
+    `,
+    "EditRestaurantFormInput" : styled.div`
+        margin-top:6px;
+    `,
+    "EditRestaurantFormInputTitle" : styled.p`
+        ${props => props.theme.fontSet.baselightBold};
+        color:${props => props.theme.maptextgrey};
+        margin-bottom:6px;
+    `,
+    "EditRestaurantFormInputInput" : styled.input`
+        ${props => props.theme.fontSet.baseEps};
+        width:100%;
+        height:40px;
+        border:1px solid ${props => props.theme.maplinegrey};
+        border-radius:8px;
+        padding:8px;
+    `,
+    "EditRestaurantFormInputSelect" : styled.select`
+        position:relative;
+        padding-right:20px;
+        ${props => props.theme.fontSet.baseEps};
+        width:100%;
+        height:40px;
+        border:1px solid ${props => props.theme.maplinegrey};
+        border-radius:8px;
+        padding:8px;
+        appearance:none; 
     `,
 }
 

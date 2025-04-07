@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
-const useLocation = () => {
-    const [location, setLocation] = useState({ lat: null, lng: null })
+const useKakaomap = () => {
+    const [myLocation, setMylocation] = useState({ lat: null, lng: null })
     const [address, setAddress] = useState()
     const [clickedPosition, setClickedPosition] = useState(null);
     const [clickedAddress, setClickedAddress] = useState(null);
@@ -11,7 +11,7 @@ const useLocation = () => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const { latitude, longitude } = position.coords
-                setLocation({ lat: latitude, lng: longitude })
+                setMylocation({ lat: latitude, lng: longitude })
                 fetchAddress(latitude, longitude)
             }
         )
@@ -37,6 +37,7 @@ const useLocation = () => {
         const clickedLng = latlng.getLng()
     
         setClickedPosition({ lat: clickedLat, lng: clickedLng })
+        console.log(clickedPosition)
     
         const geocoder = new window.kakao.maps.services.Geocoder()
         geocoder.coord2Address(clickedLng, clickedLat, (result, status) => {
@@ -49,7 +50,7 @@ const useLocation = () => {
         })
       }
 
-    return [ location, address, clickedPosition, clickedAddress, handleMapClick ]
+    return [ myLocation, address, clickedPosition, clickedAddress, handleMapClick ]
 }
 
-export default useLocation
+export default useKakaomap
