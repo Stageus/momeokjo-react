@@ -1,34 +1,48 @@
-import React, {useEffect} from "react"
+import React, {useRef, useState} from "react"
 import { useNavigate } from "react-router-dom"
-import Button from "../../shared/Button"
+import { messages, regex } from "../../shared/Content/regex"
+
 import useFindPwForm from "./model/useFindPwForm"
+import useValidatorInput from "../../shared/model/useValidatorInput"
+
 import Header from "../../widget/Header"
+import Button from "../../shared/Button"
 import s from "./style"
 
 const FindPw = () => {
-
   const navigate = useNavigate()
-  const {
-    errors, 
-    values,
-    handleFindPw, 
-    findPwInputFields, 
-    isFindPwSuccess,
-  } = useFindPwForm()
+  const idRef = useRef()
+  const emailRef = useRef()
 
-  // 입력값 변경
-  const handleInputChange = (e) => {
-    const { name, value } = e.target
-    values.current[name] = value
-  }
+  const [errors, setErrors] = useState({})
 
+  const validateId = useValidatorInput(
+    idRef,
+    (value) => regex.id.test(value),
+    messages.id
+  )
 
-  useEffect(() => {
-    if (isFindPwSuccess) {
-      navigate('/change-pw')
-    }
-  }, [isFindPwSuccess, navigate])
+  const validateEmail = useValidatorInput(
+    emailRef,
+    (value) => regex.email.test(value),
+    messages.email
+  )
+  const handleFindPw = useFindPwForm(validateId, validateEmail)
 
+  const inputList = [
+    {
+      "label" : "아이디",
+      "type" : "text",
+      "error_message" : errors.id,
+      "ref" : idRef
+    },
+    {
+      "label" : "이메일",
+      "type" : "email",
+      "error_message" : errors.email,
+      "ref" : emailRef
+    },
+  ]
 
   return(
     <s.Container>
@@ -37,27 +51,24 @@ const FindPw = () => {
         backNavigation={() => navigate('/login')}
       />
       <s.Form>
-        {findPwInputFields.map((field, index) => (
-          <s.InputBox key={index}>
+        {inputList.map((elem, idx) => 
+          <s.InputBox key={idx}>
             <s.Label>
-              {field.label} <s.Span>*</s.Span>
+              {elem.label} <s.Span>*</s.Span>
             </s.Label>
               <s.Input
-                type={field.type}
-                name={field.name}
-                $error={!!errors[field.name]}
-                onChange={handleInputChange}
-                defaultValue={values.current[field.name] || ""}
-                placeholder={field.placeholder || ""}
+                type={elem.type}
+                $error={elem.error_message}
+                ref={elem.ref}
               />
-            {errors[field.name] && (
-              <s.Message $error={!!errors[field.name]}>
-                {errors[field.name]}
+            {elem.error_message && (
+              <s.Message>
+                {elem.error_message}
               </s.Message>
             )}
           </s.InputBox>
-        ))}
-        <Button type="button" color="primary" size="largeUser" children={"비밀번호 찾기"} onClick={handleFindPw} />
+      )}
+        <Button type="button" color="primary" size="largeUser" children={"비밀번호 찾기"} onClick={() => handleFindPw(setErrors)} />
       </s.Form>
     </s.Container>
   )
