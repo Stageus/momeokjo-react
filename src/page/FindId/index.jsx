@@ -1,26 +1,26 @@
-import React from "react"
+import React, {useRef, useState} from "react"
 import { useNavigate } from "react-router-dom"
-import s from "./style"
-import Button from "../../shared/Button"
+import { messages, regex } from "../../shared/Content/regex"
+
 import useFindIdForm from "./model/useFinIdForm"
+import useValidatorInput from "../../shared/model/useValidatorInput"
+
 import Header from "../../widget/Header"
+import Button from "../../shared/Button"
+import s from "./style"
 
 const FindId = () => {
-
   const navigate = useNavigate()
-  const {
-    errors, 
-    values,
-    handleFindId, 
-    findIdInputFields, 
-    isFindIdSuccess,
-    foundId
-  } = useFindIdForm()
+  const emailRef = useRef()
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target
-    values.current[name] = value
-  }
+  const [errors, setErrors] = useState({})
+
+  const validateEmail = useValidatorInput(
+    emailRef,
+    (value) => regex.email.test(value),
+    messages.email
+  )
+  const {isFindIdSuccess, foundId, handleFindId} = useFindIdForm(validateEmail)
 
   return (
     <>
@@ -32,32 +32,35 @@ const FindId = () => {
       </s.Modal>
     }
     <s.Container>
-    <Header 
+      <Header 
         headerTitle="아이디 찾기"
         backNavigation={() => navigate('/login')}
       />
       <s.Form>
-        {findIdInputFields.map((field, index) => (
-          <s.InputBox key={index}>
+          <s.InputBox>
             <s.Label>
-              {field.label} <s.Span>*</s.Span>
+              이메일 <s.Span>*</s.Span>
             </s.Label>
               <s.Input
-                type={field.type}
-                name={field.name}
-                $error={!!errors[field.name]}
-                onChange={handleInputChange}
-                defaultValue={values.current[field.name] || ""}
-                placeholder={field.placeholder}
+                type="email"
+                name="email"
+                $error={errors.email}
+                ref={emailRef}
+                placeholder="이메일을 입력해주세요"
               />
-            {errors[field.name] && (
-              <s.Message $error={!!errors[field.name]}>
-                {errors[field.name]}
+            {errors.email && (
+              <s.Message>
+                {errors.email}
               </s.Message>
             )}
           </s.InputBox>
-        ))}
-        <Button type="button" color="primary" size="largeUser" children={"아이디 찾기"} onClick={handleFindId} />
+        <Button 
+          type="button" 
+          color="primary" 
+          size="largeUser" 
+          children={"아이디 찾기"} 
+          onClick={() => handleFindId(setErrors)} 
+        />
       </s.Form>
     </s.Container>
     {isFindIdSuccess && <s.Overlay></s.Overlay>}

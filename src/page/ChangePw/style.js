@@ -67,24 +67,9 @@ const style = {
     `,
 
     "Message" : styled.p`
-
-        margin-top: 6px;
-        ${props => props.theme.fontSet.sm};
-        color: ${props => props.theme.maptextgrey};
-
-
-      ${props =>
-        props.$error &&
-        css`
-          color: ${props => props.theme.mapaccent};
-        `}
-
-      ${props => 
-        props.$succes &&
-        css`
-          color: ${props => props.theme.mapprimary}
-        `
-      }
+      margin-top: 6px;
+      ${props => props.theme.fontSet.sm};
+      color: ${props => props.theme.mapaccent};
     `,
 }
 
