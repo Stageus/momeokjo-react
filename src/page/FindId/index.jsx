@@ -43,7 +43,6 @@ const FindId = () => {
             </s.Label>
               <s.Input
                 type="email"
-                name="email"
                 $error={errors.email}
                 ref={emailRef}
                 placeholder="이메일을 입력해주세요"
