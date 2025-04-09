@@ -85,7 +85,7 @@ const useSignUpForm = (
           values.current.email &&
           isEmailSuccessful) {
         alert("회원가입 및 로그인 성공!");
-        navigate("/home", { replace: true });
+        navigate("/", { replace: true });
       }
 
       if (pageType === 'easy' &&
@@ -93,7 +93,7 @@ const useSignUpForm = (
           values.current.email &&
           isEmailSuccessful) {
         alert("간편 회원가입 및 로그인 성공!");
-        navigate("/home", { replace: true });
+        navigate("/", { replace: true });
       }
 
     }
