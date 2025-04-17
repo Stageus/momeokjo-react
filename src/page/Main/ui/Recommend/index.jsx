@@ -1,11 +1,10 @@
 import s from "./style"
-
+import { useRef, useState } from "react"
 import restaurantsCategories from './assets/data/restaurantsCategories.json'   // 음식점 카테고리 리스트 조회 api 대체 : /restaurants/categories?include_deleted=
 import useDetailPage from "./model/useDetailPage"
 import useTabIndex from "./model/useTabIndex"
 import useModalRestaurant from "./model/useModalRestaurant"
 import useEditRestaurant from "./model/useEditRestaurant"
-
 import ModalRestaurant from "../ModalRestaurant"
 
 import maploding from "./assets/loading-hambuger.svg"
@@ -18,7 +17,7 @@ import closeDetail from './assets/close-detail.svg'
 import thumb from './assets/thumb.png'
 import like from './assets/ico-like.svg'
 import likefill from './assets/ico-like-fill.svg'
-
+import arrow from './assets/arrow.svg'
 function Recommend(props) {
 
   const { value, selectedRadius, radiusData, handleSlideChange, selectedMenu, selectedRestaurant, isLoading, isSearched, formatPhoneNumber, handleCategoryChange, formatTime, handleFilterSearch, handleRecommend } = props
@@ -26,6 +25,21 @@ function Recommend(props) {
   const [currentTab, activeTabIndex, MenuReviewData] = useTabIndex()
   const [currentModal, activeModalIndex, modalTitle] = useModalRestaurant()
   const [editRestaurant, editRestaurantOpen, inputValue, handleInputChange] = useEditRestaurant()
+
+
+
+  const categoryRef = useRef()
+  const nameRef = useRef()
+  const addressRef = useRef()
+  const detailAddressRef = useRef()
+  const phoneRef = useRef()
+  const startTimeRef = useRef()
+  const endTimeRef = useRef()
+
+
+  const handleEditRestaurant = () => {
+    alert('수정완료')
+  }
 
   return (
     <s.AsideModal>
@@ -101,6 +115,7 @@ function Recommend(props) {
                     <s.BtnFullCustom $grey $lg onClick={() => detailPageOpen(elem.restaurant_idx)}>상세보기</s.BtnFullCustom>
                   </s.RecommendBox>
                 ))
+
               ) : (
                 <s.Nodata><img src={nodatacry} />조건에 맞는 음식점이 없습니다.</s.Nodata>
               )
@@ -139,46 +154,73 @@ function Recommend(props) {
                     </s.DetailInfoBox>
                     </>
                   )}
+
+                  {/* 음식점 정보 수정 */}
                     {editRestaurant && (
                       <s.EditRestaurant>
                         <s.BtnCloseDetail onClick={editRestaurantOpen}><img src={closeDetail} /></s.BtnCloseDetail>
                         <s.EditRestaurantForm>
                         <s.EditRestaurantFormInput>
                             <s.EditRestaurantFormInputTitle>음식점 카테고리</s.EditRestaurantFormInputTitle>
-                            <s.EditRestaurantFormInputSelect>
-                            {restaurantsCategories.map((elem, idx) => (
-                              <option key={idx}>{elem.category_name}</option>
-                            ))}
+                            <img src={arrow} />
+                            <s.EditRestaurantFormInputSelect $arrow={arrow}>
+                              {restaurantsCategories.map((elem, idx) => (
+                                <option key={idx}>{elem.category_name}</option>
+                              ))}
                             </s.EditRestaurantFormInputSelect>
                           </s.EditRestaurantFormInput>
                           <s.EditRestaurantFormInput>
                             <s.EditRestaurantFormInputTitle>음식점 이름</s.EditRestaurantFormInputTitle>
-                            <s.EditRestaurantFormInputInput type="text"/>
+                            <s.EditRestaurantFormInputInput 
+                              type="text" 
+                              ref={nameRef}
+                              placeholder={selectedDetailRestaurant.restaurant_name}
+                            />
                           </s.EditRestaurantFormInput>
                           <s.EditRestaurantFormInput>
                             <s.EditRestaurantFormInputTitle>음식점 도로명 주소</s.EditRestaurantFormInputTitle>
-                            <s.EditRestaurantFormInputInput type="text"/>
+                            <s.EditRestaurantFormInputInput 
+                              type="text" 
+                              ref={addressRef}
+                              placeholder={selectedDetailRestaurant.address} 
+                            />
                           </s.EditRestaurantFormInput>
                           <s.EditRestaurantFormInput>
                             <s.EditRestaurantFormInputTitle>음식점 상세 주소</s.EditRestaurantFormInputTitle>
-                            <s.EditRestaurantFormInputInput type="text"/>
+                            <s.EditRestaurantFormInputInput 
+                              type="text" 
+                              ref={detailAddressRef}
+                              placeholder={selectedDetailRestaurant.address_detail} 
+                            />
                           </s.EditRestaurantFormInput>
                           <s.EditRestaurantFormInput>
                             <s.EditRestaurantFormInputTitle>음식점 전화번호</s.EditRestaurantFormInputTitle>
-                            <s.EditRestaurantFormInputInput type="text"/>
+                            <s.EditRestaurantFormInputInput 
+                              type="text" 
+                              ref={phoneRef}
+                              placeholder={selectedDetailRestaurant.phone} 
+                            />
                           </s.EditRestaurantFormInput>
                           <s.FlexBox>
                           <s.EditRestaurantFormInput>
                             <s.EditRestaurantFormInputTitle>음식점 영업 시작 시간</s.EditRestaurantFormInputTitle>
-                            <s.EditRestaurantFormInputInput type="text"/>
+                            <s.EditRestaurantFormInputInput 
+                              type="text" 
+                              ref={startTimeRef}
+                              placeholder={selectedDetailRestaurant.start_time} 
+                            />
                           </s.EditRestaurantFormInput>  
                           <s.EditRestaurantFormInput>
                             <s.EditRestaurantFormInputTitle>음식점 영업 종료 시간</s.EditRestaurantFormInputTitle>
-                            <s.EditRestaurantFormInputInput type="text"/>
+                            <s.EditRestaurantFormInputInput 
+                              type="text" 
+                              ref={endTimeRef}
+                              placeholder={selectedDetailRestaurant.end_time} 
+                            />
                           </s.EditRestaurantFormInput>
                           </s.FlexBox>
+                          <s.BtnFullCustom $linenavy $lg onClick={handleEditRestaurant}>수정 완료</s.BtnFullCustom>
                         </s.EditRestaurantForm>
-                        <s.BtnFullCustom $linenavy $lg>수정 완료</s.BtnFullCustom>
                       </s.EditRestaurant>
                     )}                  
                   </s.DetailBox>

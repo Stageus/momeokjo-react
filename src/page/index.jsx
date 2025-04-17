@@ -16,6 +16,7 @@ const Page = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/restaurant-create" element={<RestaurantCreate />} />
+            <Route path="/my-info" element={<Main />} />
             <Route path="/restaurant/:depth2restaurantidx" element={<Main />} />
             <Route path="/" element={<Main />} />
         </Routes>
