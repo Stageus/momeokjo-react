@@ -51,16 +51,16 @@ const style = {
         width:100%;
         height:56px;
         margin-top:8px;
-        border:1px solid ${props => props.theme.maplinegrey};
+        border:2px solid ${props => props.$isError ? '#FF3B30' : props.theme.maplinegrey};
         border-radius:8px;
         outline:0;
         padding:0 10px;
-        color:${props => props.theme.mapbgdeem1};
+        color:${props => props.theme.maptextgrey};
     `,
     "ContentNoti" : styled.div`
         font-size:12px;
         margin-top:8px;
-        color:${props => props.theme.maptextgrey};
+        color: ${props => props.$isError ? '#FF3B30' : '#8E8E93'};
         margin-bottom:20px;
     `,
     "BoxInput" : styled.div`
