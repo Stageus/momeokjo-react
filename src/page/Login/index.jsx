@@ -1,31 +1,59 @@
-import React from "react"
+import React, {useRef, useState} from "react"
 import { useNavigate } from "react-router-dom"
-import s from "./style"
-import kakaoIcon from "./assets/ico-kakao.svg"
-import useLoginForm from "./model/useLoginForm";
-import useKakaoLogin from "./model/useKakaoLogin";
-import Button from "../../shared/Button"
-import Header from "../../widget/Header";
+import { messages, regex } from "../../shared/Content/regex";
 
+import useLoginForm from "./model/useLoginForm";
+import useValidatorInput from "../../shared/model/useValidatorInput";
+import useKakaoLogin from "./model/useKakaoLogin";
+
+import Header from "../../widget/Header";
+import Button from "../../shared/Button"
+import s from "./style"
+
+import kakaoIcon from "./assets/ico-kakao.svg"
 
 
 const Login = () => {
-
   const navigate = useNavigate()
-  const {
-    errors, 
-    values,
-    handleLogin, 
-    loginInputFields,
-  } = useLoginForm()
+  const idRef = useRef()
+  const passwordRef = useRef()
+
+  const [errors, setErrors] = useState({})
+
+  const validateId = useValidatorInput(
+    idRef,
+    (value) => regex.id.test(value),
+    messages.id
+  )
+
+  const validatePassword = useValidatorInput(
+    passwordRef,
+    (value) => regex.password.test(value),
+    messages.password
+  )
+
+  const handleLogin = useLoginForm(validateId, validatePassword)
 
   const { handleKakaoLoginClick } = useKakaoLogin()
 
-  // 입력값 변경
-  const handleInputChange = (e) => {
-    const { name, value } = e.target
-    values.current[name] = value
-  }
+  const inputList = [
+    {
+      "label": "아이디",
+      "type": "text",
+      "error_message": errors.id,
+      "ref" : idRef,
+      "placeholder" : "아이디를 입력해주세요"
+    },
+    {
+      "label": "비밀번호",
+      "type": "password",
+      "error_message": errors.password,
+      "ref": passwordRef,
+      "placeholder" : "비밀번호를 입력해주세요"
+    },
+  ]
+
+  // const KAKAO_LOGIN_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${import.meta.env.VITE_KAKAO_REST_API_KEY}&redirect_uri=${import.meta.env.VITE_KAKAO_LOGIN_REDIRECT_URI}&scope=profile_nickname,account_email&prompt=login`;
 
   return (
     <s.Container>
@@ -34,27 +62,25 @@ const Login = () => {
         backNavigation={() => navigate('/')}
       />
       <s.Form>
-        {loginInputFields.map((field, index) => (
-          <s.InputBox key={index}>
+        {inputList.map((elem, idx) => 
+          <s.InputBox key={idx}>
             <s.Label>
-              {field.label} <s.Span>*</s.Span>
+              {elem.label} <s.Span>*</s.Span>
             </s.Label>
               <s.Input
-                type={field.type}
-                name={field.name}
-                $error={!!errors[field.name]}
-                onChange={handleInputChange}
-                defaultValue={values.current[field.name] || ""}
-                placeholder={field.placeholder || ""}
+                type={elem.type}
+                $error={elem.error_message}
+                ref={elem.ref}
+                placeholder={elem.placeholder}
               />
-            {errors[field.name] && (
-              <s.Message $error={!!errors[field.name]}>
-                {errors[field.name]}
+            {elem.error_message && (
+              <s.Message>
+                {elem.error_message}
               </s.Message>
             )}
-          </s.InputBox>
-        ))}
-        <Button type="button" color="primary" size="largeUser" children={"로그인"} onClick={handleLogin} />
+        </s.InputBox>
+      )}
+      <Button type="button" color="primary" size="largeUser" children={"로그인"} onClick={() => handleLogin(setErrors)} />
       
       <Button type="button" color="kakao" size="largeUser" onClick={handleKakaoLoginClick}>
         <s.KakaoImg src={kakaoIcon} alt="카카오 아이콘" />

@@ -1,16 +1,6 @@
 import styled from "styled-components";
 
 const style = {
-    "Container" : styled.div`
-        width: 564px;
-        height: 1024px;
-        margin: 0 auto;
-        padding: 0 16px;
-        border-radius: 10px;
-        background-color: ${props => props.theme.maptextwhite};
-        position: relative;
-    `,
-
     "Header" : styled.header`
         width: 100%;
         padding: 14px 0;

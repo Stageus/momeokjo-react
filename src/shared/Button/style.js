@@ -161,6 +161,12 @@ const StyledButton = styled.button`
         margin: 0 auto;
         bottom: 30px;
       `}
+
+    ${({ $modal }) => 
+     $modal &&
+     css`
+       margin-top: 16px;
+     `}
 `
 
 export default StyledButton
