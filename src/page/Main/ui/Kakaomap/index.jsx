@@ -16,7 +16,7 @@ import mylike from './assets/ico-mylike.svg'
 
 function Kakaomap(props) {
 
-    const { myLocation, address, clickedPosition, clickedAddress, handleMapClick, selectedRestaurant, selectedRandomRestaurant, formatPhoneNumber, formatTime } = props
+    const { myLocation, address, clickedPosition, clickedAddress, handleMapClick, selectedRestaurant, selectedRandomRestaurant, setSelectedRandomRestaurant, formatPhoneNumber, formatTime } = props
     const [myRestaurantLike, myRestaurantLikeOpen] = useMyRestaurantLike()
     const navigate = useNavigate()
 
@@ -97,6 +97,7 @@ function Kakaomap(props) {
                     key={selectedRandomRestaurant.restaurant_idx}
                     position={{ lat: selectedRandomRestaurant.latitude, lng: selectedRandomRestaurant.longitude }}
                     image={{ src: markerfilter, size: {width:51, height:63}}}
+                    onClick={() => setSelectedRandomRestaurant(null)}
                 />
                 <CustomOverlayMap position={{ lat: selectedRandomRestaurant.latitude, lng: selectedRandomRestaurant.longitude }}>
                     <s.RandomModal>

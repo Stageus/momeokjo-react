@@ -151,6 +151,7 @@ const useRestaurantFilter = (location, selectedRadius, radiusData, restaurantsId
         selectedMenu,
         selectedRestaurant,
         selectedRandomRestaurant,
+        setSelectedRandomRestaurant,
         isLoading,
         isSearched,
         formatPhoneNumber,
