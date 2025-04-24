@@ -95,6 +95,26 @@ const shapeStyles = {
         `
     }
   `,
+  myinfo: css`
+  position:absolute;
+  top:20px;
+  right:20px;
+  z-index:1;
+  display:flex;
+  gap:4px;
+  white-space:nowrap;
+  padding: 9px 16px;
+  height:39px;
+  box-shadow: 0px 20px 24px -4px rgba(10, 13, 18, 0.1);
+  color:${props => props.theme.mapnavy};
+  background-color:${props => props.theme.maptextwhite};
+  border-radius:14px;
+  ${props => props.theme.fontSet.baseEps};
+  img{
+    width:24px;
+    height:24px;
+  }
+`,
   hamburger: css`
     width:36px;
     height:36px;

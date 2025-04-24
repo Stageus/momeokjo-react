@@ -607,7 +607,14 @@ const style = {
 
     `,
     "EditRestaurantFormInput" : styled.div`
+        position:relative;
         margin-top:6px;
+        img{
+            position:absolute;
+            right:12px;
+            top:32px;
+            z-index:1;
+        }
     `,
     "EditRestaurantFormInputTitle" : styled.p`
         ${props => props.theme.fontSet.baselightBold};
@@ -621,6 +628,8 @@ const style = {
         border:1px solid ${props => props.theme.maplinegrey};
         border-radius:8px;
         padding:8px;
+        outline:none;
+
     `,
     "EditRestaurantFormInputSelect" : styled.select`
         position:relative;
@@ -632,6 +641,7 @@ const style = {
         border-radius:8px;
         padding:8px;
         appearance:none; 
+        outline:none;
     `,
 }
 
