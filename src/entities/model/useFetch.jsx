@@ -2,14 +2,16 @@ import { useEffect, useState } from "react"
 
 const useFetch = (url) => {
 
+  const baseUrl = "http://39.123.217.25:8000"
   const [data, setData] = useState(null)
 
   useEffect(() => {
+    if (!url) return
 
     const fetchData = async () => {
 
       try {
-        const response = await fetch(url)
+        const response = await fetch(`${baseUrl}${url}`)
         const result = await response.json()
         setData(result)
       } catch (error) {
