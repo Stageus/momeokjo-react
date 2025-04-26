@@ -1,27 +1,33 @@
 import { useState } from "react"
-import { messages } from "../../../shared/Content/regex"
+import useFetch from "../../../entities/model/usePost"
+import useValidatorInput from "../../../shared/model/useValidatorInput"
+import { regex } from "../../../shared/Content/regex"
 
-const useConfirmEmailCode = (validateEmailCode) => {
+const useConfirmEmailCode = () => {
   const [isEmailSuccessful, setIsEmailSuccessful] = useState(false)
-  const [emailCodeMessage, setEmailCodeMessage] = useState("")
+  const postData = useFetch()
   
-  // 이메일 인증 확인
-  const confirmEmailCode = (setErrors) => {
-    const validationResult = validateEmailCode()
 
-    if (!validationResult) {
-      setIsEmailSuccessful(true)
-      setEmailCodeMessage("인증에 성공하였습니다.")
-      setErrors(prev => ({ ...prev, emailCode: "" }))
-    } else {
-      setIsEmailSuccessful(false)
-      setEmailCodeMessage("")
-      setErrors(prev => ({ ...prev, emailCode: validationResult }))
-    }
+  const requestPostEmailConfirm = async (emailCodeRef) => {
+    
+    const isValidateEmailCode = useValidatorInput(emailCodeRef, regex.emailCode)
+
+    if (!isValidateEmailCode) {
+
+      const response = await postData("POST", "/auth/verify-email/confirm", {
+        code: Number(emailCodeRef?.current?.value)
+      })
+
+      if (response.status === 400) {
+        alert("인증번호 형식이 올바르지 않습니다.")
+      }
+      else if (response.status === 200) {
+        setIsEmailSuccessful(true)
+      }
+    } 
   }
 
-    return { confirmEmailCode, isEmailSuccessful, emailCodeMessage }
-
+  return { requestPostEmailConfirm, isEmailSuccessful, isValidateEmailCode }
 }
 
 

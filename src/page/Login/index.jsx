@@ -5,6 +5,7 @@ import { messages, regex } from "../../shared/Content/regex";
 import useLoginForm from "./model/useLoginForm";
 import useValidatorInput from "../../shared/model/useValidatorInput";
 import useKakaoLogin from "./model/useKakaoLogin";
+// import useFetch from "../../entities/model/useFetch";
 
 import Header from "../../widget/Header";
 import Button from "../../shared/Button"
@@ -13,12 +14,16 @@ import s from "./style"
 import kakaoIcon from "./assets/ico-kakao.svg"
 
 
+
+
 const Login = () => {
   const navigate = useNavigate()
   const idRef = useRef()
   const passwordRef = useRef()
 
   const [errors, setErrors] = useState({})
+  // const [loginData, setLoginData] = useState(null)
+  // const [loginUrl, setLoginUrl] = useState(null)
 
   const validateId = useValidatorInput(
     idRef,
@@ -53,6 +58,12 @@ const Login = () => {
     },
   ]
 
+  const handleSubmit = () => {
+    const id = idRef.current.value
+    const password = passwordRef.current.value
+    handleLogin(setErrors, id, password)
+  }
+
   // const KAKAO_LOGIN_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${import.meta.env.VITE_KAKAO_REST_API_KEY}&redirect_uri=${import.meta.env.VITE_KAKAO_LOGIN_REDIRECT_URI}&scope=profile_nickname,account_email&prompt=login`;
 
   return (
@@ -80,7 +91,7 @@ const Login = () => {
             )}
         </s.InputBox>
       )}
-      <Button type="button" color="primary" size="largeUser" children={"로그인"} onClick={() => handleLogin(setErrors)} />
+      <Button type="button" color="primary" size="largeUser" children={"로그인"} onClick={handleSubmit} />
       
       <Button type="button" color="kakao" size="largeUser" onClick={handleKakaoLoginClick}>
         <s.KakaoImg src={kakaoIcon} alt="카카오 아이콘" />
