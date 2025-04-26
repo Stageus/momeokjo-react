@@ -1,6 +1,6 @@
 import React, {useRef, useState} from "react"
 import { useNavigate } from "react-router-dom"
-import { messages, regex } from "../../shared/Content/regex"
+import { regex } from "../../shared/Content/regex"
 
 import useFindPwForm from "./model/useFindPwForm"
 import useValidatorInput from "../../shared/model/useValidatorInput"

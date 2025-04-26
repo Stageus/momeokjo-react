@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/auth': {
-        target: 'http://39.123.217.25:8000',
+        target: 'https://momeokjo.bluegyu.me',
         changeOrigin: true,
       },
     },

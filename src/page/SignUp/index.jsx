@@ -1,12 +1,9 @@
 import React, {useRef} from "react";
 import { useNavigate } from "react-router-dom";
-// import { regex } from "../../shared/Content/regex";
 
 import useSignUpForm from "./model/useSignupForm";
 import useSendEmailCode from "./model/useSendEmailCode";
 import useConfirmEmailCode from "./model/useConfirmEmailCode";
-
-// import useValidatorInput from "../../shared/model/useValidatorInput";
 
 import Button from "../../shared/Button"
 import Header from "../../widget/Header"
@@ -50,7 +47,7 @@ const SignUp = () => {
   } = useConfirmEmailCode()
 
   const { 
-    requestPostSignup, isValidateId, isValidatePassword, isValidateNickname, isComaprePassword 
+    requestPostSignup, isValidateId, isValidatePassword, isValidateNickname, isComparePassword 
   } = useSignUpForm( 
     idRef,
     passwordRef,
@@ -63,8 +60,6 @@ const SignUp = () => {
   // 어디에 이 변수가 있는건지, 이 변수를 어디로 보내줘야하는지 알 수가 없음
 
   const inputList = [
-    ...(pageType === "local"
-      ? [
           {
             label: "아이디",
             type: "text",
@@ -73,7 +68,7 @@ const SignUp = () => {
             // defaultMessage: messages.id
             validity: isValidateId,
             error_message: "아이디가 입력 형식에 맞지 않습니다.",
-            default_message: "~~~"
+            default_message: "50자 이하 / 영어, 숫자 포함"
           },
           {
             label: "비밀번호",
@@ -83,7 +78,7 @@ const SignUp = () => {
             // defaultMessage: messages.password
             validity: isValidatePassword,
             error_message: "비밀번호가 입력 형식에 맞지 않습니다.",
-            default_message: "~~~"
+            default_message: "8~32자 이하, 영대문자 1자 이상, 특수문자 1자이상, 영소문자, 숫자 조합"
           },
           {
             label: "비밀번호 확인",
@@ -91,33 +86,31 @@ const SignUp = () => {
             // error_message: errors.confirmPassword,
             ref: confirmPasswordRef,
             // defaultMessage: messages.confirmPassword
-            validity: isComaprePassword, 
+            validity: isComparePassword, 
             error_message: "두 비밀번호가 일치하지 않습니다.",
-            default_message: "~~~"
+            default_message: "비밀번호와 동일한 값 혹은 여백이 있으면 안됩니다."
+          },
+          {
+            label: "닉네임",
+            type: "text",
+            // error_message: errors.nickname,
+            ref: nicknameRef,
+            // defaultMessage: messages.
+            validity: isValidateNickname,
+            error_message: "닉네임이 입력 형식에 맞지 않습니다.",
+            default_message: "50자 이하 / 한글, 영어, 숫자 포함"
+          },
+          {
+            label: "이메일",
+            type: "email",
+            // error_message: errors.email,
+            ref: emailRef,
+            // defaultMessage: messages.email
+            validity: isValidateEmail,
+            error_message: "이메일이 입력 형식에 맞지 않습니다.",
+            default_message: "254자 이하 / '영어, 숫자, 특수문자(. , +, -, _ 만 허용) + @ + 도메인' 형태"
           },
         ]
-      : []),
-    {
-      label: "닉네임",
-      type: "text",
-      // error_message: errors.nickname,
-      ref: nicknameRef,
-      // defaultMessage: messages.
-      validity: isValidateNickname,
-      error_message: "닉네임이 입력 형식에 맞지 않습니다.",
-      default_message: "~~~"
-    },
-    {
-      label: "이메일",
-      type: "email",
-      // error_message: errors.email,
-      ref: emailRef,
-      // defaultMessage: messages.email
-      validity: isValidateEmail,
-      error_message: "이메일이 입력 형식에 맞지 않습니다.",
-      default_message: "~~~"
-    },
-  ]
   
     
 
@@ -144,12 +137,12 @@ const SignUp = () => {
                 <s.EmailContainer>
                   <s.Input
                     type={elem?.type}
-                    $error={elem?.validity}
+                    $error={!elem?.validity}
                     ref={elem?.ref}
                     disabled={isEmailSuccessful}
                   />
                   {!isEmailSuccessful && (
-                    <s.EmailVerify onClick={() => requestPostEmailCode(emailRef)} disabled={isSending}>
+                    <s.EmailVerify onClick={() => requestPostEmailCode(emailRef)} >
                       {isEmailSent ? "인증번호 재전송" : "이메일 인증번호 전송"}
                     </s.EmailVerify>
                   )}
@@ -171,7 +164,7 @@ const SignUp = () => {
                       <s.Input
                         type="text"
                         placeholder="이메일 인증번호 6자리 숫자를 입력해주세요"
-                        $error={errors.emailCode}
+                        $error={!isValidateEmailCode}
                         ref={emailCodeRef}
                         $verify
                         disabled={isEmailSuccessful}
@@ -204,7 +197,7 @@ const SignUp = () => {
               : <>
                 <s.Input
                   type={elem?.type}
-                  $error={elem?.validity}
+                  $error={!elem?.validity}
                   ref={elem?.ref}
                 />
                 

@@ -1,6 +1,6 @@
 import React, {useRef, useState} from "react"
 import { useNavigate } from "react-router-dom"
-import { messages, regex } from "../../shared/Content/regex";
+import { regex } from "../../shared/Content/regex";
 
 import useLoginForm from "./model/useLoginForm";
 import useValidatorInput from "../../shared/model/useValidatorInput";
@@ -28,13 +28,13 @@ const Login = () => {
   const validateId = useValidatorInput(
     idRef,
     (value) => regex.id.test(value),
-    messages.id
+    // messages.id
   )
 
   const validatePassword = useValidatorInput(
     passwordRef,
     (value) => regex.password.test(value),
-    messages.password
+    // messages.password
   )
 
   const handleLogin = useLoginForm(validateId, validatePassword)

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import useFetch from "../../../entities/model/usePost"
+import useFetch from "../../../entities/model/useFetch"
 import useValidatorInput from "../../../shared/model/useValidatorInput"
 import { regex } from "../../../shared/Content/regex"
 
@@ -11,13 +11,15 @@ const useSendEmailCode = () => {
   const [isSending, setIsSending] = useState(false)   // 이메일 전송 중인 것을 표현하기 위한 상태 ( 만약에 화면에 전송 중인 것을 보여주지 않으면 필요 없는 상태 )
   const [isEmailSent, setIsBackendRequest] = useState(false)   // 백엔드 통신 성공 여부 상태
   // const [emailSentResultMessage, setBackendMeesage] = useState("")   // 백엔드 통신이 실패했을 때 출력할 메세지 상태
+  const [isValidateEmail, setIsValidateEmail] = useState(true)
 
   const postData = useFetch()
 
 
   const requestPostEmailCode = async (emailRef) => {
     
-    const isValidateEmail = useValidatorInput(emailRef, regex.email)
+    const validateResult = useValidatorInput(emailRef, regex.email)
+    setIsValidateEmail(validateResult)
 
     // setErrors((prev) => {
     //   const updated = { ...prev }
@@ -26,7 +28,7 @@ const useSendEmailCode = () => {
     // })
 
     // try {
-    if (!isValidateEmail) {
+    if (validateResult) {
 
       setIsSending(true)
 
@@ -38,7 +40,7 @@ const useSendEmailCode = () => {
         alert("인증번호가 일치하지 않습니다.")
         // setBackendMeesage("인증번호가 일치하지 않습니다.")
       } 
-      else if (response.stauts === 409) {
+      else if (response.status === 409) {
         alert("이미 가입된 이메일이 존재합니다.")
         // setBackendMeesage("이미 가입된 이메일이 존재합니다.")
       }
@@ -66,6 +68,7 @@ const useSendEmailCode = () => {
     // } finally {
       // setIsSending(false)
     //}
+
   }
 
   useEffect(() => {

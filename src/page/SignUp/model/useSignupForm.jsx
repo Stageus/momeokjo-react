@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { regex } from '../../../shared/Content/regex'
 import useFetch from '../../../entities/model/useFetch';
@@ -11,6 +12,10 @@ const useSignUpForm = (
   isEmailSuccessful
 ) => {
   // const [errors, setErrors] = useState({})
+  const [isValidateId, setIsValidateId] = useState(true)
+  const [isValidatePassword, setIsValidatePassword] = useState(true)
+  const [isComparePassword, setIsComparePassword] = useState(true)
+  const [isValidateNickname, setIsValidateNickname] = useState(true)
   const navigate = useNavigate()
 
   const postData = useFetch()
@@ -34,11 +39,21 @@ const useSignUpForm = (
       return
     }
 
-    const isValidateId = useValidatorInput(idRef, regex.id)
-    const isValidatePassword = useValidatorInput(passwordRef, regex.password)
-    const isComaprePassword = 
+    console.log({
+      id: idRef.current?.value,
+      pw: passwordRef.current?.value,
+      nickname: nicknameRef.current?.value,
+    });
+
+    const validateIdResult = useValidatorInput(idRef, regex.id)
+    setIsValidateId(validateIdResult)
+    const validatePasswordResult = useValidatorInput(passwordRef, regex.password)
+    setIsValidatePassword(validatePasswordResult)
+    const comparePassword = 
       passwordRef?.current?.value === confirmPasswordRef?.current?.value ? true : false
-    const isValidateNickname = useValidatorInput(nicknameRef, regex.nickname)
+      setIsComparePassword(comparePassword)
+    const validateNicknameResult = useValidatorInput(nicknameRef, regex.nickname)
+    setIsValidateNickname(validateNicknameResult)
 
       // const newErrors = {}
       
@@ -80,11 +95,11 @@ const useSignUpForm = (
       //   emailCode: emailCodeRef.current?.value,
       // }
 
-      if (!isValidateId || !isValidatePassword || !isValidateNickname || !isComaprePassword ||  !isValidateEmail || !isValidateEmailCode) {
+      if (isValidateId && isValidatePassword && isValidateNickname && isComparePassword) {
 
         const response = await postData("POST", "/auth/signup", {
           id: idRef?.current?.value,
-          passowrd: passwordRef?.current?.value,
+          pw: passwordRef?.current?.value,
           nickname: nicknameRef?.current?.value,
         })
 
@@ -126,7 +141,7 @@ const useSignUpForm = (
 
     }
 
-    return {requestPostSignup, isValidateId, isValidatePassword, isValidateNickname, isComaprePassword}
+    return {requestPostSignup, isValidateId, isValidatePassword, isValidateNickname, isComparePassword}
 
     // return {
     //   errors,

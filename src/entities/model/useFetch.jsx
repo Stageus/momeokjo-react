@@ -8,38 +8,33 @@ const useFetch = () => {
   const [backendState, setBackendState] = useState()
 
   const requestData = async (method, url, body, formdata) => {
-
     try {
       const fullUrl = `${baseUrl}${url}`
-      const response = await fetch(fullUrl, {
-        method: method,
-        headers: {
-
-        },
+      const options = {
+        method,
+        headers: {},
         credentials: "include",  // 쿠키를 포함시켜서 요청을 보냄
         // body: JSON.stringify(body),
-      })
+      }
 
       if (body) {
-        response["headers"]["Content-Type"] = "application/json"
-        response["body"] = JSON.stringify(body)
+        options["headers"]["Content-Type"] = "application/json"
+        options["body"] = JSON.stringify(body)
       }
 
       if (formdata) {
-
+        
       }
       // 헤더에 있는 컨텐트 타입이, 내가 보내는 값의 형태가 json 이다 라는 의미
       // 보내는게 json가 아닌 경우가 있음 ( formdata )
 
-      
+      const response = await fetch(fullUrl, options)
       // ===== 에외처리
       // 통씬예써 빨썡하는 여러 쌍턔코뜨뼐 에외처리는 원럐 통씬마따 따르따로꼐야 하는 껐
 
       // 그럼 여기에 들어가는 예외처리는 뭐냐? ( 모두 다 공통으로 하는 것 )
       // EX. 500, 401, 403
       // 이런 것들 처럼 모든 통신에서 같은 후처리를 하는 상태코드들만 
-
-      let result = null
 
       if (response.status === 401) {
         alert("login nessesary")
@@ -53,15 +48,14 @@ const useFetch = () => {
         alert("server is dead")
         navigate("/500")
       }
-      else {
-        result = await response.json()
-        setBackendState({
-          status: response.status,
-          data: result
-        })
-      }
 
-      return [backendState]
+      const result = await response.json()
+      const resData =  {
+          status: response.status,
+          data: result,
+      }
+      setBackendState(resData)
+      return resData
 
       // if (response.status) {
       //   let errorMessage = "서버 오류"

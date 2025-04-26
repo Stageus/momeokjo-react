@@ -1,18 +1,20 @@
 import { useState } from "react"
-import useFetch from "../../../entities/model/usePost"
+import useFetch from "../../../entities/model/useFetch"
 import useValidatorInput from "../../../shared/model/useValidatorInput"
 import { regex } from "../../../shared/Content/regex"
 
 const useConfirmEmailCode = () => {
   const [isEmailSuccessful, setIsEmailSuccessful] = useState(false)
+  const [isValidateEmailCode, setIsValidateEmailCode] = useState(true)
   const postData = useFetch()
   
 
   const requestPostEmailConfirm = async (emailCodeRef) => {
     
-    const isValidateEmailCode = useValidatorInput(emailCodeRef, regex.emailCode)
+    const validateResult = useValidatorInput(emailCodeRef, regex.emailCode)
+    setIsValidateEmailCode(validateResult)
 
-    if (!isValidateEmailCode) {
+    if (validateResult) {
 
       const response = await postData("POST", "/auth/verify-email/confirm", {
         code: Number(emailCodeRef?.current?.value)
