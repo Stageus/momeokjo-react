@@ -1,9 +1,7 @@
-import React, {useRef, useState} from "react"
+import React, {useRef} from "react"
 import { useNavigate } from "react-router-dom"
-import { messages, regex } from "../../shared/Content/regex"
 
 import useChangePwForm from "./model/useChangePwForm"
-import useValidatorInput from "../../shared/model/useValidatorInput"
 
 import Header from "../../widget/Header"
 import Button from "../../shared/Button"
@@ -15,34 +13,22 @@ const ChangePw = () => {
   const passwordRef = useRef()
   const confirmPasswordRef = useRef()
 
-  const [errors, setErrors] = useState({})
-
-  const validatePassword = useValidatorInput(
-    passwordRef, 
-    (value) => regex.password.test(value),
-    messages.password
-  )
-  
-  const validateConfirmPassword = useValidatorInput(
-    [passwordRef, confirmPasswordRef],
-    ([password, confirmPassword]) => password === confirmPassword && password !== "",
-    messages.confirmPassword
-  )
-
-  const handleChangePw = useChangePwForm(validatePassword, validateConfirmPassword)
+  const {requestPutChangePw, isValidatePassword, isComparePassword} = useChangePwForm(passwordRef, confirmPasswordRef)
 
   const inputList = [
     {
-      "label": "비밀번호",
-      "type": "password",
-      "error_message": errors.password,
-      "ref" : passwordRef
+      label: "비밀번호",
+      type: "password",
+      ref: passwordRef,
+      validity: isValidatePassword,
+      error_message: "8~32자 이하, 영대문자 1자 이상, 특수문자 1자이상, 영소문자, 숫자 조합",
     },
     {
-      "label": "비밀번호 확인",
-      "type": "password",
-      "error_message": errors.confirmPassword,
-      "ref": confirmPasswordRef
+      label: "비밀번호 확인",
+      type: "password",
+      ref: confirmPasswordRef,
+      validity: isComparePassword,
+      error_message: "비밀번호와 동일한 값 혹은 여백이 있으면 안됩니다.",
     },
   ]
 
@@ -60,11 +46,11 @@ const ChangePw = () => {
               {elem.label} <s.Span>*</s.Span>
             </s.Label>
               <s.Input
-                type={elem.type}
-                $error={elem.error_message}
-                ref={elem.ref}
+                type={elem?.type}
+                $error={!elem?.validity}
+                ref={elem?.ref}
               />
-            {elem.error_message && (
+            {!elem.validity && (
               <s.Message>
                 {elem.error_message}
               </s.Message>
@@ -72,7 +58,7 @@ const ChangePw = () => {
           </s.InputBox>
         )}
 
-        <Button type="button" color="primary" size="largeUser" children={"비밀번호 변경"} onClick={() => handleChangePw(setErrors)} />
+        <Button type="button" color="primary" size="largeUser" children={"비밀번호 변경"} onClick={requestPutChangePw} />
 
       </s.Form>
     </s.Container>

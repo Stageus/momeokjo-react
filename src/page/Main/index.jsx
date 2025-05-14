@@ -1,4 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom"
+import {useRecoilValue} from "recoil"
+import { authState } from '../../shared/model/atom' 
+
 
 import s from "./style"
 
@@ -21,6 +24,7 @@ function Main() {
 
   const navigate = useNavigate()
   const location = useLocation() // 추천모달 & 내정보 모달 구분을 위한 location 추가 
+  const auth = useRecoilValue(authState)
 
   const [asideModalOpen, toggleAsideModal] = useAsideModal()
   const [myLocation, address, clickedPosition, clickedAddress, handleMapClick] = useKakaomap()
@@ -56,11 +60,11 @@ function Main() {
         formatTime={formatTime}
       />
       
-      {/* 로그인 유무 체크 후 버튼 노출 처리 필요 */}
-      <Button children={"로그인"} shape={"login"} onClick={() => navigate("/login")} />
-      <Button children={"홍길동"} shape={"myinfo"} icon={MyinfoIcon} onClick={() => navigate("/my-info")} style={{position:"absolute", top:"70px"}}>
-
-      </Button>
+      {auth.isLoggedIn ? (
+        <Button children={auth.user?.nickname} shape={"myinfo"} icon={MyinfoIcon} onClick={() => navigate("/my-info")} />
+      ) : (
+        <Button children={"로그인"} shape={"login"} onClick={() => navigate("/login")} />
+      )}
 
       {asideModalOpen ? (
         <s.HamburgerMenu>
