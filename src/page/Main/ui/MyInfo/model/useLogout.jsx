@@ -16,6 +16,9 @@ const useLogout = () => {
 
     console.log("[useLogout] 응답 상태코드:", response?.status)
 
+    if (response?.status === 401) {
+      console.log(response.data.message)
+    }
     if (response?.status === 200) {
       console.log("로그아웃")
       alert("로그아웃")
@@ -27,9 +30,6 @@ const useLogout = () => {
       })
 
       navigate("/login")
-    } else {
-      console.error("[useLogout] 로그아웃 실패:", response?.status);
-      alert("로그아웃 처리 중 문제가 발생했습니다.");
     }
   }
 

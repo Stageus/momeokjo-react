@@ -48,7 +48,7 @@ function Myinfo() {
                         <img src={MyinfoIcon} />
                         {auth.user?.nickname}
                         <Button children={"로그아웃"} shape={"logout"} onClick={requestLogout} />
-                    </s.MyName>
+                      </s.MyName>
                     <s.MyinfoBtn onClick={nicknameUpdateEdit}>
                         <s.MyinfoBtnText>닉네임 수정</s.MyinfoBtnText>
                     </s.MyinfoBtn>

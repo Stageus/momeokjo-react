@@ -21,8 +21,7 @@ const useAuthCheck = () => {
           null, 
           null, 
           null,
-          { skipRedirect: true },
-          { withCredentials: true }
+          { skipRedirect: true }
         )
         console.log("응답 받음:", response)
 
@@ -30,19 +29,11 @@ const useAuthCheck = () => {
           const userData = response.data?.data
           console.log("로그인 상태 확인됨:", userData)
 
-          if (userData && userData.users_idx) {
-            setAuth({
-              isLoggedIn: true,
-              user: userData,
-              checked: true,
-            })
-          } else {
-            setAuth({
-              isLoggedIn: false,
-              user: null,
-              checked: true,
-            })
-          }
+          setAuth({
+            isLoggedIn: true,
+            user: userData,
+            checked: true,
+          })
         } else {
           console.log("비로그인 상태")
           setAuth({

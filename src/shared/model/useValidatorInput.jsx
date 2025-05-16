@@ -1,4 +1,4 @@
-const validateInput = (ref, regx) => {
+const useValidatorInput = (ref, regx) => {
   
     const value = ref?.current?.value !== undefined ? ref.current.value : null
 
@@ -8,4 +8,4 @@ const validateInput = (ref, regx) => {
     return !regx.test(value) ? false : true
 }
 
-export default validateInput
+export default useValidatorInput

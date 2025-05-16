@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import KakaoRedirect from "./KakaoRedirect";
+// import KakaoRedirect from "./KakaoRedirect";
 import Login from "./Login"
 import SignUp from "./SignUp"
 import OauthSignup from "./OauthSignup";
@@ -12,7 +12,7 @@ import Main from './Main'
 const Page = () => {
     return (
         <Routes>
-            <Route path="/auth/oauth/kakao/redirect" element={<KakaoRedirect />} />
+            {/* <Route path="/auth/oauth/kakao/redirect" element={<KakaoRedirect />} /> */}
             <Route path="/find-id" element={<FindId />} />
             <Route path="/find-pw" element={<Findpw />} />
             <Route path="/change-pw" element={<ChangePw />} />

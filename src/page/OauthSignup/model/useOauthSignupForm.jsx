@@ -3,11 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { regex } from "../../../shared/Content/regex";
 import useFetch from "../../../entities/model/useFetch";
 import useValidatorInput from '../../../shared/model/useValidatorInput'
+import { useSetRecoilState } from "recoil";
+import { authState } from "../../../shared/model/atom";
 
 const useOauthSignupForm = (nicknameRef, isEmailSuccessful) => {
   
   const navigate = useNavigate()
   const postData = useFetch()
+  const setAuth = useSetRecoilState(authState)
   const [isValidateNickname, setIsValidateNickname] = useState(true)
 
   const requestPostOauthSignup = async () => {
@@ -33,8 +36,16 @@ const useOauthSignupForm = (nicknameRef, isEmailSuccessful) => {
         alert(`${target}의 값이 중복됩니다.`)
       }
       else if (response.status === 200) {
+        const userDataFormStatus = response.data?.data
         alert("회원가입에 성공하였습니다.")
-        navigate("/login")
+
+        setAuth({
+          isLoggedIn: true,
+          user: userDataFormStatus,
+          checked: true,
+        })
+
+        navigate("/")
       }
     }
   }

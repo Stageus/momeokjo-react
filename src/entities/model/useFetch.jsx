@@ -1,17 +1,20 @@
 import {useNavigate} from "react-router-dom"
-import {useState} from "react"
 
 const useFetch = () => {
-  const navigate = useNavigate()
-  const [backendState, setBackendState] = useState()
 
-  const requestData = async (method, url, body, formdata, query, options ={}) => {
+  const navigate = useNavigate()
+  const requestData = async (
+    method, 
+    url, 
+    body, 
+    formdata,
+    query, 
+    options ={}
+  ) => {
     const { skipRedirect = false } = options
     try {
 
-      const BASE_URL = import.meta.env.VITE_API_URL
-
-      let fullUrl = BASE_URL + url
+      let fullUrl = import.meta.env.VITE_API_URL + url
       
       const options = {
         method,
@@ -36,11 +39,11 @@ const useFetch = () => {
       console.log("[useFetch] 응답 상태코드:", response.status)
 
       const result = await response.json()
+
       const resData =  {
-          status: response.status,
-          data: result,
+        status: response.status,
+        data: result,
       }
-      setBackendState(resData)
 
       if (response.status === 401 && !skipRedirect) {
         alert("로그인이 필요합니다")
@@ -56,6 +59,7 @@ const useFetch = () => {
       }
       
       return resData
+
     } catch (err) {
       console.error("요청 중 오류 발생:", err.message)
     }
