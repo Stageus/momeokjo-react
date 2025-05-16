@@ -1,7 +1,11 @@
+import {useRecoilValue} from "recoil"
+import { authState } from "../../../../shared/model/atom"
+
 import s from "./style"
 import useTabIndex from "./model/useTabIndex"
 import useNicknameUpdate from "./model/useNicknameUpdate"
 import useFormat from "../../model/useFormat"
+import useLogout from "./model/useLogout"
 
 
 import MyinfoIcon from "./assets/ico-myinfo.svg"
@@ -11,12 +15,19 @@ import phone from "./assets/ico-phone.png"
 import imgaddress from "./assets/ico-address.png"
 import like from "./assets/ico-like.svg"
 
+import Button from "../../../../shared/Button"
+
 function Myinfo() {
+
+  const auth = useRecoilValue(authState)
+
+  
 
   const [formatPhoneNumber, formatTime] = useFormat()
   const [currentTab, activeTabIndex, MenuReviewData] = useTabIndex()
   const [nicknameUpdate, nicknameUpdateEdit] = useNicknameUpdate()
 
+  const requestLogout = useLogout()
 
   return (
     <s.AsideModal>
@@ -33,12 +44,20 @@ function Myinfo() {
                     </>
                 ) : (
                     <>
-                    <s.MyName><img src={MyinfoIcon} />홍길동</s.MyName>
+                      <s.MyName>
+                        <img src={MyinfoIcon} />
+                        {auth.user?.nickname}
+                        <Button children={"로그아웃"} shape={"logout"} onClick={requestLogout} />
+                      </s.MyName>
                     <s.MyinfoBtn onClick={nicknameUpdateEdit}>
                         <s.MyinfoBtnText>닉네임 수정</s.MyinfoBtnText>
                     </s.MyinfoBtn>
+                    
                     </>
                 )}
+
+                    
+
             </s.MyinfoHeader>
 
             <s.SortLine $lg></s.SortLine>

@@ -1,19 +1,20 @@
-// useKakaoLogin.js (수정 필요)
 import { useNavigate } from 'react-router-dom';
-
-const KAKAO_REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
-const KAKAO_LOGIN_REDIRECT_URI = import.meta.env.VITE_KAKAO_LOGIN_REDIRECT_URI;
+import { useSetRecoilState } from 'recoil';
+import { authState } from '../../../shared/model/atom';
+import useFetch from '../../../entities/model/useFetch';
 
 const useKakaoLogin = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const setAuth = useSetRecoilState(authState)
 
-  const handleKakaoLoginClick = () => {
-    // 카카오 로그인 API 호출
-    const kakaoAuthURL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_LOGIN_REDIRECT_URI}&response_type=code`;
-    window.location.href = kakaoAuthURL; // 리디렉션
-  };
+  // 1. 서버에 로그인 요청하여 카카오 인증 URL로 302 리디렉션
+  const requestKakaoLogin = () => {
+    const kakaoAuthURL = `https://momeokjo.bluegyu.me/auth/oauth/kakao`
+    window.location.href = kakaoAuthURL
+  }
 
-  return { handleKakaoLoginClick };
-};
+
+  return { requestKakaoLogin }
+}
 
 export default useKakaoLogin;

@@ -95,6 +95,14 @@ const shapeStyles = {
         `
     }
   `,
+  logout: css`
+    padding: 9px 16px;
+    height:39px;
+    color:${props => props.theme.maptextgrey};
+    background-color:${props => props.theme.maptextwhite};
+    border-radius:14px;
+    ${props => props.theme.fontSet.baseEps};
+  `,
   myinfo: css`
   position:absolute;
   top:20px;

@@ -1,11 +1,8 @@
-import React, {useRef, useState} from "react"
+import React, {useRef} from "react"
 import { useNavigate } from "react-router-dom"
-import { regex } from "../../shared/Content/regex";
 
 import useLoginForm from "./model/useLoginForm";
-import useValidatorInput from "../../shared/model/useValidatorInput";
 import useKakaoLogin from "./model/useKakaoLogin";
-// import useFetch from "../../entities/model/useFetch";
 
 import Header from "../../widget/Header";
 import Button from "../../shared/Button"
@@ -14,86 +11,69 @@ import s from "./style"
 import kakaoIcon from "./assets/ico-kakao.svg"
 
 
-
-
 const Login = () => {
   const navigate = useNavigate()
+
   const idRef = useRef()
   const passwordRef = useRef()
 
-  const [errors, setErrors] = useState({})
-  // const [loginData, setLoginData] = useState(null)
-  // const [loginUrl, setLoginUrl] = useState(null)
+  const { requestPostLogin, isValidateId, isValidatePassword } = useLoginForm(idRef, passwordRef)
+  const { requestKakaoLogin } = useKakaoLogin()
 
-  const validateId = useValidatorInput(
-    idRef,
-    (value) => regex.id.test(value),
-    // messages.id
-  )
-
-  const validatePassword = useValidatorInput(
-    passwordRef,
-    (value) => regex.password.test(value),
-    // messages.password
-  )
-
-  const handleLogin = useLoginForm(validateId, validatePassword)
-
-  const { handleKakaoLoginClick } = useKakaoLogin()
 
   const inputList = [
     {
-      "label": "아이디",
-      "type": "text",
-      "error_message": errors.id,
-      "ref" : idRef,
-      "placeholder" : "아이디를 입력해주세요"
+      label: "아이디",
+      type: "text",
+      ref: idRef,
+      validity: isValidateId,
+      default_message: "50자 이하 / 영어, 숫자 포함",
+      placeholder: "아이디를 입력해주세요."
     },
     {
-      "label": "비밀번호",
-      "type": "password",
-      "error_message": errors.password,
-      "ref": passwordRef,
-      "placeholder" : "비밀번호를 입력해주세요"
+      label: "비밀번호",
+      type: "password",
+      ref: passwordRef,
+      validity: isValidatePassword,
+      default_message: "8~32자 이하, 영대문자 1자 이상, 특수문자 1자이상, 영소문자, 숫자 조합",
+      placeholder: "비밀번호를 입력해주세요."
     },
   ]
 
-  const handleSubmit = () => {
-    const id = idRef.current.value
-    const password = passwordRef.current.value
-    handleLogin(setErrors, id, password)
-  }
-
-  // const KAKAO_LOGIN_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${import.meta.env.VITE_KAKAO_REST_API_KEY}&redirect_uri=${import.meta.env.VITE_KAKAO_LOGIN_REDIRECT_URI}&scope=profile_nickname,account_email&prompt=login`;
-
   return (
     <s.Container>
+
       <Header 
         headerTitle="로그인"
         backNavigation={() => navigate('/')}
       />
+
       <s.Form>
+
         {inputList.map((elem, idx) => 
           <s.InputBox key={idx}>
+
             <s.Label>
               {elem.label} <s.Span>*</s.Span>
             </s.Label>
+
               <s.Input
-                type={elem.type}
-                $error={elem.error_message}
-                ref={elem.ref}
-                placeholder={elem.placeholder}
+                type={elem?.type}
+                $error={!elem?.validity}
+                ref={elem?.ref}
+                placeholder={elem?.placeholder}
               />
-            {elem.error_message && (
-              <s.Message>
-                {elem.error_message}
-              </s.Message>
-            )}
-        </s.InputBox>
-      )}
-      <Button type="button" color="primary" size="largeUser" children={"로그인"} onClick={handleSubmit} />
+              {!elem?.validity && (
+                <s.Message>
+                  {elem.default_message}
+                </s.Message>
+              )}
+
+          </s.InputBox>
+        )}
+      <Button type="button" color="primary" size="largeUser" children={"로그인"} onClick={requestPostLogin} />
       
-      <Button type="button" color="kakao" size="largeUser" onClick={handleKakaoLoginClick}>
+      <Button type="button" color="kakao" size="largeUser" onClick={requestKakaoLogin}>
         <s.KakaoImg src={kakaoIcon} alt="카카오 아이콘" />
         카카오 로그인
       </Button>

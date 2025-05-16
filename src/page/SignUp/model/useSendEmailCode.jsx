@@ -4,31 +4,22 @@ import useValidatorInput from "../../../shared/model/useValidatorInput"
 import { regex } from "../../../shared/Content/regex"
 
 const useSendEmailCode = () => {
-  // const [isEmailCodeSent, setIsEmailCodeSent] = useState(false)
   const [timer, setTimer] = useState(900)
-  // const [emailCodeMessage, setEmailCodeMessage] = useState('')
 
   const [isSending, setIsSending] = useState(false)   // 이메일 전송 중인 것을 표현하기 위한 상태 ( 만약에 화면에 전송 중인 것을 보여주지 않으면 필요 없는 상태 )
   const [isEmailSent, setIsBackendRequest] = useState(false)   // 백엔드 통신 성공 여부 상태
-  // const [emailSentResultMessage, setBackendMeesage] = useState("")   // 백엔드 통신이 실패했을 때 출력할 메세지 상태
-  const [isValidateEmail, setIsValidateEmail] = useState(true)
+  const [isValidateEmail, setIsValidateEmail] = useState(true)  // reuquestPostEmailCode 안에서 validateEmailResult가 동작하는 구조 따라서 이 결과 값에 대한 변수를 갖다 쓰려면 state로 빼줘야 한다
+
 
   const postData = useFetch()
 
 
   const requestPostEmailCode = async (emailRef) => {
     
-    const validateResult = useValidatorInput(emailRef, regex.email)
-    setIsValidateEmail(validateResult)
+    const validateEmailResult = useValidatorInput(emailRef, regex.email)
+    setIsValidateEmail(validateEmailResult)
 
-    // setErrors((prev) => {
-    //   const updated = { ...prev }
-    //   delete updated.email
-    //   return updated
-    // })
-
-    // try {
-    if (validateResult) {
+    if (validateEmailResult) {
 
       setIsSending(true)
 
@@ -38,11 +29,9 @@ const useSendEmailCode = () => {
 
       if (response.status === 400) {
         alert("인증번호가 일치하지 않습니다.")
-        // setBackendMeesage("인증번호가 일치하지 않습니다.")
       } 
       else if (response.status === 409) {
         alert("이미 가입된 이메일이 존재합니다.")
-        // setBackendMeesage("이미 가입된 이메일이 존재합니다.")
       }
       else if (response.status === 200) {
         setIsBackendRequest(true)
@@ -51,24 +40,6 @@ const useSendEmailCode = () => {
       
       setIsSending(false)
     }
-
-      // if (!response.success) {
-      //   throw new Error(response.message || "요청 실패")
-      // }
-
-      // setIsEmailCodeSent(true)
-      // setEmailCodeMessage("")
-      // setTimer(900)
-
-      // console.log(`인증 코드가 전송되었습니다.`)
-      // console.log(response)
-    // } catch (err) {
-      // console.error("이메일 인증 코드 전송 오류:", err.message)
-      // setEmailCodeMessage("인증 코드 전송 실패: " + err.message)
-    // } finally {
-      // setIsSending(false)
-    //}
-
   }
 
   useEffect(() => {
@@ -93,7 +64,6 @@ const useSendEmailCode = () => {
     return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
   }
 
-  // return { handleSendEmailCode, isEmailCodeSent, emailCodeMessage, timer, formatTime, isSending }
   return { requestPostEmailCode, isSending, isEmailSent, timer, formatTime, isValidateEmail }
 }
 

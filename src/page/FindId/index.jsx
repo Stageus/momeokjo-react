@@ -1,9 +1,7 @@
-import React, {useRef, useState} from "react"
+import React, {useRef} from "react"
 import { useNavigate } from "react-router-dom"
-import { regex } from "../../shared/Content/regex"
 
 import useFindIdForm from "./model/useFinIdForm"
-import useValidatorInput from "../../shared/model/useValidatorInput"
 
 import Header from "../../widget/Header"
 import Button from "../../shared/Button"
@@ -13,14 +11,17 @@ const FindId = () => {
   const navigate = useNavigate()
   const emailRef = useRef()
 
-  const [errors, setErrors] = useState({})
+  const {isFindIdSuccess, isValidateEmail, foundId, requestPostFindId} = useFindIdForm(emailRef)
 
-  const validateEmail = useValidatorInput(
-    emailRef,
-    (value) => regex.email.test(value),
-    messages.email
-  )
-  const {isFindIdSuccess, foundId, handleFindId} = useFindIdForm(validateEmail)
+  const inputList = [
+    {
+      label: "이메일",
+      type: "text",
+      ref: emailRef,
+      validity: isValidateEmail,
+      error_message: "254자 이하 / '영어, 숫자, 특수문자(. , +, -, _ 만 허용) + @ + 도메인' 형태"
+    }
+  ]
 
   return (
     <>
@@ -37,28 +38,29 @@ const FindId = () => {
         backNavigation={() => navigate('/login')}
       />
       <s.Form>
-          <s.InputBox>
+      {inputList.map((elem, idx) => 
+          <s.InputBox key={idx}>
             <s.Label>
-              이메일 <s.Span>*</s.Span>
+              {elem.label} <s.Span>*</s.Span>
             </s.Label>
               <s.Input
-                type="email"
-                $error={errors.email}
-                ref={emailRef}
-                placeholder="이메일을 입력해주세요"
+                type={elem?.type}
+                $error={!elem?.validity}
+                ref={elem?.ref}
               />
-            {errors.email && (
+            {!elem.validity && (
               <s.Message>
-                {errors.email}
+                {elem.error_message}
               </s.Message>
             )}
           </s.InputBox>
+        )}
         <Button 
           type="button" 
           color="primary" 
           size="largeUser" 
           children={"아이디 찾기"} 
-          onClick={() => handleFindId(setErrors)} 
+          onClick={requestPostFindId} 
         />
       </s.Form>
     </s.Container>

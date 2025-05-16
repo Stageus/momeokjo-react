@@ -1,0 +1,155 @@
+import styled, {css} from "styled-components";
+
+const style = {
+    "Container" : styled.div`
+        width: 564px;
+        height: 1024px;
+        margin: 0 auto;
+        padding: 0 16px;
+        border-radius: 10px;
+        background-color: ${props => props.theme.maptextwhite};
+        position: relative;
+    `,
+
+    "Header" : styled.header`
+        width: 100%;
+        padding: 14px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 36px;
+    `,
+
+    "Back" : styled.button`
+        width:24px;
+        height:24px;
+    `,
+
+    "BackImg" : styled.img`
+        width:100%;
+    `,
+
+    "Title" : styled.h2`
+        text-align: center;
+        ${props => props.theme.fontSet.xlgBold};
+        color: ${props => props.theme.maptextblack};
+    `,
+
+    "Empty" : styled.div`
+        width: 24px;
+        height: 24px;
+    `,
+
+    "Form" : styled.form`
+        display: flex;
+        flex-direction: column;
+    `,
+
+    "InputBox" : styled.div`
+        width: 532px;
+        margin-bottom: 30px;
+    `,
+
+    "Label" : styled.label`
+        margin-bottom: 8px;
+        ${props => props.theme.fontSet.smBold};
+        color: ${props => props.theme.maptextgrey};
+    `,
+
+    "Span" : styled.span`
+        color: ${props => props.theme.mapaccent};
+    `,
+
+    "Input" : styled.input`
+        padding: 16px;
+        ${props => props.theme.fontSet.md};
+        color: ${props => props.theme.mapbgdeem1};
+        border: 1px solid ${props => props.theme.maplinegrey};
+        border-radius: 8px;
+        outline: none;
+        width: 100%;
+
+        ${props =>
+            props.$error &&
+            css`
+              border: 2px solid ${props => props.theme.mapaccent};
+            `}
+
+        ${props =>
+            props.$verify &&
+            css`
+              background-color: ${props => props.theme.maplinegrey};
+              color: ${props => props.theme.maptextgrey};
+            `
+        }
+
+        &::placeholder {
+            ${props => props.theme.fontSet.md};
+            color: ${props => props.theme.mapbgdeem1};
+
+            ${props => 
+                props.$verify &&
+                css`
+                  color: ${props => props.theme.maptextgrey};
+                `
+            }
+        }
+    `,
+
+    "Message" : styled.p`
+
+        margin-top: 6px;
+        ${props => props.theme.fontSet.sm};
+        color: ${props => props.theme.maptextgrey};
+
+
+      ${props =>
+        props.$error &&
+        css`
+          color: ${props => props.theme.mapaccent};
+        `}
+
+      ${props => 
+        props.$success &&
+        css`
+          color: ${props => props.theme.mapprimary}
+        `
+      }
+    `,
+
+    "EmailContainer" : styled.div`
+        width: 100%;
+        display: flex;
+        position: relative;
+        margin-top: 7px;
+    `,
+
+    "EmailVerify" : styled.a`
+        position: absolute;
+        top: 23px;
+        right: 16px;
+        ${props => props.theme.fontSet.baselightBold};
+        color: ${props => props.theme.mapprimary};
+        text-decoration: underline;
+
+
+      ${props =>
+        props.$verify &&
+        css`
+        ${props => props.theme.fontSet.base};
+        color: ${props => props.theme.maptextblack};
+        text-decoration: underline;
+        `
+      }
+    `,
+
+    "Timer" : styled.p`
+        position: absolute;
+        top: 23px;
+        right: 123px;
+        ${props => props.theme.fontSet.sm};
+        color: ${props => props.theme.mapaccent};
+    `,
+}
+
+export default style

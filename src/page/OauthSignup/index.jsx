@@ -1,20 +1,16 @@
 import React, {useRef} from "react";
 import { useNavigate } from "react-router-dom";
 
-import useSignUpForm from "./model/useSignupForm";
-import useSendEmailCode from "./model/useSendEmailCode";
-import useConfirmEmailCode from "./model/useConfirmEmailCode";
+import useOauthSignupForm from "./model/useOauthSignupForm";
+import useSendEmailCode from '../SignUp/model/useSendEmailCode'
+import useConfirmEmailCode from "../SignUp/model/useConfirmEmailCode";
 
-import Button from "../../shared/Button"
-import Header from "../../widget/Header"
+import Button from "../../shared/Button";
+import Header from "../../widget/Header";
 import s from "./style"
 
-
-const SignUp = () => {
+const OauthSignup = () => {
   const navigate = useNavigate()
-  const idRef = useRef()
-  const passwordRef = useRef()
-  const confirmPasswordRef = useRef()
   const nicknameRef = useRef()
   const emailRef = useRef()
   const emailCodeRef = useRef()
@@ -27,60 +23,29 @@ const SignUp = () => {
     requestPostEmailConfirm, isEmailSuccessful, isValidateEmailCode 
   } = useConfirmEmailCode()
 
-  const { 
-    requestPostSignup, isValidateId, isValidatePassword, isValidateNickname, isComparePassword 
-  } = useSignUpForm( 
-    idRef,
-    passwordRef,
-    confirmPasswordRef,
+  const { requestPostOauthSignup, isValidateNickname, } = useOauthSignupForm(
     nicknameRef,
     isEmailSuccessful
   )
 
   const inputList = [
-          {
-            label: "아이디",
-            type: "text",
-            ref: idRef,
-            validity: isValidateId,
-            error_message: "아이디가 입력 형식에 맞지 않습니다.",
-            default_message: "50자 이하 / 영어, 숫자 포함"
-          },
-          {
-            label: "비밀번호",
-            type: "password",
-            ref: passwordRef,
-            validity: isValidatePassword,
-            error_message: "비밀번호가 입력 형식에 맞지 않습니다.",
-            default_message: "8~32자 이하, 영대문자 1자 이상, 특수문자 1자이상, 영소문자, 숫자 조합"
-          },
-          {
-            label: "비밀번호 확인",
-            type: "password",
-            ref: confirmPasswordRef,
-            validity: isComparePassword, 
-            error_message: "두 비밀번호가 일치하지 않습니다.",
-            default_message: "비밀번호와 동일한 값 혹은 여백이 있으면 안됩니다."
-          },
-          {
-            label: "닉네임",
-            type: "text",
-            ref: nicknameRef,
-            validity: isValidateNickname,
-            error_message: "닉네임이 입력 형식에 맞지 않습니다.",
-            default_message: "50자 이하 / 한글, 영어, 숫자 포함"
-          },
-          {
-            label: "이메일",
-            type: "email",
-            ref: emailRef,
-            validity: isValidateEmail,
-            error_message: "이메일이 입력 형식에 맞지 않습니다.",
-            default_message: "254자 이하 / '영어, 숫자, 특수문자(. , +, -, _ 만 허용) + @ + 도메인' 형태"
-          },
-        ]
-  
-    
+    {
+      label: "닉네임",
+      type: "text",
+      ref: nicknameRef,
+      validity: isValidateNickname,
+      error_message: "닉네임이 입력 형식에 맞지 않습니다.",
+      default_message: "50자 이하 / 한글, 영어, 숫자 포함"
+    },
+    {
+      label: "이메일",
+      type: "email",
+      ref: emailRef,
+      validity: isValidateEmail,
+      error_message: "이메일이 입력 형식에 맞지 않습니다.",
+      default_message: "254자 이하 / '영어, 숫자, 특수문자(. , +, -, _ 만 허용) + @ + 도메인' 형태"
+    },
+  ]
 
   return (
     <s.Container>
@@ -108,7 +73,7 @@ const SignUp = () => {
                     disabled={isEmailSuccessful}
                   />
                   {!isEmailSuccessful && (
-                    <s.EmailVerify onClick={() => requestPostEmailCode(emailRef)} >
+                    <s.EmailVerify onClick={() => requestPostEmailCode(emailRef)} disabled={isSending}>
                       {isEmailSent ? "인증번호 재전송" : "이메일 인증번호 전송"}
                     </s.EmailVerify>
                   )}
@@ -182,11 +147,11 @@ const SignUp = () => {
           </s.InputBox>
         ))}
 
-        <Button $signup type="button" color="primary" size="largeUser" children={"회원가입"} onClick={requestPostSignup} />
+        <Button type="button" color="primary" size="largeUser" children={"회원가입"} onClick={requestPostOauthSignup} />
 
       </s.Form>
     </s.Container>
   )
 }
 
-export default SignUp;
+export default OauthSignup

@@ -1,46 +1,71 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { regex } from '../../../shared/Content/regex';
+import useFetch from '../../../entities/model/useFetch';
+import useValidatorInput from "../../../shared/model/useValidatorInput"
+import { useSetRecoilState } from 'recoil';
+import { authState } from '../../../shared/model/atom';
 
-const useLoginForm = (validateId, validatePassword) => {
+const useLoginForm = (idRef, passwordRef) => {
+
   const navigate = useNavigate()
+  const setAuth = useSetRecoilState(authState)
+  const fetchData = useFetch()
 
-  // 로그인 처리 함수
-  const handleLogin = async (setErrors, id, password) => {
-    const idError = validateId()
-    const passwordError = validatePassword()
+  const [isValidateId, setIsValidateId] = useState(true)
+  const [isValidatePassword, setIsValidatePassword] = useState(true)
 
-    const errors = {}
+  const handleAuthError = (message) => {
+    setAuth({ isLoggedIn: false, user: null, checked: true })
+    alert(message)
+  }
 
-    if (idError) {
-      errors.id = idError
-      setErrors(errors)
+  const requestPostLogin = async () => {
+    const id = idRef?.current?.value
+    const pw = passwordRef?.current?.value
+
+    const validateIdResult = useValidatorInput(idRef, regex.id)
+    const validatePwResult = useValidatorInput(passwordRef, regex.password)
+
+    setIsValidateId(validateIdResult)
+    setIsValidatePassword(validatePwResult)
+
+    if (!validateIdResult || !validatePwResult) return
+
+    const response = await fetchData("POST", "/auth/signin", { id, pw })
+
+    switch (response?.status) {
+      case 400:
+        alert("입력값의 양식이 올바르지 않습니다.")
+        return
+      case 404:
+        alert("등록된 계정이 없습니다.")
+        return
+      case 200:
+        break
+      default:
+        return
     }
-    if (passwordError) {
-      errors.password = passwordError
-      setErrors(errors)
-    }
 
-    if (Object.keys(errors).length === 0) {
+    try {
+      const statusResponse = await fetchData("GET", "/auth/status", null, null, { skipRedirect: true })
 
-      const response = await fetch('http://39.123.217.25:8000/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id, password}),
-      })
+      const userData = statusResponse?.data?.data
 
-      if (response.ok) {
-        alert("로그인 성공")
-        navigate('/')
+      if (statusResponse.status === 200 && userData?.users_idx) {
+        setAuth({ isLoggedIn: true, user: userData, checked: true })
+        alert("로그인에 성공하였습니다.")
+        navigate("/")
       } else {
-        const error = await response.json()
-        setErrors({ login: error.message })
+        handleAuthError("사용자 정보 로딩 실패")
       }
-      
+    } catch (err) {
+      console.error("status API 에러:", err)
+      handleAuthError("사용자 정보 확인 중 오류 발생")
     }
   }
 
-  return handleLogin
+  return { requestPostLogin, isValidateId, isValidatePassword }
 }
 
 export default useLoginForm

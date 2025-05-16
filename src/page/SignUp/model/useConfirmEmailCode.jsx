@@ -11,10 +11,10 @@ const useConfirmEmailCode = () => {
 
   const requestPostEmailConfirm = async (emailCodeRef) => {
     
-    const validateResult = useValidatorInput(emailCodeRef, regex.emailCode)
-    setIsValidateEmailCode(validateResult)
+    const validateEmailCodeResult = useValidatorInput(emailCodeRef, regex.emailCode)
+    setIsValidateEmailCode(validateEmailCodeResult)
 
-    if (validateResult) {
+    if (validateEmailCodeResult) {
 
       const response = await postData("POST", "/auth/verify-email/confirm", {
         code: Number(emailCodeRef?.current?.value)
