@@ -11,7 +11,7 @@ const useSignUpForm = (
   nicknameRef,
   isEmailSuccessful
 ) => {
-
+  
   const navigate = useNavigate()
 
   const postData = useFetch()
@@ -19,7 +19,6 @@ const useSignUpForm = (
   const [isValidatePassword, setIsValidatePassword] = useState(true)
   const [isComparePassword, setIsComparePassword] = useState(true)
   const [isValidateNickname, setIsValidateNickname] = useState(true)
-  const [isValidateEmail, setIsValidateEmail] = useState(true)
 
   const requestPostSignup = async () => {
     const id = idRef?.current?.value

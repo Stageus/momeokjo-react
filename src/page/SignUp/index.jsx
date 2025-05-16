@@ -82,8 +82,6 @@ const SignUp = () => {
   
     
 
-  // const KAKAO_SIGNUP_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${import.meta.env.VITE_KAKAO_REST_API_KEY}&redirect_uri=${import.meta.env.VITE_KAKAO_SIGNUP_REDIRECT_URI}&scope=profile_nickname,account_email`
-
   return (
     <s.Container>
 
@@ -110,7 +108,7 @@ const SignUp = () => {
                     disabled={isEmailSuccessful}
                   />
                   {!isEmailSuccessful && (
-                    <s.EmailVerify onClick={() => requestPostEmailCode(emailRef)} disabled={isSending}>
+                    <s.EmailVerify onClick={() => requestPostEmailCode(emailRef)} >
                       {isEmailSent ? "인증번호 재전송" : "이메일 인증번호 전송"}
                     </s.EmailVerify>
                   )}

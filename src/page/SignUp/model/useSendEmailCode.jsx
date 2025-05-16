@@ -10,6 +10,7 @@ const useSendEmailCode = () => {
   const [isEmailSent, setIsBackendRequest] = useState(false)   // 백엔드 통신 성공 여부 상태
   const [isValidateEmail, setIsValidateEmail] = useState(true)  // reuquestPostEmailCode 안에서 validateEmailResult가 동작하는 구조 따라서 이 결과 값에 대한 변수를 갖다 쓰려면 state로 빼줘야 한다
 
+
   const postData = useFetch()
 
 
