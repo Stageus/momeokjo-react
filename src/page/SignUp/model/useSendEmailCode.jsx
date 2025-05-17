@@ -15,6 +15,7 @@ const useSendEmailCode = () => {
 
 
   const requestPostEmailCode = async (emailRef) => {
+    const email = emailRef?.current?.value
     
     const validateEmailResult = useValidatorInput(emailRef, regex.email)
     setIsValidateEmail(validateEmailResult)
@@ -23,21 +24,19 @@ const useSendEmailCode = () => {
 
       setIsSending(true)
 
-      const response = await postData("POST", "/auth/verify-email", { 
-        email: emailRef.current.value 
-      })
+      const response = await postData("POST", "/auth/verify-email", { email })
 
-      if (response.status === 400) {
-        alert("인증번호가 일치하지 않습니다.")
-      } 
-      else if (response.status === 409) {
-        alert("이미 가입된 이메일이 존재합니다.")
+      switch (response?.status) {
+        case 400:
+          alert("인증번호가 일치하지 않습니다.")
+          return
+        case 409:
+          alert("이미 가입된 이메일이 존재합니다.")
+          return
+        case 200:
+          setIsBackendRequest(true)
+          setTimer(900)
       }
-      else if (response.status === 200) {
-        setIsBackendRequest(true)
-        setTimer(900)
-      }
-      
       setIsSending(false)
     }
   }
@@ -48,7 +47,7 @@ const useSendEmailCode = () => {
     if (isEmailSent && timer > 0) {
       interval = setInterval(() => {
         setTimer((prevTimer) => prevTimer - 1)
-      }, 1000);
+      }, 1000)
     } else if (timer === 0) {
       setIsEmailCodeSent(false)
       setEmailCodeMessage("타이머가 만료되었습니다. 인증 코드를 다시 요청하세요.")

@@ -46,30 +46,24 @@ const useSignUpForm = (
         return
       }
 
-      const response = await postData("POST", "/auth/signup", {
-        id: idRef?.current?.value,
-        pw: passwordRef?.current?.value,
-        nickname: nicknameRef?.current?.value,
-      })
+      const response = await postData("POST", "/auth/signup", { id, pw, nickname })
 
-      if (response.status === 400) {
-        alert("입력값의 양식이 올바르지 않습니다.")
+      switch (response?.status) {
+        case 400:
+          alert("입력값의 양식이 올바르지 않습니다.")
+          return
+        case 409:
+          const target = response?.data?.target
+          alert(`${target}의 값이 중복됩니다.`)
+          return
+        case 200:
+          alert("회원강비에 성공하였습니다.")
+          navigate("/login")
       }
-      else if (response.status === 409) {
-        const target = response?.data?.target
-        alert(`${target}의 값이 중복됩니다.`)
-      }
-      else if (response.status === 200) {
-        alert("회원가입에 성공하였습니다.")
-        navigate("/login")
-      }
-
     }
+  }
 
-    }
-
-    return {requestPostSignup, isValidateId, isValidatePassword, isValidateNickname, isComparePassword}
-
+  return {requestPostSignup, isValidateId, isValidatePassword, isValidateNickname, isComparePassword}
 }
 
 export default useSignUpForm;

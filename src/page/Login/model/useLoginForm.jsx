@@ -52,8 +52,12 @@ const useLoginForm = (idRef, passwordRef) => {
 
       const userData = statusResponse?.data?.data
 
-      if (statusResponse.status === 200 && userData?.users_idx) {
-        setAuth({ isLoggedIn: true, user: userData, checked: true })
+      if (statusResponse.status === 200) {
+        setAuth({ 
+          isLoggedIn: true, 
+          user: userData, 
+          checked: true 
+        })
         alert("로그인에 성공하였습니다.")
         navigate("/")
       } else {

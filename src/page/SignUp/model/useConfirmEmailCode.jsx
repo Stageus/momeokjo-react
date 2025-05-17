@@ -10,15 +10,14 @@ const useConfirmEmailCode = () => {
   
 
   const requestPostEmailConfirm = async (emailCodeRef) => {
+    const code = Number(emailCodeRef?.current?.value)
     
     const validateEmailCodeResult = useValidatorInput(emailCodeRef, regex.emailCode)
     setIsValidateEmailCode(validateEmailCodeResult)
 
     if (validateEmailCodeResult) {
 
-      const response = await postData("POST", "/auth/verify-email/confirm", {
-        code: Number(emailCodeRef?.current?.value)
-      })
+      const response = await postData("POST", "/auth/verify-email/confirm", { code })
 
       if (response.status === 400) {
         alert("인증번호 형식이 올바르지 않습니다.")
